@@ -10,9 +10,12 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import urllib.error
+import urllib.request
 from abc import ABC, abstractmethod
 
-__all__ = ["LLMInterface", "MockLLM", "BedrockLLM"]
+__all__ = ["LLMInterface", "MockLLM", "BedrockLLM", "GeminiLLM"]
 
 
 class LLMInterface(ABC):
@@ -143,3 +146,132 @@ class BedrockLLM(LLMInterface):
                 f"Bedrock LLM 调用失败 (model_id={self.model_id}, "
                 f"region={self.region_name}): {exc}"
             ) from exc
+
+
+class GeminiLLM(LLMInterface):
+    """基于 Google AI Studio (Gemini) 的真实 LLM 实现（Req 2.1）。
+
+    作为 ``MockLLM`` / ``BedrockLLM`` 之外的可插拔选项，通过 Gemini 的
+    ``generateContent`` REST 端点调用托管大语言模型，用于在无法使用 Bedrock
+    （配额 / 开通问题）时生成推荐理由。
+
+    实现仅依赖标准库（``urllib`` / ``json``），不引入新的第三方依赖。API Key
+    不写入代码，由上层从环境变量 ``GEMINI_API_KEY`` 注入。
+
+    健壮性约定：
+      * 当响应结构缺失或被安全过滤（无 ``candidates`` 或无 ``text``）时，
+        ``generate`` 返回空字符串，交由上层走兜底模板，不抛异常导致整个流程
+        500；
+      * 当网络错误或 HTTP 4xx/5xx 时，抛出 ``RuntimeError``（携带状态码与响应
+        体前 200 字），交由上层 Agent 捕获。
+
+    实际的 HTTP 调用被封装在独立的 ``_post`` 方法中，便于测试时替换（monkeypatch）
+    而无需真实联网。
+    """
+
+    _ENDPOINT = (
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        "{model}:generateContent?key={api_key}"
+    )
+
+    def __init__(
+        self,
+        api_key: str,
+        model: str = "gemini-2.0-flash",
+        timeout: int = 60,
+    ) -> None:
+        """初始化 Gemini LLM 客户端。
+
+        Args:
+            api_key: Google AI Studio 的 API Key（形如 ``AIza...``）。
+            model: Gemini 模型名，默认 ``gemini-2.0-flash``。
+            timeout: 单次请求的超时时间（秒），默认 60。
+        """
+        self.api_key = api_key
+        self.model = model
+        self.timeout = timeout
+
+    def generate(self, prompt: str, **kw) -> str:
+        """调用 Gemini ``generateContent`` 端点依据 ``prompt`` 生成文本。
+
+        Args:
+            prompt: 提示词文本。
+            **kw: 可选生成参数，支持 ``max_tokens``（默认 512）与
+                ``temperature``（默认 0.7）。
+
+        Returns:
+            模型生成的文本字符串；响应结构缺失或被安全过滤时返回空字符串。
+
+        Raises:
+            RuntimeError: 网络错误或 HTTP 4xx/5xx 时抛出，携带状态码与响应体
+                前 200 字，交由上层 Agent 捕获。
+        """
+        url = self._ENDPOINT.format(model=self.model, api_key=self.api_key)
+        body = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {
+                "maxOutputTokens": kw.get("max_tokens", 2048),
+                "temperature": kw.get("temperature", 0.7),
+            },
+        }
+        data = self._post(url, body)
+        return self._extract_text(data)
+
+    def _post(self, url: str, body: dict) -> dict:
+        """向 ``url`` 发送 JSON POST 并解析返回 JSON（可被测试替换）。
+
+        Args:
+            url: 完整的请求地址（已含 ``?key=``）。
+            body: 请求体字典，将被序列化为 JSON。
+
+        Returns:
+            解析后的响应 JSON 字典。
+
+        Raises:
+            RuntimeError: HTTP 4xx/5xx 或网络 / 解析错误时抛出，携带状态码与
+                响应体前 200 字。
+        """
+        payload = json.dumps(body).encode("utf-8")
+        request = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=self.timeout) as resp:
+                raw = resp.read().decode("utf-8")
+            return json.loads(raw)
+        except urllib.error.HTTPError as exc:
+            detail = ""
+            try:
+                detail = exc.read().decode("utf-8", errors="replace")[:200]
+            except Exception:  # noqa: BLE001 - 读取错误体失败时忽略细节
+                detail = ""
+            raise RuntimeError(
+                f"Gemini LLM 调用失败 (model={self.model}, "
+                f"status={exc.code}): {detail}"
+            ) from exc
+        except Exception as exc:  # noqa: BLE001 - 网络 / 解析错误统一上抛
+            raise RuntimeError(
+                f"Gemini LLM 调用失败 (model={self.model}): {exc}"
+            ) from exc
+
+    @staticmethod
+    def _extract_text(data: dict) -> str:
+        """从 Gemini 响应中提取生成文本，缺失则返回空字符串。
+
+        Args:
+            data: ``generateContent`` 的响应 JSON。
+
+        Returns:
+            ``candidates[0].content.parts[0].text`` 去除首尾空白后的文本；
+            任一层级缺失则返回空字符串。
+        """
+        try:
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+        except (KeyError, IndexError, TypeError):
+            return ""
+        if not isinstance(text, str):
+            return ""
+        return text.strip()
