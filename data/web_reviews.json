@@ -1,0 +1,1656 @@
+{
+  "info": {
+    "elec-001": "索尼 WH-1000XM5 无线降噪头戴属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-002": "Anker 65W 氮化镓充电器属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-003": "小米 Redmi 显示器 27 英寸 2属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-004": "罗技 MX Master 3S 无线鼠标属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-005": "Kindle Paperwhite 电子属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-006": "大疆 Osmo Pocket 3 口袋云属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-007": "elec-007属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-008": "机械键盘 87 键 RGB 背光属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-009": "移动固态硬盘 1TB属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "elec-010": "智能手表 GPS 版属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
+    "home-001": "戴森 V12 无绳吸尘器属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-002": "石头扫地机器人 G20属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-003": "北欧风实木餐桌属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-004": "记忆棉枕头属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-005": "智能空气净化器属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-006": "电动升降桌属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-007": "加湿器 4.5L 大容量属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-008": "多功能电饭煲属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-009": "落地灯 LED 无极调光属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "home-010": "home-010属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-001": "雅诗兰黛小棕瓶精华 50ml属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-002": "兰蔻菁纯面霜属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-003": "科颜氏高保湿面霜属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-004": "植村秀琥珀卸妆油属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-005": "圣罗兰细管唇釉属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-006": "资生堂新艳阳夏防晒霜 SPF50+属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-007": "花西子空气蜜粉饼属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "beauty-008": "SK-II 神仙水 230ml属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-001": "耐克 Pegasus 40 跑鞋属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-002": "阿迪达斯运动速干T恤属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-003": "瑜伽垫 TPE 材质属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-004": "可调节哑铃一对属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-005": "运动水壶 1L 大容量属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-006": "登山双肩包 40L属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-007": "sport-007属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "sport-008": "筋膜枪深层肌肉放松属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
+    "book-001": "《人类简史》尤瓦尔·赫拉利著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
+    "book-002": "《深度工作》卡尔·纽波特著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
+    "book-003": "《活着》余华著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
+    "book-004": "《原则》瑞·达利欧著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
+    "kitchen-001": "不锈钢炒锅 32cm属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
+    "kitchen-002": "全自动咖啡机属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
+    "kitchen-003": "破壁料理机属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
+    "kitchen-004": "陶瓷刀具套装属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
+    "kitchen-005": "空气炸锅 5.5L 大容量属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
+    "baby-001": "婴儿推车轻便可折叠属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
+    "baby-002": "恒温调奶器属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
+    "baby-003": "儿童安全座椅属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
+    "pet-001": "自动喂食器智能定时属于宠物用品品类的热门单品，官方主打实用性与耐用度，市场口碑整体不错，是同价位段的关注热点。",
+    "pet-002": "pet-002属于宠物用品品类的热门单品，官方主打实用性与耐用度，市场口碑整体不错，是同价位段的关注热点。"
+  },
+  "reviews": {
+    "elec-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-005": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-006": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-007": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-008": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-009": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "elec-010": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-005": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-006": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-007": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-008": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-009": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "home-010": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-005": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-006": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-007": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "beauty-008": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-005": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-006": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-007": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "sport-008": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+      }
+    ],
+    "book-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+      }
+    ],
+    "book-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+      }
+    ],
+    "book-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+      }
+    ],
+    "book-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+      }
+    ],
+    "kitchen-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "kitchen-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "kitchen-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "kitchen-004": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "kitchen-005": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "baby-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+      }
+    ],
+    "baby-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+      }
+    ],
+    "baby-003": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+      }
+    ],
+    "pet-001": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款宠物用品产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，耐用度和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测耐用度很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ],
+    "pet-002": [
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "positive",
+        "content": "姐妹们冲！这款宠物用品产品真的绝，实用性超出预期，回购无数次。"
+      },
+      {
+        "platform": "xiaohongshu",
+        "sentiment": "negative",
+        "content": "踩雷预警，耐用度和宣传有差距，用下来体验一般般。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "positive",
+        "content": "刷到就买了，实测耐用度很能打，日常使用非常满意，强烈安利。"
+      },
+      {
+        "platform": "douyin",
+        "sentiment": "negative",
+        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "positive",
+        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+      },
+      {
+        "platform": "bilibili",
+        "sentiment": "negative",
+        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+      }
+    ]
+  }
+}

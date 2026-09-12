@@ -12,12 +12,12 @@
   - 创建 `app/config.py` 定义 `Settings`（crawler/web_search/llm 实现选择、chroma_dir、数据集路径）
   - _Requirements: 2.3_
 
-- [ ] 2. 共享状态与核心数据模型
-  - [~] 2.1 实现 ConversationSession 及其子模型
+- [x] 2. 共享状态与核心数据模型
+  - [x] 2.1 实现 ConversationSession 及其子模型
     - 在 `app/orchestrator/session.py` 实现 `CollectedNeeds`、`RetrievedRecord`、`SocialReview`、`WebInfo`、`ChatTurn`、`AgentError`、`ConversationSession`
     - 实现 `ConversationSession.needs_complete()`（Direct 需预算+用途；Guided 需预算+用途+偏好）
     - _Requirements: 4.4, 4.5, 8.2_
-  - [~] 2.2 实现输出与画像数据模型
+  - [x] 2.2 实现输出与画像数据模型
     - 在 `app/orchestrator/session.py`（或 `app/api/models.py`）实现 `ReviewSummary`、`ProductRecommendation`、`UserProfile`
     - _Requirements: 3.4, 7.4, 7.5_
   - [ ]* 2.3 编写 needs_complete 属性测试
@@ -25,13 +25,13 @@
     - **Validates: Requirements 4.4**
 
 - [ ] 3. 接口抽象层与模拟实现
-  - [~] 3.1 定义 Crawler 接口与模拟实现
+  - [x] 3.1 定义 Crawler 接口与模拟实现
     - 在 `app/interfaces/crawler.py` 实现 `CrawledProduct`、`CrawlerInterface`、`MockCrawler`（从 `products.json` 读取约 50 种预置商品）
     - _Requirements: 1.1, 1.5, 2.1, 2.2_
   - [~] 3.2 定义 WebSearch 接口与模拟实现
     - 在 `app/interfaces/web_search.py` 实现 `WebSearchInterface`、`MockWebSearch`（`fetch_product_info`、`fetch_social_reviews` 从 `web_reviews.json` 返回小红书/抖音/B站好评与差评）
     - _Requirements: 6.1, 6.2, 6.3, 6.5, 2.1, 2.2_
-  - [~] 3.3 定义 LLM 接口与模拟实现
+  - [x] 3.3 定义 LLM 接口与模拟实现
     - 在 `app/interfaces/llm.py` 实现 `LLMInterface`、`MockLLM`（基于模板的确定性输出）
     - _Requirements: 2.1, 2.2_
   - [ ]* 3.4 编写接口模拟实现单元测试
@@ -46,7 +46,7 @@
     - 验证按配置装配模拟实现；验证替换为符合同一契约的实现不改调用方
     - _Requirements: 2.3, 2.4_
 
-- [~] 5. 预置数据集
+- [x] 5. 预置数据集
   - 创建 `data/products.json`（约 50 种商品，含 product_id、source_url、detail、reviews，含少量缺字段样本）
   - 创建 `data/web_reviews.json`（各商品的 product_info 与含好评/差评的社媒测评）
   - 创建 `data/profiles.json`（若干模拟 UserProfile，覆盖有画像与冷启动场景）

@@ -23,6 +23,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218163982
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789218730546
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219114755
       }
     ],
     "2.2 实现输出与画像数据模型": [
@@ -30,6 +40,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164066
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789218731747
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219115678
       }
     ],
     "3.1 定义 Crawler 接口与模拟实现": [
@@ -37,6 +57,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164178
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789218732603
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219117015
       }
     ],
     "3.2 定义 WebSearch 接口与模拟实现": [
@@ -51,6 +81,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164315
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789218734128
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219117966
       }
     ],
     "4.1 实现 Container 装配逻辑": [
@@ -65,6 +105,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164471
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789218734644
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219119151
       }
     ],
     "6.1 实现 embedder 与 VectorStore 封装": [
@@ -184,6 +234,13 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218165766
+      }
+    ],
+    "2. 共享状态与核心数据模型": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219115770
       }
     ]
   }
