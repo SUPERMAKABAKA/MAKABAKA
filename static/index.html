@@ -649,7 +649,7 @@ function makeOrb(canvas,opts){
   let raf=0,pts=[],rings=[],meridians=[];
 
   const D2R=Math.PI/180;
-  const OUTLINES=DENSE;                  // stroke continent borders only on the dense (auth) globe
+  const OUTLINES=false;                  // continent borders disabled: plates shown by dense fill points only
 
   function latLonToVec(latDeg,lonDeg){
     const la=latDeg*D2R, lo=lonDeg*D2R;
