@@ -151,11 +151,11 @@
 - [x] 14. Checkpoint - 确保各 Agent 测试通过
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 15. Orchestrator LangGraph 状态机
-  - [~] 15.1 实现路由函数
+- [x] 15. Orchestrator LangGraph 状态机
+  - [x] 15.1 实现路由函数
     - 在 `app/orchestrator/graph.py` 实现 `route_after_profile`、`route_after_clarify`（await_user/retrieval/error）、`route_after_retrieval`、`route_after_web_search`、`route_after_recommendation`
     - _Requirements: 8.3, 8.4, 4.4, 4.5, 5.3, 6.4_
-  - [~] 15.2 实现 build_orchestrator 图装配
+  - [x] 15.2 实现 build_orchestrator 图装配
     - 在 `app/orchestrator/graph.py` 用 `StateGraph(ConversationSession)` 注册 5 节点、设入口、添加条件边并 `compile()`
     - _Requirements: 8.1, 8.2, 8.3_
   - [ ]* 15.3 编写会话状态单调累积属性测试
@@ -169,10 +169,10 @@
     - _Requirements: 8.1, 8.3_
 
 - [ ] 16. FastAPI /chat 接口
-  - [~] 16.1 实现请求/响应模型
+  - [x] 16.1 实现请求/响应模型
     - 在 `app/api/models.py` 实现 `ChatRequest`（含 recommendation_count）、`ChatResponse`、`ErrorResponse`
     - _Requirements: 9.1, 9.4, 9.5_
-  - [~] 16.2 实现 /chat 路由并接线到 main.py
+  - [-] 16.2 实现 /chat 路由并接线到 main.py
     - 在 `app/api/routes.py` 实现 `/chat`：缺字段→400+missing_fields；按 session_id 定位会话；透传 recommendation_count；驱动 orchestrator；错误→500+failed_agent；完成返回推荐列表
     - 在 `main.py` 装配 Container、会话仓、orchestrator 并挂载路由
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 8.4_

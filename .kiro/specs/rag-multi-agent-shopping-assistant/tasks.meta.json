@@ -336,6 +336,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218165441
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220069873
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220161730
       }
     ],
     "15.2 实现 build_orchestrator 图装配": [
@@ -343,6 +353,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218165523
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220163730
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220367922
       }
     ],
     "16.1 实现请求/响应模型": [
@@ -350,6 +370,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218165620
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220070698
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220163498
       }
     ],
     "16.2 实现 /chat 路由并接线到 main.py": [
@@ -357,6 +387,11 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218165695
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220367043
       }
     ],
     "17. Final checkpoint - 确保全部测试通过": [
@@ -434,6 +469,13 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789220032870
+      }
+    ],
+    "15. Orchestrator LangGraph 状态机": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789220368042
       }
     ]
   }
