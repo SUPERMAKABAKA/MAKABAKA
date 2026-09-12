@@ -52,12 +52,12 @@
   - 创建 `data/profiles.json`（若干模拟 UserProfile，覆盖有画像与冷启动场景）
   - _Requirements: 1.5, 6.5, 3.3_
 
-- [ ] 6. RAG 层：向量库、embedder 与灌库
+- [x] 6. RAG 层：向量库、embedder 与灌库
   - [x] 6.1 实现 embedder 与 VectorStore 封装
     - 在 `app/rag/embedder.py` 实现确定性 embedding（离线可测）
     - 在 `app/rag/vector_store.py` 封装 Chroma，提供 `add(embedding, metadata)` 与 `query(embedding, top_k)`（返回含 metadata 与 distance）
     - _Requirements: 1.2, 5.1_
-  - [~] 6.2 实现 IngestionPipeline
+  - [x] 6.2 实现 IngestionPipeline
     - 在 `app/rag/ingestion.py` 实现 `IngestionPipeline.run()`：读取商品→字段校验（缺 detail/reviews 跳过并记录含 product_id 日志）→切分→向量化→写入 Chroma（metadata 含 product_id/source_url/original_text）
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
   - [ ]* 6.3 编写灌库元数据完整性属性测试
@@ -66,11 +66,11 @@
   - [ ]* 6.4 编写缺字段跳过与日志边界测试
     - 验证缺 detail/reviews 时跳过该字段并记录含 product_id 的日志
     - _Requirements: 1.4_
-  - [~] 6.5 实现灌库脚本
+  - [x] 6.5 实现灌库脚本
     - 在 `scripts/ingest.py` 通过 Container 装配 crawler/store/embedder 并运行 IngestionPipeline
     - _Requirements: 1.1_
 
-- [~] 7. Checkpoint - 确保数据层与接口层测试通过
+- [x] 7. Checkpoint - 确保数据层与接口层测试通过
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 8. 会话仓与画像源

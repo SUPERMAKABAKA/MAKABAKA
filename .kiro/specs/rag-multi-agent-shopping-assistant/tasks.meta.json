@@ -159,6 +159,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164663
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219528979
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219639817
       }
     ],
     "6.5 实现灌库脚本": [
@@ -166,6 +176,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164731
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219640584
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219759081
       }
     ],
     "7. Checkpoint - 确保数据层与接口层测试通过": [
@@ -173,6 +193,11 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164800
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219778548
       }
     ],
     "8.1 实现内存会话仓": [
@@ -312,6 +337,13 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789219483605
+      }
+    ],
+    "6. RAG 层：向量库、embedder 与灌库": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219759159
       }
     ]
   }

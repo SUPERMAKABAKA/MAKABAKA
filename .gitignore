@@ -51,3 +51,6 @@ Thumbs.db
 
 # 日志
 *.log
+
+# RAG 向量库产物（本地灌库生成）
+.chroma/
