@@ -210,6 +210,19 @@ textarea::placeholder{color:var(--text-faint)}
 ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:9px;border:2px solid transparent;background-clip:padding-box}
 ::-webkit-scrollbar-thumb:hover{background:var(--text-faint);background-clip:padding-box}
 .hidden{display:none!important}
+
+/* ===== TEXT SELECTION CONTROL ===== */
+/* App chrome (titles, buttons, sidebar, labels, chips, history) is not selectable */
+.app,.auth{user-select:none;-webkit-user-select:none;cursor:default}
+/* Interactive elements keep pointer cursor */
+.app button,.auth button,.chip,.hist-item,.rec-link,.auth-switch b,
+.new-chat,.logout,.seg button,.send,.auth-btn{cursor:pointer}
+/* Content regions stay selectable so users can copy product info */
+.bubble,.body,.rec-title,.rec-reason,.sum{
+  user-select:text;-webkit-user-select:text;cursor:text}
+/* Form fields remain editable/selectable */
+textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
+
 @media(max-width:820px){.app{grid-template-columns:1fr}.side{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -357,6 +370,7 @@ $("#logout").onclick=()=>{
   token=null;username=null; localStorage.removeItem("nova_token"); localStorage.removeItem("nova_user");
   appScreen.classList.add("hidden"); authScreen.classList.remove("hidden");
   streamInner.innerHTML=""; streamInner.appendChild(welcome); welcome.style.display="";
+  for(const k in sessions) delete sessions[k]; histEl.innerHTML=""; sessionId=newId();
   uInput.value="";pInput.value=""; setMode("login");
 };
 
@@ -365,6 +379,21 @@ const streamInner=$("#streamInner"), stream=$("#stream"), input=$("#input"),
   sendBtn=$("#send"), welcome=$("#welcome"), histEl=$("#hist");
 let sessionId=newId(), busy=false;
 function newId(){ return "s-"+Math.random().toString(36).slice(2,10); }
+/* session store: sessionId -> { title, html } (html = streamInner snapshot) */
+const sessions={};
+/* Persist the current session's conversation as an innerHTML snapshot */
+function saveSession(){ if(sessions[sessionId]) sessions[sessionId].html=streamInner.innerHTML; }
+/* Switch the visible conversation to an existing session's snapshot */
+function switchToSession(id){
+  if(!sessions[id]) return;
+  saveSession();
+  sessionId=id;
+  streamInner.innerHTML=sessions[id].html;
+  welcome.style.display="none";
+  [...histEl.children].forEach(h=>h.classList.toggle("on",h.dataset.session===id));
+  $("#topMeta").textContent="Tell me what you want to buy";
+  scrollDown();
+}
 function autosize(){ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px"; }
 input.addEventListener("input",()=>{ autosize(); sendBtn.disabled=!input.value.trim()||busy; });
 input.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); doSend(); }});
@@ -373,12 +402,18 @@ document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
   input.value=c.textContent; autosize(); sendBtn.disabled=false; input.focus();
 }));
 $("#newChat").onclick=()=>{
+  saveSession();
   sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome);
   welcome.style.display=""; $("#topMeta").textContent="Tell me what you want to buy";
   [...histEl.children].forEach(h=>h.classList.remove("on"));
 };
+/* Create a history entry bound to the current session and wire up switching */
 function pushHistory(text){
-  const it=document.createElement("div"); it.className="hist-item on"; it.textContent=text;
+  const title=text.length>42?text.slice(0,42)+"...":text;
+  sessions[sessionId]={title, html:streamInner.innerHTML};
+  const it=document.createElement("div"); it.className="hist-item on";
+  it.textContent=title; it.title=text; it.dataset.session=sessionId;
+  it.addEventListener("click",()=>switchToSession(it.dataset.session));
   [...histEl.children].forEach(h=>h.classList.remove("on")); histEl.prepend(it);
 }
 function addUser(text){
@@ -476,7 +511,7 @@ async function doSend(){
     }
   }catch(err){ think.remove(); const m=aiBubble();
     await typeFallback(m.querySelector(".body"),"Network error. Please check the server and retry."); }
-  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); }
+  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession(); }
 }
 function parseSSE(raw){
   let event="message",data="";
