@@ -32,7 +32,7 @@ class Settings(BaseModel):
     Attributes:
         crawler_impl: Crawler_Interface 的实现选择，当前仅支持模拟实现。
         web_search_impl: Web_Search_Interface 的实现选择。
-        llm_impl: LLM_Interface 的实现选择（mock / bedrock）。
+        llm_impl: LLM_Interface 的实现选择（mock / bedrock / gemini）。
         embedder_impl: embedder 的实现选择（deterministic / bedrock）。
         chroma_dir: 本地 Chroma 向量库持久化目录。
         products_dataset: MockCrawler 读取的预置商品数据集路径。
@@ -42,12 +42,14 @@ class Settings(BaseModel):
         bedrock_llm_model_id: Bedrock LLM 模型标识。
         bedrock_embed_model_id: Bedrock embedding 模型标识。
         bedrock_embed_dim: Bedrock embedding 输出维度。
+        gemini_api_key: Google AI Studio (Gemini) 的 API Key。
+        gemini_model: Gemini 模型名。
     """
 
     # 外部依赖实现选择（Req 2.3）
     crawler_impl: Literal["mock"] = "mock"
     web_search_impl: Literal["mock"] = "mock"
-    llm_impl: Literal["mock", "bedrock"] = "mock"
+    llm_impl: Literal["mock", "bedrock", "gemini"] = "mock"
     embedder_impl: Literal["deterministic", "bedrock"] = "deterministic"
 
     # 向量库目录
@@ -63,6 +65,10 @@ class Settings(BaseModel):
     bedrock_llm_model_id: str = "amazon.nova-lite-v1:0"
     bedrock_embed_model_id: str = "amazon.titan-embed-text-v2:0"
     bedrock_embed_dim: int = 1024
+
+    # Google AI Studio (Gemini) 配置（llm_impl="gemini" 时使用）
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-2.0-flash"
 
 
 def get_settings() -> Settings:
@@ -109,5 +115,13 @@ def get_settings() -> Settings:
     if embed_dim:
         # 环境变量恒为字符串，维度需转为 int；非法值直接抛出以尽早暴露配置错误。
         overrides["bedrock_embed_dim"] = int(embed_dim)
+
+    # Gemini（Google AI Studio）配置：仅当环境变量有值时才覆盖默认。
+    gemini_api_key = os.environ.get("GEMINI_API_KEY")
+    if gemini_api_key:
+        overrides["gemini_api_key"] = gemini_api_key
+    gemini_model = os.environ.get("GEMINI_MODEL")
+    if gemini_model:
+        overrides["gemini_model"] = gemini_model
 
     return Settings(**overrides)
