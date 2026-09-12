@@ -168,11 +168,11 @@
     - 验证图含 5 节点与预期边；验证节点完成后的路由
     - _Requirements: 8.1, 8.3_
 
-- [ ] 16. FastAPI /chat 接口
+- [x] 16. FastAPI /chat 接口
   - [x] 16.1 实现请求/响应模型
     - 在 `app/api/models.py` 实现 `ChatRequest`（含 recommendation_count）、`ChatResponse`、`ErrorResponse`
     - _Requirements: 9.1, 9.4, 9.5_
-  - [-] 16.2 实现 /chat 路由并接线到 main.py
+  - [x] 16.2 实现 /chat 路由并接线到 main.py
     - 在 `app/api/routes.py` 实现 `/chat`：缺字段→400+missing_fields；按 session_id 定位会话；透传 recommendation_count；驱动 orchestrator；错误→500+failed_agent；完成返回推荐列表
     - 在 `main.py` 装配 Container、会话仓、orchestrator 并挂载路由
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 8.4_
@@ -189,7 +189,7 @@
     - 验证基本可用与推荐完成时返回推荐列表
     - _Requirements: 9.1, 9.3_
 
-- [~] 17. Final checkpoint - 确保全部测试通过
+- [x] 17. Final checkpoint - 确保全部测试通过
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
