@@ -167,36 +167,62 @@ class RecommendationAgent:
         needs = self._describe_needs(session)
         product_info = web_info.product_info if web_info is not None else ""
         prompt = (
-            "请基于用户需求与商品信息，用一句话给出该商品的推荐理由。\n"
-            f"用户需求：{needs}\n"
-            f"商品标识：{record.product_id}\n"
-            f"检索匹配文本：{record.matched_text}\n"
-            f"商品信息：{product_info}"
+            "In one concise English sentence, explain why this product fits "
+            "the shopper. Do not repeat the prompt.\n"
+            f"Shopper needs: {needs}\n"
+            f"Product: {record.product_id}\n"
+            f"Matched review/detail: {record.matched_text}\n"
+            f"Product info: {product_info}"
         )
 
+        # LLM 生成理由，异常/超时时回退；输出经 _clean_llm 清洗防止回显泄漏
         if self._llm is not None:
-            generated = self._llm.generate(prompt)
-            if generated and generated.strip():
-                return generated.strip()
+            try:
+                generated = self._llm.generate(prompt)
+            except Exception:  # noqa: BLE001 - LLM 不可用/超时时回退到模板
+                generated = None
+            cleaned = self._clean_llm(generated)
+            if cleaned:
+                return cleaned
 
-        # 无 LLM 或 LLM 返回空：确定性模板兜底，保证 reason 非空 (Req 7.4)
-        base = record.matched_text.strip() or f"商品 {record.product_id}"
+        # 无 LLM / LLM 返回被过滤：英文模板兜底，保证 reason 非空 (Req 7.4)
+        base = record.matched_text.strip() or f"Product {record.product_id}"
         if needs:
-            return f"结合你的需求（{needs}），{base} 与之匹配，值得考虑。"
-        return f"{base}，符合你的选购方向，值得考虑。"
+            return f"Matches your needs ({needs}): {base} Worth a look."
+        return f"{base} A solid fit for what you are after."
+
+    @staticmethod
+    def _clean_llm(text: Optional[str]) -> str:
+        """清洗 LLM 输出，过滤空值与 MockLLM 回显，避免展示原始回显给用户。
+
+        规则：
+        - ``None`` 或空串 → ``""``。
+        - ``strip`` 后为空 → ``""``。
+        - 以 ``"[MockLLM]"`` 开头或包含 ``"response to:"`` → ``""``
+          （这是 MockLLM 的回显，不能展示）。
+        - 其余情况返回 ``strip`` 后的文本。
+        """
+        if not text:
+            return ""
+        stripped = text.strip()
+        if not stripped:
+            return ""
+        if stripped.startswith("[MockLLM]") or "response to:" in stripped:
+            return ""
+        return stripped
 
     @staticmethod
     def _describe_needs(session: ConversationSession) -> str:
-        """将 ``collected_needs`` 压缩为简短的需求描述片段。"""
+        """将 ``collected_needs`` 压缩为简短的英文需求描述片段。"""
         needs = session.collected_needs
         parts: list[str] = []
         if needs.budget is not None:
-            parts.append(f"预算 {needs.budget}")
+            parts.append(f"budget {needs.budget}")
         if needs.purpose:
-            parts.append(f"用途 {needs.purpose}")
+            parts.append(f"use case {needs.purpose}")
         if needs.preferences:
-            parts.append("偏好 " + "、".join(needs.preferences))
-        return "；".join(parts)
+            parts.append("prefers " + ", ".join(needs.preferences))
+        return "; ".join(parts)
 
     @staticmethod
     def _build_summary(web_info: Optional[WebInfo]) -> ReviewSummary:
