@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nova 导购 · 智能购物助手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#080b12;
+  --bg-elev:#0e131d;
+  --bg-elev-2:#141b28;
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.14);
+  --text:#e8edf6;
+  --text-dim:#8a95a8;
+  --text-faint:#5b6577;
+  --accent:#38e0c8;
+  --accent-deep:#12b8a2;
+  --accent-glow:rgba(56,224,200,.16);
+  --pos:#48d597;
+  --neg:#f0748a;
+  --radius:16px;
+  --radius-sm:11px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font:"Space Grotesk",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  line-height:1.5;
+}
+/* 背景氛围光 */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient::before,.ambient::after{
+  content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.5;
+}
+.ambient::before{width:52vw;height:52vw;top:-18vw;left:-12vw;
+  background:radial-gradient(circle,rgba(56,224,200,.20),transparent 70%);
+  animation:drift1 26s var(--ease) infinite alternate}
+.ambient::after{width:46vw;height:46vw;bottom:-16vw;right:-10vw;
+  background:radial-gradient(circle,rgba(64,120,240,.18),transparent 70%);
+  animation:drift2 30s var(--ease) infinite alternate}
+@keyframes drift1{to{transform:translate(8vw,6vw) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-6vw,-5vw) scale(1.1)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.app{position:relative;z-index:2;display:grid;grid-template-columns:264px 1fr;height:100dvh}
+
+/* 侧栏 */
+.side{border-right:1px solid var(--line);background:rgba(14,19,29,.6);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;padding:20px 16px}
+.brand{display:flex;align-items:center;gap:11px;padding:6px 8px 22px}
+.brand-mark{width:32px;height:32px;border-radius:9px;position:relative;flex:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 6px 20px var(--accent-glow)}
+.brand-mark::after{content:"";position:absolute;inset:8px;border-radius:4px;
+  border:2px solid rgba(8,11,18,.85);border-right-color:transparent;border-bottom-color:transparent;
+  transform:rotate(45deg)}
+.brand-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
+.brand-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+.new-chat{display:flex;align-items:center;gap:9px;width:100%;padding:11px 13px;border-radius:var(--radius-sm);
+  border:1px solid var(--line-strong);background:var(--bg-elev-2);color:var(--text);
+  font-family:var(--font);font-size:13.5px;font-weight:500;cursor:pointer;
+  transition:border-color .25s var(--ease),transform .15s var(--ease),background .25s var(--ease)}
+.new-chat:hover{border-color:var(--accent);background:rgba(56,224,200,.06)}
+.new-chat:active{transform:scale(.98)}
+.new-chat svg{width:16px;height:16px;stroke:var(--accent)}
+.side-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-faint);
+  padding:22px 8px 10px;font-family:var(--mono)}
+.hist{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.hist-item{padding:10px 12px;border-radius:9px;font-size:13px;color:var(--text-dim);cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .2s,color .2s}
+.hist-item:hover{background:var(--bg-elev-2);color:var(--text)}
+.hist-item.on{background:rgba(56,224,200,.08);color:var(--text)}
+.side-foot{padding:14px 8px 4px;border-top:1px solid var(--line);margin-top:8px;
+  font-size:11px;color:var(--text-faint);display:flex;align-items:center;gap:8px}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos);
+  animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* 主区 */
+.main{display:flex;flex-direction:column;min-width:0;position:relative}
+.topbar{height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.topbar h1{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.topbar .meta{font-size:11.5px;color:var(--text-faint);font-family:var(--mono)}
+
+.stream{flex:1;overflow-y:auto;padding:32px 0 20px;scroll-behavior:smooth}
+.stream-inner{max-width:760px;margin:0 auto;padding:0 28px;display:flex;flex-direction:column;gap:26px}
+
+/* 空状态 */
+.welcome{margin:auto;text-align:center;max-width:540px;padding:8vh 24px;
+  animation:fadeUp .7s var(--ease) both}
+.welcome h2{font-size:30px;font-weight:700;letter-spacing:-.025em;line-height:1.15;margin-bottom:14px}
+.welcome h2 .hl{background:linear-gradient(120deg,var(--accent),#6aa8ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{color:var(--text-dim);font-size:15px;margin-bottom:30px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{padding:10px 16px;border-radius:999px;border:1px solid var(--line-strong);
+  background:var(--bg-elev);color:var(--text-dim);font-size:13px;cursor:pointer;
+  transition:all .25s var(--ease)}
+.chip:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px);
+  box-shadow:0 8px 24px var(--accent-glow)}
+
+/* 消息 */
+.msg{display:flex;gap:14px;animation:fadeUp .5s var(--ease) both}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;
+  font-size:13px;font-weight:600}
+.avatar.ai{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d}
+.avatar.me{background:var(--bg-elev-2);border:1px solid var(--line-strong);color:var(--text-dim)}
+.bubble{max-width:80%;font-size:14.5px;line-height:1.7}
+.msg.user .bubble{background:var(--bg-elev-2);border:1px solid var(--line-strong);
+  padding:12px 16px;border-radius:var(--radius);border-top-right-radius:5px}
+.msg.ai .bubble{padding-top:5px}
+.msg.ai .bubble .who{font-size:11px;color:var(--text-faint);font-family:var(--mono);margin-bottom:6px}
+
+/* 思考态 */
+.thinking{display:flex;align-items:center;gap:10px;color:var(--text-dim);font-size:13.5px;padding-top:5px}
+.orb{width:22px;height:22px;position:relative}
+.orb span{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;
+  border-top-color:var(--accent);animation:spin 1s linear infinite}
+.orb span:nth-child(2){inset:4px;border-top-color:transparent;border-bottom-color:#6aa8ff;
+  animation-duration:1.4s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dots::after{content:"";animation:dots 1.4s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+
+/* 推荐卡片 */
+.recs{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+.rec{border:1px solid var(--line);background:linear-gradient(180deg,var(--bg-elev),rgba(14,19,29,.4));
+  border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;
+  transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);
+  animation:cardIn .6s var(--ease) both}
+.rec::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(var(--accent),var(--accent-deep));opacity:.55}
+.rec:hover{border-color:var(--line-strong);transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.rec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
+.rec-title{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.rec-rank{font-family:var(--mono);font-size:11px;color:var(--accent);flex:none}
+.rec-reason{font-size:13.5px;color:var(--text-dim);line-height:1.65;margin-bottom:14px}
+.rec-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:560px){.rec-summary{grid-template-columns:1fr}}
+.sum{border-radius:var(--radius-sm);padding:11px 13px;background:rgba(255,255,255,.02);
+  border:1px solid var(--line)}
+.sum-h{font-size:11px;font-family:var(--mono);letter-spacing:.04em;margin-bottom:7px;
+  display:flex;align-items:center;gap:6px}
+.sum.pos .sum-h{color:var(--pos)}
+.sum.neg .sum-h{color:var(--neg)}
+.sum-h i{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.sum li{font-size:12.5px;color:var(--text-dim);line-height:1.6;list-style:none;
+  padding-left:13px;position:relative}
+.sum li::before{content:"";position:absolute;left:2px;top:9px;width:4px;height:1px;background:var(--text-faint)}
+.rec-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;
+  color:var(--accent);text-decoration:none;transition:gap .25s var(--ease)}
+.rec-link:hover{gap:11px}
+.rec-link svg{width:14px;height:14px;stroke:currentColor}
+
+.notices{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.notice{font-size:12px;color:var(--text-faint);font-family:var(--mono);display:flex;gap:7px;align-items:center}
+.notice::before{content:"//";color:var(--accent);opacity:.6}
+
+/* 输入区 */
+.composer{flex:none;padding:16px 28px 24px;border-top:1px solid var(--line);
+  background:linear-gradient(180deg,transparent,rgba(8,11,18,.6))}
+.composer-inner{max-width:760px;margin:0 auto;position:relative}
+.input-wrap{display:flex;align-items:flex-end;gap:10px;padding:10px 10px 10px 18px;
+  border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--bg-elev);
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-glow)}
+textarea{flex:1;background:none;border:none;outline:none;resize:none;color:var(--text);
+  font-family:var(--font);font-size:14.5px;line-height:1.6;max-height:140px;padding:6px 0}
+textarea::placeholder{color:var(--text-faint)}
+.send{width:38px;height:38px;flex:none;border:none;border-radius:11px;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));display:grid;place-items:center;
+  transition:transform .18s var(--ease),box-shadow .25s var(--ease),opacity .2s}
+.send:hover{box-shadow:0 6px 20px var(--accent-glow);transform:translateY(-1px)}
+.send:active{transform:scale(.92)}
+.send:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;transform:none}
+.send svg{width:17px;height:17px;stroke:#05221d;fill:none;stroke-width:2}
+.composer-hint{text-align:center;font-size:11px;color:var(--text-faint);margin-top:10px;font-family:var(--mono)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:9px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint);background-clip:padding-box}
+
+/* 响应式 */
+@media(max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .ambient::before,.ambient::after{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grain"></div>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-name">Nova 导购</div>
+        <div class="brand-sub">RAG · Multi-Agent</div>
+      </div>
+    </div>
+    <button class="new-chat" id="newChat">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      开启新对话
+    </button>
+    <div class="side-label">最近</div>
+    <div class="hist" id="hist"></div>
+    <div class="side-foot"><span class="dot-live"></span> 助手在线 · 已连接向量库</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="topTitle">智能购物助手</h1>
+      <span class="meta" id="topMeta">告诉我你想买什么</span>
+    </header>
+    <div class="stream" id="stream">
+      <div class="stream-inner" id="streamInner">
+        <div class="welcome" id="welcome">
+          <h2>你想找什么，<span class="hl">我帮你挑</span></h2>
+          <p>说说预算、用途和偏好，我会结合真实评论与全网测评，给你 3 到 5 个最合适的选择。</p>
+          <div class="chips">
+            <span class="chip">通勤用的降噪耳机，预算 2000</span>
+            <span class="chip">在家健身减脂的器械</span>
+            <span class="chip">送给爱猫人士的礼物</span>
+            <span class="chip">适合新手的咖啡机</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="composer-inner">
+        <div class="input-wrap">
+          <textarea id="input" rows="1" placeholder="描述你的需求，回车发送 · Shift+回车换行"></textarea>
+          <button class="send" id="send" disabled>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="composer-hint">Nova 会读取模拟画像并多轮澄清 · 推荐仅供参考</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = "/chat";
+const $ = s => document.querySelector(s);
+const streamInner = $("#streamInner");
+const stream = $("#stream");
+const input = $("#input");
+const sendBtn = $("#send");
+const welcome = $("#welcome");
+const histEl = $("#hist");
+
+const svgArrow = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+let sessionId = newId();
+let busy = false;
+const history = [];
+
+function newId(){ return "s-" + Math.random().toString(36).slice(2,10); }
+
+function autosize(){ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px"; }
+input.addEventListener("input",()=>{ autosize(); sendBtn.disabled = !input.value.trim() || busy; });
+input.addEventListener("keydown",e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); doSend(); }});
+sendBtn.addEventListener("click",doSend);
+
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  input.value=c.textContent; autosize(); sendBtn.disabled=false; input.focus();
+}));
+
+$("#newChat").addEventListener("click",()=>{
+  sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome);
+  welcome.style.display=""; $("#topMeta").textContent="告诉我你想买什么";
+  [...histEl.children].forEach(h=>h.classList.remove("on"));
+});
+
+function pushHistory(text){
+  const it=document.createElement("div"); it.className="hist-item on"; it.textContent=text;
+  [...histEl.children].forEach(h=>h.classList.remove("on"));
+  histEl.prepend(it);
+}
+
+function addUser(text){
+  if(welcome.parentNode) welcome.style.display="none";
+  const m=document.createElement("div"); m.className="msg user";
+  m.innerHTML=`<div class="avatar me">你</div><div class="bubble"></div>`;
+  m.querySelector(".bubble").textContent=text;
+  streamInner.appendChild(m); scrollDown();
+}
+
+function addThinking(){
+  const m=document.createElement("div"); m.className="msg ai"; m.dataset.think="1";
+  m.innerHTML=`<div class="avatar ai">N</div><div class="bubble">
+    <div class="thinking"><div class="orb"><span></span><span></span></div>
+    <span>正在读取画像并检索商品<span class="dots"></span></span></div></div>`;
+  streamInner.appendChild(m); scrollDown(); return m;
+}
+
+function aiBubble(){
+  const m=document.createElement("div"); m.className="msg ai";
+  m.innerHTML=`<div class="avatar ai">N</div><div class="bubble"><div class="who">Nova</div><div class="body"></div></div>`;
+  streamInner.appendChild(m); return m;
+}
+
+async function typeText(el,text){
+  el.textContent="";
+  for(let i=0;i<text.length;i++){ el.textContent+=text[i]; if(i%2===0) scrollDown(); await sleep(12); }
+  scrollDown();
+}
+
+function renderRecs(container,recs,status){
+  const wrap=document.createElement("div"); wrap.className="recs";
+  recs.forEach((r,i)=>{
+    const pos=(r.summary?.positives||[]).slice(0,3);
+    const neg=(r.summary?.negatives||[]).slice(0,3);
+    const card=document.createElement("div"); card.className="rec"; card.style.animationDelay=(i*90)+"ms";
+    card.innerHTML=`
+      <div class="rec-head"><div class="rec-title">${esc(r.title||r.product_id)}</div>
+        <div class="rec-rank">#${String(i+1).padStart(2,"0")}</div></div>
+      <div class="rec-reason">${esc(r.reason||"")}</div>
+      <div class="rec-summary">
+        <div class="sum pos"><div class="sum-h"><i></i>好评</div><ul>${pos.map(p=>`<li>${esc(p)}</li>`).join("")||'<li>暂无</li>'}</ul></div>
+        <div class="sum neg"><div class="sum-h"><i></i>差评</div><ul>${neg.map(p=>`<li>${esc(p)}</li>`).join("")||'<li>暂无</li>'}</ul></div>
+      </div>
+      <a class="rec-link" href="${esc(r.product_url||"#")}" target="_blank" rel="noopener">查看商品 ${svgArrow}</a>`;
+    wrap.appendChild(card);
+  });
+  container.appendChild(wrap);
+  if(status==="insufficient"){
+    const n=document.createElement("div"); n.className="notices";
+    n.innerHTML=`<div class="notice">符合条件的商品较少，已返回全部可用结果</div>`;
+    container.appendChild(n);
+  }
+  scrollDown();
+}
+
+function renderNotices(container,notices){
+  if(!notices||!notices.length) return;
+  const n=document.createElement("div"); n.className="notices";
+  n.innerHTML=notices.map(x=>`<div class="notice">${esc(x)}</div>`).join("");
+  container.appendChild(n); scrollDown();
+}
+
+async function doSend(){
+  const text=input.value.trim(); if(!text||busy) return;
+  busy=true; sendBtn.disabled=true;
+  if(!histEl.querySelector(".hist-item.on")) pushHistory(text);
+  addUser(text);
+  input.value=""; autosize();
+  const think=addThinking();
+  try{
+    const res=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({session_id:sessionId,message:text})});
+    const data=await res.json();
+    think.remove();
+    const m=aiBubble(); const body=m.querySelector(".body");
+    if(!res.ok){
+      await typeText(body, data.error?("出了点问题："+data.error):"抱歉，请求失败了，请稍后再试。");
+    } else {
+      const recs=data.recommendations||[];
+      if(recs.length){
+        await typeText(body, data.assistant_message || `根据你的需求，我挑了 ${recs.length} 个，从推荐理由到真实口碑都帮你看过了：`);
+        renderRecs(body, recs, data.recommendation_status);
+        renderNotices(body, data.notices);
+        $("#topMeta").textContent=`已推荐 ${recs.length} 个商品`;
+      } else {
+        await typeText(body, data.assistant_message || "我需要再多了解一点，方便给你更准的建议。");
+        renderNotices(body, data.notices);
+      }
+    }
+  }catch(err){
+    think.remove(); const m=aiBubble();
+    await typeText(m.querySelector(".body"),"网络连接异常，请检查服务后重试。");
+  }finally{
+    busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown();
+  }
+}
+
+function scrollDown(){ stream.scrollTop=stream.scrollHeight; }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+input.focus();
+</script>
+</body>
+</html>
