@@ -18,7 +18,6 @@ import logging
 
 from app.config import get_settings
 from app.container import Container
-from app.rag.embedder import DeterministicEmbedder
 from app.rag.ingestion import IngestionPipeline
 from app.rag.vector_store import VectorStore
 
@@ -44,7 +43,7 @@ def main() -> int:
 
     crawler = container.crawler()
     store = VectorStore(chroma_dir=settings.chroma_dir)
-    embedder = DeterministicEmbedder()
+    embedder = container.embedder()
 
     pipeline = IngestionPipeline(
         crawler=crawler,

@@ -26,7 +26,6 @@ from app.config import get_settings
 from app.container import Container
 from app.orchestrator.graph import build_default_orchestrator
 from app.orchestrator.session import ChatTurn, ConversationSession
-from app.rag.embedder import DeterministicEmbedder
 from app.rag.vector_store import VectorStore
 from app.repositories.profile_source import MockProfileSource
 from app.repositories.session_repo import InMemorySessionRepository
@@ -45,7 +44,7 @@ class _Components:
         settings = get_settings()
         container = Container(settings)
         store = VectorStore(chroma_dir=settings.chroma_dir)
-        embedder = DeterministicEmbedder()
+        embedder = container.embedder()
         profile_source = MockProfileSource(settings.profiles_dataset)
         orchestrator, _bundle = build_default_orchestrator(
             container, store, embedder, profile_source
