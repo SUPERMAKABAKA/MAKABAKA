@@ -37,6 +37,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 
 /* ===== AUTH ===== */
 .auth{position:relative;z-index:2;height:100dvh;display:grid;place-items:center;padding:24px}
+/* dynamic deep-space starfield layer: sits above .ambient, below .auth-shell */
+.auth-sky{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  will-change:transform;transition:opacity .6s var(--ease)}
+.auth-sky canvas{display:block;width:100%;height:100%}
 /* split shell: form column + 3D visual column */
 .auth-shell{position:relative;width:100%;max-width:1040px;height:min(680px,86dvh);
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
@@ -276,6 +280,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 
 <!-- ===== AUTH SCREEN ===== -->
 <div class="auth" id="authScreen">
+  <div class="auth-sky" id="authSky"><canvas id="authStars"></canvas></div>
   <div class="auth-shell" id="authShell">
     <div class="auth-spot" id="authSpot"><div class="glow"></div></div>
     <div class="auth-form-col">
@@ -644,28 +649,88 @@ function makeOrb(canvas,opts){
   let raf=0,pts=[],rings=[],meridians=[];
 
   const D2R=Math.PI/180;
-  // deterministic continent centres (unit direction vectors) plus angular radius.
-  const LAND=[
-    {lat:32,lon:-15,r:0.42},
-    {lat:8,lon:22,r:0.5},
-    {lat:-18,lon:135,r:0.46},
-    {lat:44,lon:96,r:0.5},
-    {lat:-30,lon:-60,r:0.4},
-    {lat:20,lon:-105,r:0.38}
-  ].map(c=>({v:latLonToVec(c.lat,c.lon),r:c.r}));
+  const OUTLINES=DENSE;                  // stroke continent borders only on the dense (auth) globe
 
   function latLonToVec(latDeg,lonDeg){
     const la=latDeg*D2R, lo=lonDeg*D2R;
     const cl=Math.cos(la);
     return {x:cl*Math.cos(lo), y:Math.sin(la), z:cl*Math.sin(lo)};
   }
-  function isLand(v){
-    for(let i=0;i<LAND.length;i++){
-      const c=LAND[i];
-      // dot product -> angular closeness; within disk if angle < acos threshold
-      const dot=v.x*c.v.x+v.y*c.v.y+v.z*c.v.z;
-      if(dot>Math.cos(c.r)) return true;
+
+  // Deterministic continent plates as closed spherical polygons: each is an
+  // ordered ring of [lat,lon] vertices. Shapes are stylised (not a real map)
+  // but sized and scattered like plates: large landmasses, small ones, an
+  // irregular outline, and a polar band. Order of vertices defines the border.
+  const CONTINENTS=[
+    // North America (large, upper-left region)
+    [[62,-128],[70,-96],[58,-72],[46,-64],[30,-80],[24,-100],[34,-118],[50,-126]],
+    // South America (tapering, lower-left)
+    [[10,-70],[2,-52],[-14,-42],[-32,-54],[-50,-68],[-30,-72],[-12,-78]],
+    // Europe (small, cluster upper-mid)
+    [[60,-6],[64,18],[54,36],[44,26],[40,6],[48,-8]],
+    // Africa (big, mid, irregular)
+    [[34,-6],[30,28],[12,44],[-8,40],[-30,26],[-34,18],[-14,10],[6,2]],
+    // Asia (largest, upper-right)
+    [[66,44],[72,96],[62,140],[42,148],[26,120],[20,84],[32,54],[52,42]],
+    // Oceania (small, lower-right)
+    [[-12,120],[-14,142],[-28,150],[-38,144],[-32,124],[-22,118]],
+    // Antarctic band (thin polar strip at the bottom)
+    [[-72,-160],[-70,-80],[-72,0],[-70,80],[-72,160],[-78,120],[-80,0],[-78,-120]]
+  ].map(ring=>ring.map(p=>latLonToVec(p[0],p[1])));
+
+  // Spherical linear interpolation between two unit vectors (great-circle path).
+  function slerp(a,b,t){
+    let d=a.x*b.x+a.y*b.y+a.z*b.z;
+    if(d>1)d=1; else if(d<-1)d=-1;
+    const om=Math.acos(d);
+    if(om<1e-4) return {x:a.x,y:a.y,z:a.z};
+    const so=Math.sin(om), w1=Math.sin((1-t)*om)/so, w2=Math.sin(t*om)/so;
+    return {x:a.x*w1+b.x*w2, y:a.y*w1+b.y*w2, z:a.z*w1+b.z*w2};
+  }
+
+  // Precompute densely-sampled border points (unit vectors) for each plate so
+  // draw() only has to rotate + project them. Sampling along great-circle arcs
+  // keeps the outline smooth as the globe turns.
+  function buildBorder(ring){
+    const out=[]; const STEP=DENSE?0.16:0.28;
+    for(let i=0;i<ring.length;i++){
+      const a=ring[i], b=ring[(i+1)%ring.length];
+      let d=a.x*b.x+a.y*b.y+a.z*b.z; if(d>1)d=1; else if(d<-1)d=-1;
+      const seg=Math.max(2,Math.ceil(Math.acos(d)/STEP));
+      for(let s=0;s<seg;s++) out.push(slerp(a,b,s/seg));
     }
+    return out;
+  }
+  const BORDERS=CONTINENTS.map(buildBorder);
+
+  // Point-in-spherical-polygon test via signed-angle winding. A point counts as
+  // land if it is inside any plate ring; used to light land points brighter than
+  // ocean points so the plate faces read as filled.
+  function insideRing(v,ring){
+    let ang=0;
+    for(let i=0;i<ring.length;i++){
+      const a=ring[i], b=ring[(i+1)%ring.length];
+      // vectors from v to each vertex, projected onto the tangent plane at v
+      const av={x:a.x-v.x,y:a.y-v.y,z:a.z-v.z};
+      const bv={x:b.x-v.x,y:b.y-v.y,z:b.z-v.z};
+      const ta=tangent(av,v), tb=tangent(bv,v);
+      const la=Math.hypot(ta.x,ta.y,ta.z), lb=Math.hypot(tb.x,tb.y,tb.z);
+      if(la<1e-6||lb<1e-6) continue;
+      let dot=(ta.x*tb.x+ta.y*tb.y+ta.z*tb.z)/(la*lb);
+      if(dot>1)dot=1; else if(dot<-1)dot=-1;
+      // sign of the turn via the sphere normal (v itself)
+      const cx=ta.y*tb.z-ta.z*tb.y, cy=ta.z*tb.x-ta.x*tb.z, cz=ta.x*tb.y-ta.y*tb.x;
+      const s=(cx*v.x+cy*v.y+cz*v.z)>=0?1:-1;
+      ang+=s*Math.acos(dot);
+    }
+    return Math.abs(ang)>Math.PI;   // ~2*PI winding when enclosed
+  }
+  function tangent(w,n){ // remove the component of w along n
+    const d=w.x*n.x+w.y*n.y+w.z*n.z;
+    return {x:w.x-d*n.x, y:w.y-d*n.y, z:w.z-d*n.z};
+  }
+  function isLand(v){
+    for(let i=0;i<CONTINENTS.length;i++){ if(insideRing(v,CONTINENTS[i])) return true; }
     return false;
   }
 
@@ -791,12 +856,32 @@ function makeOrb(canvas,opts){
       if(p.equator){
         r=(0.9+depth*1.7)*p.persp*1.4; al=0.35+depth*0.55;
       }else if(p.land){
-        r=(0.9+depth*2.0)*p.persp*1.4; al=0.30+depth*0.6;   // continents brighter/larger
+        r=(1.0+depth*2.1)*p.persp*1.45; al=0.34+depth*0.62;  // plate faces: brighter/larger = filled feel
       }else{
-        r=(0.5+depth*1.3)*p.persp*1.3; al=0.12+depth*0.34;  // oceans dimmer/smaller
+        r=(0.5+depth*1.2)*p.persp*1.3; al=0.09+depth*0.26;   // oceans dimmer/smaller
       }
       ctx.fillStyle="rgba(56,224,200,"+al.toFixed(3)+")";
       ctx.beginPath(); ctx.arc(p.sx,p.sy,Math.max(0.4,r),0,6.283); ctx.fill();
+    }
+
+    // continent plate outlines: stroke each border as a poly-line of projected
+    // great-circle samples. Front edges (both endpoints near hemisphere) are
+    // bright; edges wrapping to the back fade out so the sphere keeps its volume.
+    if(OUTLINES){
+      ctx.lineWidth=1.1; ctx.lineJoin="round"; ctx.lineCap="round";
+      for(let bi=0;bi<BORDERS.length;bi++){
+        const bd=BORDERS[bi];
+        let prev=project(bd[0].x,bd[0].y,bd[0].z,cosY,sinY,cosX,sinX);
+        for(let s=1;s<=bd.length;s++){
+          const q=bd[s%bd.length];
+          const cur=project(q.x,q.y,q.z,cosY,sinY,cosX,sinX);
+          const front=(prev.z>=-0.15 && cur.z>=-0.15);
+          const al=front?0.5:0.07;               // brighter than grid net when on the front
+          ctx.strokeStyle="rgba(56,224,200,"+al.toFixed(3)+")";
+          ctx.beginPath(); ctx.moveTo(prev.sx,prev.sy); ctx.lineTo(cur.sx,cur.sy); ctx.stroke();
+          prev=cur;
+        }
+      }
     }
 
     // orbiting satellite: a glowing point on a tilted orbit around the globe
@@ -832,15 +917,146 @@ function makeOrb(canvas,opts){
   }};
 }
 
+/* ---- reusable deep-space starfield: drifting stars + occasional meteor ----
+   Draws many tiny stars that slowly drift and breathe in opacity, plus a rare
+   meteor streak (a fading diagonal line with a short tail). Single teal hue
+   with faint cool-white highlights (same hue family, higher lightness). rAF
+   driven, DPR aware. reduceMotion => one static frame, no drift, no meteors. */
+function makeStarfield(canvas){
+  if(!canvas) return {destroy(){}};
+  const ctx=canvas.getContext("2d");
+  if(!ctx) return {destroy(){}};
+  let W=0,H=0,DPR=1,raf=0,stars=[],meteors=[],last=0,t=0;
+
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=Math.max(1,Math.round(rect.width)); H=Math.max(1,Math.round(rect.height));
+    canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function build(){
+    // density scales with area; deterministic-ish random is fine here
+    const n=Math.round(Math.min(220,Math.max(70,(W*H)/9000)));
+    stars=[];
+    for(let i=0;i<n;i++){
+      const cool=Math.random()<0.22;             // a few cool-white stars (same hue family)
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:Math.random()*1.3+0.3,
+        base:Math.random()*0.4+0.18,             // base opacity
+        amp:Math.random()*0.3+0.12,              // breathing amplitude
+        ph:Math.random()*6.283,                  // phase
+        sp:Math.random()*0.35+0.08,              // twinkle speed
+        vx:(Math.random()-0.5)*0.05,             // slow horizontal drift px/frame
+        vy:Math.random()*0.06+0.015,             // slow downward drift
+        cool
+      });
+    }
+  }
+  function spawnMeteor(){
+    const fromLeft=Math.random()<0.5;
+    const x=fromLeft?-40:W*(0.3+Math.random()*0.7);
+    const y=Math.random()*H*0.5;
+    const ang=(Math.PI/180)*(fromLeft?(18+Math.random()*14):(150+Math.random()*14));
+    const speed=6+Math.random()*4;
+    meteors.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,life:0,max:34+Math.random()*22,len:60+Math.random()*50});
+  }
+
+  function frame(now){
+    raf=requestAnimationFrame(frame);
+    const dt=last?Math.min(2.5,(now-last)/16.67):1; last=now; t+=dt;
+    ctx.clearRect(0,0,W,H);
+
+    for(let i=0;i<stars.length;i++){
+      const s=stars[i];
+      s.x+=s.vx*dt; s.y+=s.vy*dt;
+      if(s.y>H+2){ s.y=-2; s.x=Math.random()*W; }
+      if(s.x<-2)s.x=W+2; else if(s.x>W+2)s.x=-2;
+      const tw=s.base+Math.sin(t*s.sp+s.ph)*s.amp;
+      const a=Math.max(0,Math.min(0.85,tw));
+      ctx.fillStyle=s.cool?"rgba(200,244,238,"+a.toFixed(3)+")":"rgba(56,224,200,"+a.toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
+    }
+
+    // occasional meteor
+    if(Math.random()<0.004*dt && meteors.length<2) spawnMeteor();
+    for(let i=meteors.length-1;i>=0;i--){
+      const m=meteors[i]; m.x+=m.vx*dt; m.y+=m.vy*dt; m.life+=dt;
+      const k=1-m.life/m.max; if(k<=0){ meteors.splice(i,1); continue; }
+      const nx=m.x-m.vx*(m.len/ (Math.hypot(m.vx,m.vy)||1)), ny=m.y-m.vy*(m.len/(Math.hypot(m.vx,m.vy)||1));
+      const g=ctx.createLinearGradient(m.x,m.y,nx,ny);
+      g.addColorStop(0,"rgba(200,244,238,"+(0.55*k).toFixed(3)+")");
+      g.addColorStop(1,"rgba(56,224,200,0)");
+      ctx.strokeStyle=g; ctx.lineWidth=1.6; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(nx,ny); ctx.stroke();
+    }
+  }
+
+  resize();
+  window.addEventListener("resize",resize);
+  if(reduceMotion){
+    // static single frame: draw stars at base opacity, no drift, no meteors
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<stars.length;i++){
+      const s=stars[i], a=Math.min(0.7,s.base);
+      ctx.fillStyle=s.cool?"rgba(200,244,238,"+a.toFixed(3)+")":"rgba(56,224,200,"+a.toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
+    }
+  }else{
+    raf=requestAnimationFrame(frame);
+  }
+  return {destroy(){
+    if(raf) cancelAnimationFrame(raf); raf=0;
+    window.removeEventListener("resize",resize);
+  }};
+}
+
+/* ---- parallax: nudge the starfield + ambient opposite to the mouse ----
+   rAF-damped; only writes transform. reduceMotion disables it entirely. */
+function makeParallax(targets){
+  if(reduceMotion||!targets.length) return {destroy(){}};
+  let tx=0,ty=0,cx=0,cy=0,raf=0;
+  function tick(){
+    raf=0; cx+=(tx-cx)*.08; cy+=(ty-cy)*.08;
+    for(let i=0;i<targets.length;i++){
+      const g=targets[i].g;
+      targets[i].el.style.transform="translate("+(cx*g).toFixed(2)+"px,"+(cy*g).toFixed(2)+"px)";
+    }
+    if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1) raf=requestAnimationFrame(tick);
+  }
+  function onMove(e){
+    // reverse of cursor offset from centre, clamped to a small range (+/-12px base)
+    const nx=(e.clientX/window.innerWidth-0.5), ny=(e.clientY/window.innerHeight-0.5);
+    tx=-nx*24; ty=-ny*24;
+    if(!raf) raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener("mousemove",onMove);
+  return {destroy(){
+    if(raf) cancelAnimationFrame(raf); raf=0;
+    window.removeEventListener("mousemove",onMove);
+    for(let i=0;i<targets.length;i++) targets[i].el.style.transform="";
+  }};
+}
+
 /* ---- lifecycle wiring ---- */
-let authOrb=null,authSpot=null,welcomeOrb=null,welcomeSpot=null;
+let authOrb=null,authSpot=null,welcomeOrb=null,welcomeSpot=null,authStars=null,authParallax=null;
 function startAuthVisuals(){
   if(!authOrb){ const c=$("#authOrb"); if(c) authOrb=makeOrb(c,{mode:"dense",count:460,links:true}); }
   if(!authSpot){ const s=$("#authSpot"); if(s) authSpot=makeSpotlight(s,s.querySelector(".glow")); }
+  if(!authStars){ const c=$("#authStars"); if(c) authStars=makeStarfield(c); }
+  if(!authParallax){
+    const sky=$("#authSky"), amb=document.querySelector(".ambient");
+    const targets=[]; if(sky)targets.push({el:sky,g:1}); if(amb)targets.push({el:amb,g:0.5});
+    authParallax=makeParallax(targets);
+  }
 }
 function stopAuthVisuals(){
   if(authOrb){ authOrb.destroy(); authOrb=null; }
   if(authSpot){ authSpot.destroy(); authSpot=null; }
+  if(authStars){ authStars.destroy(); authStars=null; }
+  if(authParallax){ authParallax.destroy(); authParallax=null; }
 }
 function startWelcomeVisuals(){
   const fx=$("#welcomeFx"); if(!fx) return;
