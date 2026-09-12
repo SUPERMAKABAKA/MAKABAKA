@@ -101,16 +101,30 @@ class DeterministicEmbedder:
 
 
 class BedrockEmbedder:
-    """基于 Amazon Bedrock Titan 的真实 embedder（Req 1.2, 5.1）。
+    """基于 Amazon Bedrock 的真实 embedder，支持 Titan 与 Cohere（Req 1.2, 5.1）。
 
-    作为 ``DeterministicEmbedder`` 的可插拔替代，通过 Bedrock Runtime 调用
-    Titan Text Embeddings V2 生成文本向量。调用契约与确定性实现一致：
+    作为 ``DeterministicEmbedder`` 的可插拔替代，通过 Bedrock Runtime 的
+    ``invoke_model`` 生成文本向量。调用契约与确定性实现一致：
     ``embedder(text) -> list[float]``，可像函数一样被 ingestion 与检索复用。
+
+    模型分派：根据 ``self.model_id`` 自动选择请求/响应格式。
+
+    * Titan（``model_id`` 含 ``"titan"``）：
+        - 请求体 ``{"inputText": text, "dimensions": dim, "normalize": True}``；
+        - 响应向量取 ``json_response["embedding"]``。
+    * Cohere（``model_id`` 含 ``"cohere"``，如 ``cohere.embed-multilingual-v3``）：
+        - 请求体 ``{"texts": [text], "input_type": input_type,
+          "embedding_types": ["float"]}``，不传 ``dimensions``（v3 固定 1024）；
+        - 响应向量做健壮解析：``embeddings`` 为 dict 时取 ``["float"][0]``，
+          为 list 时取 ``[0]``。
+
+    背景：目标区域新加坡 ``ap-southeast-1`` 无 Titan Embeddings，仅有 Cohere，
+    故需同时支持两种格式，按 ``model_id`` 自动分派。
 
     凭证不写入代码：依赖 boto3 默认凭证链。为使本模块在缺少 boto3 的环境下
     仍可被导入（不影响确定性路径），``boto3`` 采用延迟导入，仅在实例化时导入。
 
-    注意：Titan V2 的输出维度（``dim``）默认 1024，与 ``DeterministicEmbedder``
+    注意：真实模型的输出维度（``dim``）默认 1024，与 ``DeterministicEmbedder``
     的 64 维不同。切换实现后必须重新灌库，避免同一向量库内维度不一致。
     """
 
@@ -120,37 +134,107 @@ class BedrockEmbedder:
         region_name: str = "ap-southeast-1",
         dim: int = 1024,
         client=None,
+        input_type: str = "search_document",
     ) -> None:
-        """初始化 Bedrock Titan embedder。
+        """初始化 Bedrock embedder。
 
         Args:
-            model_id: Bedrock embedding 模型标识，默认 Titan Text Embeddings V2。
+            model_id: Bedrock embedding 模型标识。含 ``"titan"`` 走 Titan 格式，
+                含 ``"cohere"`` 走 Cohere 格式，默认 Titan Text Embeddings V2。
             region_name: AWS 区域，默认新加坡 ``ap-southeast-1``。
-            dim: 输出向量维度，默认 1024（Titan V2 支持 256/512/1024）。
+            dim: 输出向量维度，默认 1024。Titan V2 支持 256/512/1024；Cohere
+                embed-multilingual-v3 固定 1024（请求中不传该值）。
             client: 可选注入的 bedrock-runtime 客户端；为 ``None`` 时按
                 ``region_name`` 创建。注入便于在测试中使用假客户端。
+            input_type: 仅 Cohere 使用。灌库文档用 ``"search_document"``，
+                查询可用 ``"search_query"`` 更规范，默认 ``"search_document"``。
         """
         self.model_id = model_id
         self.region_name = region_name
         self.dim = dim
+        self.input_type = input_type
         if client is None:
             import boto3
 
             client = boto3.client("bedrock-runtime", region_name=region_name)
         self._client = client
 
-    def __call__(self, text: str) -> list[float]:
-        """向量化单条文本，返回长度为 ``self.dim`` 的浮点向量。
-
-        空文本（``None`` / 空串 / 仅空白）返回全零向量，与
-        ``DeterministicEmbedder`` 对空文本的行为一致，同时避免 Titan 对空串
-        报错。
+    def _build_body(self, text: str) -> str:
+        """根据 ``self.model_id`` 构造 ``invoke_model`` 请求体（JSON 字符串）。
 
         Args:
             text: 待向量化的文本。
 
         Returns:
-            长度为 ``self.dim`` 的浮点向量。
+            序列化后的请求体 JSON 字符串。
+
+        Raises:
+            ValueError: ``model_id`` 既非 Titan 也非 Cohere，无法识别格式。
+        """
+        import json
+
+        model = self.model_id.lower()
+        if "cohere" in model:
+            # Cohere embed v3/v4 用 input_type 区分文档/查询；v3 维度固定，
+            # 不传 dimensions。
+            return json.dumps(
+                {
+                    "texts": [text],
+                    "input_type": self.input_type,
+                    "embedding_types": ["float"],
+                }
+            )
+        if "titan" in model:
+            return json.dumps(
+                {
+                    "inputText": text,
+                    "dimensions": self.dim,
+                    "normalize": True,
+                }
+            )
+        raise ValueError(
+            f"无法识别的 embedding model_id（既非 titan 也非 cohere）：{self.model_id}"
+        )
+
+    def _parse_vector(self, payload: dict) -> list[float]:
+        """根据 ``self.model_id`` 从响应中解析出向量。
+
+        Args:
+            payload: ``invoke_model`` 响应体反序列化后的字典。
+
+        Returns:
+            向量 ``list[float]``。
+
+        Raises:
+            ValueError: ``model_id`` 无法识别，或响应结构不符合预期。
+        """
+        model = self.model_id.lower()
+        if "cohere" in model:
+            embeddings = payload["embeddings"]
+            # 兼容两种 Cohere 响应：
+            #   * {"embeddings": {"float": [[...]]}}（embedding_types 形态）
+            #   * {"embeddings": [[...]]}（直接列表形态）
+            if isinstance(embeddings, dict):
+                return embeddings["float"][0]
+            return embeddings[0]
+        if "titan" in model:
+            return payload["embedding"]
+        raise ValueError(
+            f"无法识别的 embedding model_id（既非 titan 也非 cohere）：{self.model_id}"
+        )
+
+    def __call__(self, text: str) -> list[float]:
+        """向量化单条文本，返回长度为 ``self.dim`` 的浮点向量。
+
+        空文本（``None`` / 空串 / 仅空白）返回全零向量，与
+        ``DeterministicEmbedder`` 对空文本的行为一致，同时避免模型对空串
+        报错；此路径不调用底层 client。
+
+        Args:
+            text: 待向量化的文本。
+
+        Returns:
+            向量 ``list[float]``（Titan 长度为 ``self.dim``；Cohere v3 为 1024）。
 
         Raises:
             RuntimeError: 调用 Bedrock 或解析响应失败时抛出，携带清晰的
@@ -164,16 +248,10 @@ class BedrockEmbedder:
         try:
             response = self._client.invoke_model(
                 modelId=self.model_id,
-                body=json.dumps(
-                    {
-                        "inputText": text,
-                        "dimensions": self.dim,
-                        "normalize": True,
-                    }
-                ),
+                body=self._build_body(text),
             )
             payload = json.loads(response["body"].read())
-            return payload["embedding"]
+            return self._parse_vector(payload)
         except Exception as exc:  # noqa: BLE001 - 统一转换为清晰错误上抛
             raise RuntimeError(
                 f"Bedrock embedding 调用失败 (model_id={self.model_id}, "

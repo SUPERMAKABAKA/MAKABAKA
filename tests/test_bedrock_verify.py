@@ -150,3 +150,112 @@ def test_chat_missing_fields_returns_400():
     resp = client.post("/chat", json={})
     assert resp.status_code == 400
     assert set(resp.json()["missing_fields"]) == {"session_id", "message"}
+
+
+class _FakeCohereClient:
+    """模拟 bedrock-runtime.invoke_model 返回 Cohere 格式响应的假 client。
+
+    ``payload`` 为响应体反序列化后的字典，用于覆盖 Cohere 的两种响应结构。
+    """
+
+    def __init__(self, payload):
+        self.payload = payload
+        self.last_kwargs = None
+
+    def invoke_model(self, **kwargs):
+        self.last_kwargs = kwargs
+        body = json.dumps(self.payload)
+        return {"body": io.BytesIO(body.encode("utf-8"))}
+
+
+def test_bedrock_embedder_cohere_dict_response():
+    """Cohere 模型：请求走 Cohere 格式，dict 形态响应正确解析为 1024 维。"""
+    from app.rag.embedder import BedrockEmbedder
+
+    vec = [0.1] * 1024
+    fake = _FakeCohereClient({"embeddings": {"float": [vec]}})
+    embedder = BedrockEmbedder(
+        model_id="cohere.embed-multilingual-v3", dim=1024, client=fake
+    )
+    out = embedder("测试文本")
+
+    assert out == vec
+    assert len(out) == 1024
+    kw = fake.last_kwargs
+    assert kw["modelId"] == "cohere.embed-multilingual-v3"
+    sent = json.loads(kw["body"])
+    # Cohere 请求体：texts + input_type + embedding_types，不含 dimensions。
+    assert sent == {
+        "texts": ["测试文本"],
+        "input_type": "search_document",
+        "embedding_types": ["float"],
+    }
+    assert "dimensions" not in sent
+
+
+def test_bedrock_embedder_cohere_list_response():
+    """Cohere 模型：list 形态响应 {"embeddings": [[...]]} 也能正确解析。"""
+    from app.rag.embedder import BedrockEmbedder
+
+    vec = [0.2] * 1024
+    fake = _FakeCohereClient({"embeddings": [vec]})
+    embedder = BedrockEmbedder(
+        model_id="cohere.embed-multilingual-v3", dim=1024, client=fake
+    )
+    out = embedder("测试文本")
+
+    assert out == vec
+    assert len(out) == 1024
+
+
+def test_bedrock_embedder_titan_still_parses():
+    """Titan 模型：请求走 Titan 格式且响应 {"embedding": [...]} 仍正确解析。"""
+    from app.rag.embedder import BedrockEmbedder
+
+    vec = [0.3] * 1024
+    fake = _FakeInvokeClient(vec)
+    embedder = BedrockEmbedder(
+        model_id="amazon.titan-embed-text-v2:0", dim=1024, client=fake
+    )
+    out = embedder("测试文本")
+
+    assert out == vec
+    assert len(out) == 1024
+    sent = json.loads(fake.last_kwargs["body"])
+    assert sent == {
+        "inputText": "测试文本",
+        "dimensions": 1024,
+        "normalize": True,
+    }
+
+
+def test_bedrock_embedder_cohere_custom_input_type():
+    """Cohere 模型：input_type 可配置为 search_query。"""
+    from app.rag.embedder import BedrockEmbedder
+
+    fake = _FakeCohereClient({"embeddings": {"float": [[0.0] * 1024]}})
+    embedder = BedrockEmbedder(
+        model_id="cohere.embed-multilingual-v3",
+        dim=1024,
+        client=fake,
+        input_type="search_query",
+    )
+    embedder("查询文本")
+
+    sent = json.loads(fake.last_kwargs["body"])
+    assert sent["input_type"] == "search_query"
+
+
+def test_bedrock_embedder_cohere_empty_returns_zero_vector():
+    """Cohere 模型空文本返回全零向量，不调用 client。"""
+    from app.rag.embedder import BedrockEmbedder
+
+    class _NeverCalled:
+        def invoke_model(self, **kwargs):  # pragma: no cover
+            raise AssertionError("空文本不应调用 client")
+
+    embedder = BedrockEmbedder(
+        model_id="cohere.embed-multilingual-v3", dim=1024, client=_NeverCalled()
+    )
+    assert embedder("") == [0.0] * 1024
+    assert embedder("   ") == [0.0] * 1024
