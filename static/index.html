@@ -629,16 +629,19 @@ function makeOrb(canvas,opts){
   if(!ctx) return {destroy(){}};
   // density preset: "dense" (auth) draws a crisper globe, otherwise sparser.
   const DENSE=(opts.mode==="dense")||(opts.count||420)>=360;
-  const LINKS=opts.links!==false;       // draw faint latitude ring lines
+  const LINKS=opts.links!==false;       // draw faint latitude + longitude ring lines
   const DAMP=0.06;                       // rotation follow damping
   const LAT_STEP=DENSE?10:14;            // degrees between latitude rings
   const LON_STEP=DENSE?9:14;             // base degrees between longitude samples
+  const LON_LINE_STEP=DENSE?15:30;       // degrees between meridian (longitude) arcs
+  const ARC_SEG=DENSE?64:48;             // samples per grid arc (higher = smoother)
+  const LINE_A=DENSE?1.0:0.85;           // scale for grid-line alpha (welcome dimmer)
   const LAT_MAX=80;                      // clamp near the poles
   let W=0,H=0,DPR=1,R=1,cxp=0,cyp=0;
   let spinY=0;                           // continuous auto-rotation (like a spinning planet)
   let curX=0,curY=0,tgtX=0,tgtY=0;       // damped mouse tilt
   let orbitA=0;                          // satellite orbit angle
-  let raf=0,pts=[],rings=[];
+  let raf=0,pts=[],rings=[],meridians=[];
 
   const D2R=Math.PI/180;
   // deterministic continent centres (unit direction vectors) plus angular radius.
@@ -679,9 +682,14 @@ function makeOrb(canvas,opts){
       pts.push({x:v.x,y:v.y,z:v.z,land:isLand(v),equator});
     }
   }
-  // latitude ring definitions (for faint connecting arcs)
+  // latitude ring definitions (horizontal rings, for faint connecting arcs)
   for(let lat=-LAT_MAX; lat<=LAT_MAX; lat+=LAT_STEP){
     rings.push({lat, equator:Math.abs(lat)<LAT_STEP*0.5});
+  }
+  // meridian (longitude) definitions: vertical half-rings pole to pole at a
+  // fixed longitude. lon 0 (prime meridian) drawn a touch brighter.
+  for(let lon=0; lon<360; lon+=LON_LINE_STEP){
+    meridians.push({lon, prime:lon===0});
   }
 
   function resize(){
@@ -719,25 +727,51 @@ function makeOrb(canvas,opts){
     const cosY=Math.cos(tiltY),sinY=Math.sin(tiltY);
     const cosX=Math.cos(tiltX),sinX=Math.sin(tiltX);
 
-    // faint latitude ring arcs so the globe grid reads clearly
+    // faint latitude + longitude grid arcs so the globe net reads clearly.
+    // Front segments (z>=-0.15) draw at full grid alpha; back segments draw at
+    // a low alpha instead of being cut, keeping the net continuous and giving
+    // the sphere a see-through, volumetric feel. Each visible edge is stroked
+    // on its own so front/back alpha can differ without breaking the arc.
     if(LINKS){
-      ctx.lineWidth=1;
+      ctx.lineWidth=DENSE?1:0.9;
+      const strokeArc=function(sample, frontA, backA){
+        // sample(i) -> projected point for i in [0..ARC_SEG]
+        let prev=sample(0);
+        for(let s=1;s<=ARC_SEG;s++){
+          const cur=sample(s);
+          // an edge is "front" when both endpoints are on the near hemisphere
+          const front=(prev.z>=-0.15 && cur.z>=-0.15);
+          const al=(front?frontA:backA)*LINE_A;
+          ctx.strokeStyle="rgba(56,224,200,"+al.toFixed(3)+")";
+          ctx.beginPath();
+          ctx.moveTo(prev.sx,prev.sy);
+          ctx.lineTo(cur.sx,cur.sy);
+          ctx.stroke();
+          prev=cur;
+        }
+      };
+      // latitude rings (horizontal): full circle at fixed lat
       for(let ri=0;ri<rings.length;ri++){
         const ring=rings[ri];
         const la=ring.lat*D2R, cl=Math.cos(la), sy0=Math.sin(la);
-        const seg=48;
-        let prev=null;
-        ctx.beginPath();
-        for(let s=0;s<=seg;s++){
-          const lon=(s/seg)*Math.PI*2;
-          const p=project(cl*Math.cos(lon), sy0, cl*Math.sin(lon), cosY,sinY,cosX,sinX);
-          if(p.z<-0.15){ prev=null; continue; }   // hide far back arc segments
-          if(prev) ctx.lineTo(p.sx,p.sy); else ctx.moveTo(p.sx,p.sy);
-          prev=p;
-        }
-        const al=ring.equator?0.34:0.08;
-        ctx.strokeStyle="rgba(56,224,200,"+al.toFixed(3)+")";
-        ctx.stroke();
+        const frontA=ring.equator?0.34:0.10;
+        const backA=ring.equator?0.10:0.03;
+        strokeArc(function(s){
+          const lon=(s/ARC_SEG)*Math.PI*2;
+          return project(cl*Math.cos(lon), sy0, cl*Math.sin(lon), cosY,sinY,cosX,sinX);
+        }, frontA, backA);
+      }
+      // meridians (vertical): half-ring from south pole to north pole at fixed lon
+      for(let mi=0;mi<meridians.length;mi++){
+        const m=meridians[mi];
+        const lo=m.lon*D2R, clo=Math.cos(lo), slo=Math.sin(lo);
+        const frontA=m.prime?0.13:0.10;
+        const backA=m.prime?0.04:0.03;
+        strokeArc(function(s){
+          const la=(-Math.PI/2)+(s/ARC_SEG)*Math.PI;   // -90deg .. +90deg
+          const cl=Math.cos(la), sy0=Math.sin(la);
+          return project(cl*clo, sy0, cl*slo, cosY,sinY,cosX,sinX);
+        }, frontA, backA);
       }
     }
 
