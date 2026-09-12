@@ -8,10 +8,13 @@
 
 from __future__ import annotations
 
+from typing import Callable
+
 from app.config import Settings, get_settings
 from app.interfaces.crawler import CrawlerInterface, MockCrawler
-from app.interfaces.llm import LLMInterface, MockLLM
+from app.interfaces.llm import BedrockLLM, LLMInterface, MockLLM
 from app.interfaces.web_search import MockWebSearch, WebSearchInterface
+from app.rag.embedder import BedrockEmbedder, DeterministicEmbedder
 
 __all__ = ["Container"]
 
@@ -71,5 +74,31 @@ class Container:
         """
         factories = {
             "mock": lambda: MockLLM(),
+            "bedrock": lambda: BedrockLLM(
+                model_id=self.settings.bedrock_llm_model_id,
+                region_name=self.settings.bedrock_region,
+            ),
         }
         return factories[self.settings.llm_impl]()
+
+    def embedder(self) -> Callable[[str], list[float]]:
+        """按配置装配 embedder 实现（Req 1.2, 2.3, 2.4）。
+
+        embedder 的调用契约为 ``embedder(text) -> list[float]``，两种实现均
+        以可调用对象形式满足该契约，调用方无需感知具体实现。
+
+        Returns:
+            满足 ``Callable[[str], list[float]]`` 的 embedder 实例。
+
+        Raises:
+            KeyError: ``settings.embedder_impl`` 不在支持的实现集合中时抛出。
+        """
+        factories = {
+            "deterministic": lambda: DeterministicEmbedder(),
+            "bedrock": lambda: BedrockEmbedder(
+                model_id=self.settings.bedrock_embed_model_id,
+                region_name=self.settings.bedrock_region,
+                dim=self.settings.bedrock_embed_dim,
+            ),
+        }
+        return factories[self.settings.embedder_impl]()

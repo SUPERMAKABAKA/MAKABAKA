@@ -98,3 +98,84 @@ class DeterministicEmbedder:
             长度为 ``self.dim`` 的浮点向量。
         """
         return embed(text, self.dim)
+
+
+class BedrockEmbedder:
+    """基于 Amazon Bedrock Titan 的真实 embedder（Req 1.2, 5.1）。
+
+    作为 ``DeterministicEmbedder`` 的可插拔替代，通过 Bedrock Runtime 调用
+    Titan Text Embeddings V2 生成文本向量。调用契约与确定性实现一致：
+    ``embedder(text) -> list[float]``，可像函数一样被 ingestion 与检索复用。
+
+    凭证不写入代码：依赖 boto3 默认凭证链。为使本模块在缺少 boto3 的环境下
+    仍可被导入（不影响确定性路径），``boto3`` 采用延迟导入，仅在实例化时导入。
+
+    注意：Titan V2 的输出维度（``dim``）默认 1024，与 ``DeterministicEmbedder``
+    的 64 维不同。切换实现后必须重新灌库，避免同一向量库内维度不一致。
+    """
+
+    def __init__(
+        self,
+        model_id: str = "amazon.titan-embed-text-v2:0",
+        region_name: str = "ap-southeast-1",
+        dim: int = 1024,
+        client=None,
+    ) -> None:
+        """初始化 Bedrock Titan embedder。
+
+        Args:
+            model_id: Bedrock embedding 模型标识，默认 Titan Text Embeddings V2。
+            region_name: AWS 区域，默认新加坡 ``ap-southeast-1``。
+            dim: 输出向量维度，默认 1024（Titan V2 支持 256/512/1024）。
+            client: 可选注入的 bedrock-runtime 客户端；为 ``None`` 时按
+                ``region_name`` 创建。注入便于在测试中使用假客户端。
+        """
+        self.model_id = model_id
+        self.region_name = region_name
+        self.dim = dim
+        if client is None:
+            import boto3
+
+            client = boto3.client("bedrock-runtime", region_name=region_name)
+        self._client = client
+
+    def __call__(self, text: str) -> list[float]:
+        """向量化单条文本，返回长度为 ``self.dim`` 的浮点向量。
+
+        空文本（``None`` / 空串 / 仅空白）返回全零向量，与
+        ``DeterministicEmbedder`` 对空文本的行为一致，同时避免 Titan 对空串
+        报错。
+
+        Args:
+            text: 待向量化的文本。
+
+        Returns:
+            长度为 ``self.dim`` 的浮点向量。
+
+        Raises:
+            RuntimeError: 调用 Bedrock 或解析响应失败时抛出，携带清晰的
+                错误信息，不静默吞掉。
+        """
+        if not text or not text.strip():
+            return [0.0] * self.dim
+
+        import json
+
+        try:
+            response = self._client.invoke_model(
+                modelId=self.model_id,
+                body=json.dumps(
+                    {
+                        "inputText": text,
+                        "dimensions": self.dim,
+                        "normalize": True,
+                    }
+                ),
+            )
+            payload = json.loads(response["body"].read())
+            return payload["embedding"]
+        except Exception as exc:  # noqa: BLE001 - 统一转换为清晰错误上抛
+            raise RuntimeError(
+                f"Bedrock embedding 调用失败 (model_id={self.model_id}, "
+                f"region={self.region_name}): {exc}"
+            ) from exc

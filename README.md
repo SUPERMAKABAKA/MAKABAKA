@@ -65,3 +65,54 @@ MAKABAKA/
 ├── README.md          # 项目说明
 └── .gitignore         # Git 忽略规则
 ```
+
+## 接入 Amazon Bedrock（真实 LLM 与 embedding）
+
+系统默认使用离线 Mock 实现（`mock` LLM + `deterministic` embedding），可零配置本地运行。
+若要接入 Amazon Bedrock 的真实模型（区域：新加坡 ap-southeast-1），无需改代码，按以下步骤操作。
+
+### 1. 在 AWS 控制台准备
+
+1. 创建 IAM 用户并生成访问密钥，附加 `AmazonBedrockFullAccess` 权限（生产环境建议收敛为仅 `bedrock:InvokeModel`）。
+2. 控制台切到 **Asia Pacific (Singapore) ap-southeast-1**，进入 **Bedrock → Model access**，开通：
+   - `amazon.titan-embed-text-v2:0`（Titan Text Embeddings V2，1024 维）
+   - `amazon.nova-lite-v1:0`（对话模型 Nova Lite）
+
+### 2. 配置环境变量
+
+```bash
+# 切换实现为 Bedrock（不改代码）
+export LLM_IMPL=bedrock
+export EMBEDDER_IMPL=bedrock
+
+# AWS 凭证（boto3 默认凭证链）
+export AWS_ACCESS_KEY_ID=你的AccessKeyId
+export AWS_SECRET_ACCESS_KEY=你的SecretAccessKey
+export AWS_REGION=ap-southeast-1
+```
+
+Windows PowerShell 用 `$env:LLM_IMPL="bedrock"` 形式设置。
+
+### 3. 必须重新灌库
+
+embedding 维度从 Mock 的 64 维变为 Titan V2 的 1024 维，同一 Chroma 库不能混用不同维度。
+切换到 Bedrock embedding 后，务必清空旧向量库并重新灌库：
+
+```bash
+# 删除旧向量库（64 维）
+rm -rf .chroma          # Windows: Remove-Item -Recurse -Force .chroma
+
+# 用 Bedrock embedding 重新灌库
+python -m scripts.ingest
+```
+
+灌库侧与检索侧必须使用同一 embedder 实现，否则维度不匹配会报错。
+
+### 可配置项（app/config.py 的 Settings）
+
+| 配置 | 默认值 | 说明 |
+| ---- | ------ | ---- |
+| `bedrock_region` | `ap-southeast-1` | Bedrock 区域 |
+| `bedrock_llm_model_id` | `amazon.nova-lite-v1:0` | 对话模型 |
+| `bedrock_embed_model_id` | `amazon.titan-embed-text-v2:0` | embedding 模型 |
+| `bedrock_embed_dim` | `1024` | embedding 维度 |
