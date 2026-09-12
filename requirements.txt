@@ -1,2 +1,11 @@
 fastapi>=0.110.0
 uvicorn[standard]>=0.29.0
+
+# 多 Agent 编排与 RAG 依赖
+langgraph>=0.2.0
+chromadb>=0.5.0
+pydantic>=2.6.0
+
+# 测试依赖
+pytest>=8.0.0
+hypothesis>=6.100.0
