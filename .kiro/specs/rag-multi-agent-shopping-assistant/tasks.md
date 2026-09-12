@@ -81,8 +81,8 @@
     - 在 `app/repositories/profile_source.py` 从 `profiles.json` 按 user_id 加载 `UserProfile`，无画像返回 None
     - _Requirements: 3.3_
 
-- [ ] 9. Profile Agent
-  - [~] 9.1 实现 Profile_Agent
+- [x] 9. Profile Agent
+  - [x] 9.1 实现 Profile_Agent
     - 在 `app/agents/base.py` 定义 `Agent` 协议；在 `app/agents/profile_agent.py` 实现 `run`：加载画像→写入偏好/预算/用途；无画像标记 cold_start；异常置 `session.error`
     - _Requirements: 3.1, 3.2, 3.4, 8.2_
   - [ ]* 9.2 编写冷启动标记属性测试
@@ -92,8 +92,8 @@
     - **Property 3: 画像字段映射**
     - **Validates: Requirements 3.4**
 
-- [ ] 10. Clarify Agent
-  - [~] 10.1 实现 Clarify_Agent
+- [x] 10. Clarify Agent
+  - [x] 10.1 实现 Clarify_Agent
     - 在 `app/agents/clarify_agent.py` 实现统一流程：冷启动对缺失预算/用途/偏好逐项提问；有画像以确认现有特征为主减少提问；yes/no 回答更新 `confirmed_features` 与对应字段；未收集完置 `pending_question`
     - _Requirements: 4.1, 4.2, 4.3, 4.5, 4.6_
   - [ ]* 10.2 编写有画像提问数不增加属性测试
@@ -103,8 +103,8 @@
     - **Property 5: yes/no 确认更新特征**
     - **Validates: Requirements 4.3**
 
-- [ ] 11. Retrieval Agent
-  - [~] 11.1 实现 Retrieval_Agent
+- [x] 11. Retrieval Agent
+  - [x] 11.1 实现 Retrieval_Agent
     - 在 `app/agents/retrieval_agent.py` 实现 `run`：由 `collected_needs` 构造查询→向量化→Chroma 检索→映射为 `RetrievedRecord`（product_id/source_url/matched_text）→按相关度降序排序；空结果置 `retrieval_status="no_match"`
     - _Requirements: 5.1, 5.2, 5.3, 5.4_
   - [ ]* 11.2 编写检索结果字段完整属性测试
@@ -117,8 +117,8 @@
     - 验证无匹配时返回空列表并置 `retrieval_status="no_match"`
     - _Requirements: 5.3_
 
-- [ ] 12. Web Search Agent
-  - [~] 12.1 实现 Web_Search_Agent
+- [x] 12. Web Search Agent
+  - [x] 12.1 实现 Web_Search_Agent
     - 在 `app/agents/web_search_agent.py` 实现 `run`：对候选商品经 `Web_Search_Interface` 获取 product_info 与社媒测评（好评+差评），聚合为 `web_results`；无测评置 `web_status="no_review"`
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
   - [ ]* 12.2 编写测评好评差评覆盖属性测试
@@ -128,8 +128,8 @@
     - 验证无测评时置 `web_status="no_review"` 并继续流程
     - _Requirements: 6.4_
 
-- [ ] 13. Recommendation Agent
-  - [~] 13.1 实现 Recommendation_Agent
+- [x] 13. Recommendation Agent
+  - [x] 13.1 实现 Recommendation_Agent
     - 在 `app/agents/recommendation_agent.py` 实现 `run`：融合 `retrieval_results` 与 `web_results` 生成 `ProductRecommendation`（reason/product_url/含好评差评的 summary）；默认 3–5 条；指定数量按数量输出；候选不足置 `recommendation_status="insufficient"`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
   - [ ]* 13.2 编写默认推荐数量区间属性测试
@@ -148,7 +148,7 @@
     - 验证候选少于目标数量时返回全部并置 `recommendation_status="insufficient"`
     - _Requirements: 7.6_
 
-- [~] 14. Checkpoint - 确保各 Agent 测试通过
+- [x] 14. Checkpoint - 确保各 Agent 测试通过
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 15. Orchestrator LangGraph 状态机
