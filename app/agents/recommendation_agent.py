@@ -22,6 +22,8 @@ LLM 时退化为确定性模板，保证离线可用。
 
 from __future__ import annotations
 
+import json
+import re
 from typing import Optional
 
 from app.interfaces.llm import LLMInterface
@@ -82,9 +84,17 @@ class RecommendationAgent:
                 selected = candidates[:target]
                 session.recommendation_status = "ok"
 
+            # 一次性批量生成全部推荐理由，避免逐条调用 LLM 触发限流/超时；
+            # 批量失败或条数不匹配时，逐条回退（_build_reason 内含模板兜底）。
+            batch_reasons = self._batch_reasons(selected, web_index, session)
             recommendations = [
-                self._build_recommendation(record, web_index.get(record.product_id), session)
-                for record in selected
+                self._build_recommendation(
+                    record,
+                    web_index.get(record.product_id),
+                    session,
+                    reason=batch_reasons[i] if batch_reasons else None,
+                )
+                for i, record in enumerate(selected)
             ]
             session.recommendations = recommendations
         except Exception as exc:  # noqa: BLE001 - 不可恢复错误统一传播 (Req 8.4)
@@ -131,10 +141,15 @@ class RecommendationAgent:
         record: RetrievedRecord,
         web_info: Optional[WebInfo],
         session: ConversationSession,
+        reason: Optional[str] = None,
     ) -> ProductRecommendation:
-        """基于检索记录与对应联网结果构造单条推荐 (Req 7.4, 7.5)。"""
+        """基于检索记录与对应联网结果构造单条推荐 (Req 7.4, 7.5)。
+
+        ``reason`` 为批量生成的预填理由；为空时逐条回退到 ``_build_reason``。
+        """
         title = self._resolve_title(record, web_info)
-        reason = self._build_reason(record, web_info, session)
+        cleaned = self._clean_llm(reason) if reason else ""
+        reason = cleaned or self._build_reason(record, web_info, session)
         summary = self._build_summary(web_info)
         return ProductRecommendation(
             product_id=record.product_id,
@@ -152,6 +167,78 @@ class RecommendationAgent:
             if first_line:
                 return first_line
         return record.product_id
+
+    def _batch_reasons(
+        self,
+        records: list,
+        web_index: dict,
+        session: ConversationSession,
+    ) -> Optional[list]:
+        """一次 LLM 调用为所有商品生成推荐理由，返回与 ``records`` 等长的列表。
+
+        将全部候选商品打包进单个 prompt，要求模型返回 JSON 字符串数组，从而把
+        请求数从 N 次降到 1 次，规避免费额度的每分钟限流 (RPM)。
+
+        返回：
+          * 成功且条数匹配 → ``list[str]``（逐条已过 ``_clean_llm``）。
+          * 无 LLM / 调用失败 / 解析失败 / 条数不匹配 → ``None``（由上层逐条回退）。
+        """
+        if self._llm is None or not records:
+            return None
+
+        needs = self._describe_needs(session)
+        lines = []
+        for i, record in enumerate(records):
+            web_info = web_index.get(record.product_id)
+            product_info = web_info.product_info if web_info is not None else ""
+            lines.append(
+                f"{i}. product_id={record.product_id} | "
+                f"matched={record.matched_text} | info={product_info}"
+            )
+        catalog = "\n".join(lines)
+        prompt = (
+            "You are a shopping assistant. For EACH product below, write one "
+            "concise English sentence explaining why it fits the shopper. "
+            "Return ONLY a JSON array of strings, one per product, in the same "
+            "order, with no markdown, no code fences, no extra text.\n"
+            f"Shopper needs: {needs}\n"
+            f"Products:\n{catalog}"
+        )
+
+        try:
+            generated = self._llm.generate(prompt)
+        except Exception:  # noqa: BLE001 - 批量调用失败时回退逐条
+            return None
+
+        reasons = self._parse_reason_array(generated, len(records))
+        return reasons
+
+    @staticmethod
+    def _parse_reason_array(text: Optional[str], expected: int) -> Optional[list]:
+        """从 LLM 输出中解析 JSON 字符串数组，条数需与 ``expected`` 一致。
+
+        容忍模型偶尔包裹的 ```` ```json ```` 代码围栏；解析失败或条数不符返回
+        ``None``。
+        """
+        if not text:
+            return None
+        cleaned = text.strip()
+        # 去除可能的 markdown 代码围栏
+        fence = re.match(r"^```[a-zA-Z]*\s*(.*?)\s*```$", cleaned, re.DOTALL)
+        if fence:
+            cleaned = fence.group(1).strip()
+        # 截取首个 [ 到末个 ] 之间的内容，容忍前后杂散文本
+        start = cleaned.find("[")
+        end = cleaned.rfind("]")
+        if start == -1 or end == -1 or end <= start:
+            return None
+        try:
+            arr = json.loads(cleaned[start : end + 1])
+        except (ValueError, TypeError):
+            return None
+        if not isinstance(arr, list) or len(arr) != expected:
+            return None
+        return [str(x) for x in arr]
 
     def _build_reason(
         self,

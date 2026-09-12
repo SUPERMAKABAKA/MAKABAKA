@@ -178,14 +178,14 @@ class GeminiLLM(LLMInterface):
         self,
         api_key: str,
         model: str = "gemini-2.0-flash",
-        timeout: int = 30,
+        timeout: int = 60,
     ) -> None:
         """初始化 Gemini LLM 客户端。
 
         Args:
             api_key: Google AI Studio 的 API Key（形如 ``AIza...``）。
             model: Gemini 模型名，默认 ``gemini-2.0-flash``。
-            timeout: 单次请求的超时时间（秒），默认 30。
+            timeout: 单次请求的超时时间（秒），默认 60。
         """
         self.api_key = api_key
         self.model = model
