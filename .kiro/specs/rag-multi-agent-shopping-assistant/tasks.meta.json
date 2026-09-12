@@ -74,6 +74,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164246
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219155582
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219272897
       }
     ],
     "3.3 定义 LLM 接口与模拟实现": [
@@ -241,6 +251,13 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789219115770
+      }
+    ],
+    "3. 接口抽象层与模拟实现": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219272967
       }
     ]
   }

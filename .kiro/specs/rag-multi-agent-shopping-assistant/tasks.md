@@ -24,11 +24,11 @@
     - **Property 6: Direct 节奏推进条件**
     - **Validates: Requirements 4.4**
 
-- [ ] 3. 接口抽象层与模拟实现
+- [x] 3. 接口抽象层与模拟实现
   - [x] 3.1 定义 Crawler 接口与模拟实现
     - 在 `app/interfaces/crawler.py` 实现 `CrawledProduct`、`CrawlerInterface`、`MockCrawler`（从 `products.json` 读取约 50 种预置商品）
     - _Requirements: 1.1, 1.5, 2.1, 2.2_
-  - [~] 3.2 定义 WebSearch 接口与模拟实现
+  - [x] 3.2 定义 WebSearch 接口与模拟实现
     - 在 `app/interfaces/web_search.py` 实现 `WebSearchInterface`、`MockWebSearch`（`fetch_product_info`、`fetch_social_reviews` 从 `web_reviews.json` 返回小红书/抖音/B站好评与差评）
     - _Requirements: 6.1, 6.2, 6.3, 6.5, 2.1, 2.2_
   - [x] 3.3 定义 LLM 接口与模拟实现
