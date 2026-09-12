@@ -38,8 +38,8 @@
     - 验证三个模拟实现返回预置数据；验证 WebSearch 覆盖三平台来源
     - _Requirements: 1.5, 2.2, 6.2, 6.5_
 
-- [ ] 4. 依赖注入容器
-  - [~] 4.1 实现 Container 装配逻辑
+- [x] 4. 依赖注入容器
+  - [x] 4.1 实现 Container 装配逻辑
     - 在 `app/container.py` 实现 `Container`，按 `Settings` 选择 `crawler()`/`web_search()`/`llm()` 的模拟实现，调用方仅依赖抽象类型
     - _Requirements: 2.3, 2.4_
   - [ ]* 4.2 编写容器装配与可替换性单元测试
@@ -53,7 +53,7 @@
   - _Requirements: 1.5, 6.5, 3.3_
 
 - [ ] 6. RAG 层：向量库、embedder 与灌库
-  - [~] 6.1 实现 embedder 与 VectorStore 封装
+  - [x] 6.1 实现 embedder 与 VectorStore 封装
     - 在 `app/rag/embedder.py` 实现确定性 embedding（离线可测）
     - 在 `app/rag/vector_store.py` 封装 Chroma，提供 `add(embedding, metadata)` 与 `query(embedding, top_k)`（返回含 metadata 与 distance）
     - _Requirements: 1.2, 5.1_
@@ -73,11 +73,11 @@
 - [~] 7. Checkpoint - 确保数据层与接口层测试通过
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. 会话仓与画像源
-  - [~] 8.1 实现内存会话仓
+- [x] 8. 会话仓与画像源
+  - [x] 8.1 实现内存会话仓
     - 在 `app/repositories/session_repo.py` 实现 `get_or_create(session_id)` 与 `save(session)`
     - _Requirements: 9.2_
-  - [~] 8.2 实现模拟画像源
+  - [x] 8.2 实现模拟画像源
     - 在 `app/repositories/profile_source.py` 从 `profiles.json` 按 user_id 加载 `UserProfile`，无画像返回 None
     - _Requirements: 3.3_
 

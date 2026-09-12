@@ -108,6 +108,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164400
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219293151
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219481389
       }
     ],
     "5. 预置数据集": [
@@ -132,6 +142,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164595
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219294296
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219482653
       }
     ],
     "6.2 实现 IngestionPipeline": [
@@ -160,6 +180,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164873
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219295252
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219483539
       }
     ],
     "8.2 实现模拟画像源": [
@@ -167,6 +197,16 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789218164961
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219296224
+      },
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219480344
       }
     ],
     "9.1 实现 Profile_Agent": [
@@ -258,6 +298,20 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789219272967
+      }
+    ],
+    "4. 依赖注入容器": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219481508
+      }
+    ],
+    "8. 会话仓与画像源": [
+      {
+        "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
+        "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
+        "timestamp": 1789219483605
       }
     ]
   }
