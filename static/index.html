@@ -747,6 +747,25 @@ function makeOrb(canvas,opts){
       pts.push({x:v.x,y:v.y,z:v.z,land:isLand(v),equator});
     }
   }
+  // continent fill points: scan the sphere on a finer grid and keep only the
+  // samples that fall inside a plate polygon. This packs the plate interiors so
+  // landmasses read as solid faces (not just a sparse lat/lon lattice) while the
+  // OUTLINES borders still bound them. Built once here and cached in pts so
+  // draw() only projects them; isLand() is never called per frame. dense fills
+  // tightly (auth globe), sparse fills lightly (welcome stays restrained). A
+  // hard cap keeps the total point budget in check so rAF stays smooth.
+  const FILL_STEP=DENSE?3.5:6;                 // finer than LAT/LON_STEP so interiors densify
+  const FILL_CAP=DENSE?1300:220;               // max fill points added (dense ~800-1300, sparse light)
+  let fillCount=0;
+  for(let lat=-LAT_MAX; lat<=LAT_MAX && fillCount<FILL_CAP; lat+=FILL_STEP){
+    const la=lat*D2R, cl=Math.cos(la);
+    const n=Math.max(6, Math.round((360/FILL_STEP)*Math.max(0.25,cl)));
+    for(let k=0;k<n && fillCount<FILL_CAP;k++){
+      const lon=(k/n)*360-180;
+      const v=latLonToVec(lat,lon);
+      if(isLand(v)){ pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true}); fillCount++; }
+    }
+  }
   // latitude ring definitions (horizontal rings, for faint connecting arcs)
   for(let lat=-LAT_MAX; lat<=LAT_MAX; lat+=LAT_STEP){
     rings.push({lat, equator:Math.abs(lat)<LAT_STEP*0.5});
@@ -819,8 +838,8 @@ function makeOrb(canvas,opts){
       for(let ri=0;ri<rings.length;ri++){
         const ring=rings[ri];
         const la=ring.lat*D2R, cl=Math.cos(la), sy0=Math.sin(la);
-        const frontA=ring.equator?0.34:0.10;
-        const backA=ring.equator?0.10:0.03;
+        const frontA=ring.equator?0.17:0.10;   // equator toned down: only a touch brighter than plain rings
+        const backA=ring.equator?0.05:0.03;
         strokeArc(function(s){
           const lon=(s/ARC_SEG)*Math.PI*2;
           return project(cl*Math.cos(lon), sy0, cl*Math.sin(lon), cosY,sinY,cosX,sinX);
@@ -845,7 +864,7 @@ function makeOrb(canvas,opts){
     for(let i=0;i<pts.length;i++){
       const pt=pts[i];
       const p=project(pt.x,pt.y,pt.z,cosY,sinY,cosX,sinX);
-      p.land=pt.land; p.equator=pt.equator;
+      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill;
       proj.push(p);
     }
     proj.sort((a,b)=>a.z-b.z);
@@ -853,8 +872,10 @@ function makeOrb(canvas,opts){
       const p=proj[i];
       const depth=(p.z+1)/2;                 // 0 back .. 1 front
       let r,al;
-      if(p.equator){
-        r=(0.9+depth*1.7)*p.persp*1.4; al=0.35+depth*0.55;
+      if(p.fill){
+        r=(0.7+depth*1.5)*p.persp*1.35; al=0.28+depth*0.5;   // continent fill: smaller/softer so plates read as solid, not clumped
+      }else if(p.equator){
+        r=(0.6+depth*1.3)*p.persp*1.3; al=0.16+depth*0.3;    // equator now blends into the net, no longer a heavy line
       }else if(p.land){
         r=(1.0+depth*2.1)*p.persp*1.45; al=0.34+depth*0.62;  // plate faces: brighter/larger = filled feel
       }else{
