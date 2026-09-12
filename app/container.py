@@ -12,7 +12,7 @@ from typing import Callable
 
 from app.config import Settings, get_settings
 from app.interfaces.crawler import CrawlerInterface, MockCrawler
-from app.interfaces.llm import BedrockLLM, LLMInterface, MockLLM
+from app.interfaces.llm import BedrockLLM, GeminiLLM, LLMInterface, MockLLM
 from app.interfaces.web_search import MockWebSearch, WebSearchInterface
 from app.rag.embedder import BedrockEmbedder, DeterministicEmbedder
 
@@ -77,6 +77,10 @@ class Container:
             "bedrock": lambda: BedrockLLM(
                 model_id=self.settings.bedrock_llm_model_id,
                 region_name=self.settings.bedrock_region,
+            ),
+            "gemini": lambda: GeminiLLM(
+                api_key=self.settings.gemini_api_key,
+                model=self.settings.gemini_model,
             ),
         }
         return factories[self.settings.llm_impl]()

@@ -33,16 +33,16 @@ _FEATURES = ("budget", "purpose", "preferences")
 
 # 各特征的确定性模板问题（LLM 不可用时回退，保证离线可用）。
 _QUESTION_TEMPLATES = {
-    "budget": "请问您的预算大概是多少？",
-    "purpose": "请问您购买这件商品主要用于什么用途？",
-    "preferences": "请问您有哪些偏好（如品牌、风格、功能等）？",
+    "budget": "What is your rough budget for this?",
+    "purpose": "What will you mainly use it for?",
+    "preferences": "Any preferences on brand, style or key features?",
 }
 
 # 确认现有画像特征时的模板问题（有画像时以确认为主，Req 4.2）。
 _CONFIRM_TEMPLATES = {
-    "budget": "根据您的画像，预算约为 {value}，还合适吗？（是/否）",
-    "purpose": "根据您的画像，用途是「{value}」，仍然如此吗？（是/否）",
-    "preferences": "根据您的画像，您偏好「{value}」，这些还符合吗？（是/否）",
+    "budget": "Your profile suggests a budget around {value}. Still works? (yes/no)",
+    "purpose": "Your profile shows the use case is {value}. Still the case? (yes/no)",
+    "preferences": "Your profile shows you prefer {value}. Still a fit? (yes/no)",
 }
 
 # yes/no 识别词表（大小写不敏感）。
@@ -81,13 +81,19 @@ class ClarifyAgent:
         try:
             latest = self._latest_user_message(session)
 
-            # 1) 若存在上一轮待确认特征，且本轮消息是 yes/no，则据此更新（Req 4.3）。
-            if session.pending_question is not None and latest is not None:
-                self._apply_yes_no(session, latest)
+            # 记住上一轮正在问的字段（pending-field 驱动本轮回答的路由）。
+            # 首轮时 pending_question 为 None，active 亦为 None。
+            active = self._pending_feature(session.pending_question)
+            confirming = self._is_confirm_question(session.pending_question)
 
-            # 2) 尽量从消息中解析预算数字/用途文本填入 collected_needs（简单解析）。
             if latest is not None:
-                self._parse_free_text(session, latest)
+                # 1) 上一轮是「确认既有画像值」且本轮为 yes/no：走 yes/no 更新（Req 4.3）。
+                if active is not None and confirming \
+                        and self._interpret_yes_no(latest) is not None:
+                    self._apply_yes_no(session, latest)
+                else:
+                    # 2) 否则按「上一轮正在问哪个字段」路由用户这轮回答。
+                    self._route_answer(session, active, latest)
 
             # 3) 有画像时用画像已有值预填，减少提问（Req 4.2）。
             self._prefill_from_profile(session)
@@ -149,44 +155,91 @@ class ClarifyAgent:
 
     @staticmethod
     def _pending_feature(pending_question: Optional[str]) -> Optional[str]:
-        """从上一轮问题文本推断其针对的特征键。"""
+        """从上一轮问题文本推断其针对的特征键。
+
+        直接比对英文问题/确认模板文案而非猜关键词，保证与实际问题模板一致：
+        - 普通提问模板做等值/包含匹配；
+        - 确认模板含 ``{value}`` 格式化后的变体，故用 ``{value}`` 之前的固定
+          前缀做前缀匹配。
+
+        返回 ``"budget"`` / ``"purpose"`` / ``"preferences"`` 或 ``None``。
+        """
         if not pending_question:
             return None
-        keywords = {
-            "budget": ("预算",),
-            "purpose": ("用途",),
-            "preferences": ("偏好",),
-        }
-        for feature, words in keywords.items():
-            if any(word in pending_question for word in words):
+        text = pending_question.strip()
+
+        # 普通提问模板：等值或包含匹配。
+        for feature, template in _QUESTION_TEMPLATES.items():
+            if text == template or template in text:
+                return feature
+
+        # 确认模板：用 {value} 之前的固定前缀做前缀匹配。
+        for feature, template in _CONFIRM_TEMPLATES.items():
+            prefix = template.split("{value}", 1)[0]
+            if prefix and text.startswith(prefix):
                 return feature
         return None
 
-    def _parse_free_text(self, session: ConversationSession, message: str) -> None:
-        """从自由文本中简单解析预算数字与用途/偏好文本填入需求。
+    @staticmethod
+    def _is_confirm_question(pending_question: Optional[str]) -> bool:
+        """判定上一轮问题是否为「确认既有画像值」的确认型提问。"""
+        if not pending_question:
+            return False
+        text = pending_question.strip()
+        for template in _CONFIRM_TEMPLATES.values():
+            prefix = template.split("{value}", 1)[0]
+            if prefix and text.startswith(prefix):
+                return True
+        return False
 
-        规则（简单解析即可）：消息含数字 → 作为 ``budget``；否则非空文本按当前
-        缺失的项（用途优先，其次偏好）填入。已确认为 ``False`` 的项优先重新收集。
+    def _route_answer(
+        self,
+        session: ConversationSession,
+        active: Optional[str],
+        message: str,
+    ) -> None:
+        """基于「上一轮正在问哪个字段」把本轮回答路由到对应字段。
+
+        - ``active == "budget"``：从消息提取数字填 ``budget``；无数字则保留旧值。
+        - ``active == "purpose"``：整句（去空白）填 ``purpose``。
+        - ``active == "preferences"``：按分隔符切分填 ``preferences`` 列表。
+        - ``active is None``（首轮自由描述）：智能首填——含数字则填 ``budget``，
+          并把整句作为 ``purpose`` 候选（``purpose`` 为空时填入）。
+
+        以 ``active`` 字段为准，避免同一轮把一个回答错配到多个字段导致跳字段。
         """
         needs = session.collected_needs
         text = message.strip()
         if not text:
             return
 
-        # 纯 yes/no 回答不作为自由文本填充，避免污染字段。
-        if self._interpret_yes_no(text) is not None and not re.search(r"\d", text):
+        if active == "budget":
+            number = self._extract_number(text)
+            if number is not None:
+                needs.budget = number
             return
 
+        if active == "purpose":
+            needs.purpose = text
+            return
+
+        if active == "preferences":
+            prefs = self._split_preferences(text)
+            if prefs:
+                needs.preferences = prefs
+            return
+
+        # 首轮（active is None）：智能首填。
         number = self._extract_number(text)
         if number is not None and needs.budget is None:
             needs.budget = number
-            return
-
-        # 无数字的文本：填入下一个缺失的文本型需求。
         if needs.purpose is None:
             needs.purpose = text
-        elif needs.preferences is None:
-            needs.preferences = [p for p in re.split(r"[，,、\s]+", text) if p]
+
+    @staticmethod
+    def _split_preferences(text: str) -> list[str]:
+        """按英文逗号、中文逗号、顿号、空白切分偏好文本为列表。"""
+        return [p for p in re.split(r"[，,、\s]+", text) if p]
 
     @staticmethod
     def _extract_number(text: str) -> Optional[float]:
@@ -254,30 +307,15 @@ class ClarifyAgent:
         return getattr(profile, feature, None)
 
     def _render_question(self, feature: str) -> str:
-        """生成缺失项的提问文本，优先借助 LLM，失败回退模板。"""
-        template = _QUESTION_TEMPLATES[feature]
-        return self._llm_or_template(
-            prompt=f"请针对用户的「{feature}」需求，生成一句简短的中文澄清提问。",
-            fallback=template,
-        )
+        """Return the deterministic English template question for a missing field.
+
+        Clarification prompts are a key product interaction, so we use fixed,
+        controllable copy instead of live LLM generation. This keeps the
+        language consistent (English UI), the wording stable, and never leaks
+        internal prompt text. The LLM is reserved for recommendation reasons.
+        """
+        return _QUESTION_TEMPLATES[feature]
 
     def _render_confirm(self, feature: str, value) -> str:
-        """生成对既有画像特征的确认提问文本。"""
-        template = _CONFIRM_TEMPLATES[feature].format(value=value)
-        return self._llm_or_template(
-            prompt=(
-                f"请生成一句简短的中文确认提问，向用户确认其画像中的「{feature}」"
-                f"是否仍为「{value}」。"
-            ),
-            fallback=template,
-        )
-
-    def _llm_or_template(self, prompt: str, fallback: str) -> str:
-        """有可用 LLM 时用其生成提问文本，否则/失败时回退到模板。"""
-        if self._llm is None:
-            return fallback
-        try:
-            generated = self._llm.generate(prompt)
-        except Exception:  # noqa: BLE001 - LLM 不可用时回退，不影响澄清流程
-            return fallback
-        return generated if generated else fallback
+        """Return the deterministic English confirmation question for a profile field."""
+        return _CONFIRM_TEMPLATES[feature].format(value=value)
