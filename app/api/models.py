@@ -30,6 +30,7 @@ class ChatResponse(BaseModel):
     notices: list[str] = Field(default_factory=list)  # no_match / no_review 等提示
     options: list[str] = Field(default_factory=list)  # 澄清问题的可选项（前端按钮）
     react_steps: list[dict] = Field(default_factory=list)  # ReAct 展示步骤
+    intent: str = "chat"  # chat / recommend
 
 
 class ErrorResponse(BaseModel):

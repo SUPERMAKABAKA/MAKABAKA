@@ -75,6 +75,7 @@ class ConversationSession(BaseModel):
                    "web_search", "recommendation", "done", "error"] = "profile"
     pace: Literal["direct", "guided"] = "guided"
     cold_start: bool = False               # Req 3.2
+    intent: Literal["chat", "recommend"] = "chat"  # Conversation_Agent 产出：聊天还是该推荐
     category: Optional[str] = None         # 当前会话识别出的商品品类（换品类视为新需求）
     error: Optional[AgentError] = None     # Req 8.4
 
