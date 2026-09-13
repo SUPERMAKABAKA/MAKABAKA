@@ -819,7 +819,16 @@ function makeOrb(canvas,opts){
     for(let k=0;k<n && fillCount<FILL_CAP;k++){
       const lon=(k/n)*360-180;
       const v=latLonToVec(lat,lon);
-      if(isLand(v)){ pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true}); fillCount++; }
+      if(isLand(v)){
+        // deterministic pseudo-random per-point "city" flag: only a subset of
+        // land fill points glow on the night side, so lights read as scattered
+        // city clusters rather than a solid lit continent. Hash lat/lon so the
+        // pattern is stable across frames and screen sizes.
+        const h=Math.sin(lat*12.9898+lon*78.233)*43758.5453;
+        const city=(h-Math.floor(h))<0.34;
+        pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true,city});
+        fillCount++;
+      }
     }
   }
   // latitude ring definitions (horizontal rings, for faint connecting arcs)
@@ -856,7 +865,9 @@ function makeOrb(canvas,opts){
     let y=py*cosX - z*sinX;
     z=py*sinX + z*cosX;
     const persp=1/(2.2 - z);
-    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, z, persp};
+    // also return rotated world coords (x,y,z) so the day/night lighting can dot
+    // each point normal against a fixed sun direction in view space.
+    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, x, y, z, persp};
   }
 
   function draw(){
@@ -920,33 +931,59 @@ function makeOrb(canvas,opts){
     for(let i=0;i<pts.length;i++){
       const pt=pts[i];
       const p=project(pt.x,pt.y,pt.z,cosY,sinY,cosX,sinX);
-      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill;
+      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill; p.city=pt.city;
       proj.push(p);
     }
     proj.sort((a,b)=>a.z-b.z);
+    // Day/night lighting: a fixed sun direction in VIEW space (upper-left, a bit
+    // toward the viewer). Each point normal (its rotated x,y,z) is dotted with
+    // the sun to get illum in [-1..1]: >0 day side, <0 night side. As the globe
+    // spins, the terminator sweeps across, so regions cross from day to night.
+    // Day: cool teal, brighter. Night: much dimmer teal; land "city" points glow
+    // warm amber like satellite night imagery, brightest deep on the night side.
+    const SUN={x:-0.55,y:-0.42,z:0.72};      // view-space sun (normalized-ish)
+    const slen=Math.hypot(SUN.x,SUN.y,SUN.z);
     for(let i=0;i<proj.length;i++){
       const p=proj[i];
       const depth=(p.z+1)/2;                 // 0 back .. 1 front
-      // Perspective is deliberately WEAKENED here: instead of multiplying the
-      // radius by the raw persp (which blows up front-facing points into a few
-      // huge, jarring blobs), we fold it into a gentle factor and let depth do
-      // the real sizing. persp ~0.31 (back) .. ~0.83 (front) -> pf ~0.72 .. 0.93,
-      // so front points end up only slightly larger than back ones. Each radius
-      // is then hard-clamped with Math.min(CAP,...) so no point can spike, and
-      // floored with Math.max(0.5,...) so back points stay visible.
       const pf=0.6+0.4*p.persp;              // softened perspective contribution
+      // illum: dot(normal, sun) in [-1..1]. day = t in [0..1], night when <0.
+      const illum=(p.x*SUN.x + p.y*SUN.y + p.z*SUN.z)/slen;
+      const day=Math.max(0,illum);           // 0 on/again night .. 1 full day
+      const night=Math.max(0,-illum);        // 0 day .. 1 deep night
       let r,al;
       if(p.fill){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;   // continent fill: smaller/softer so plates read as solid, not clumped
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;
       }else if(p.equator){
-        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;   // equator now blends into the net, no longer a heavy line
+        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;
       }else if(p.land){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;   // plate faces: uniform small dots like fill points (no oversized particles)
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;
       }else{
-        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;  // oceans dimmer/smaller
+        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;
       }
-      ctx.fillStyle="rgba(56,224,200,"+al.toFixed(3)+")";
-      ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      // Night-side land "cities" glow amber; everything else uses teal that is
+      // brighter on the day side and dimmed on the night side.
+      if(p.land && p.city && night>0.12){
+        // warm city light: strengthens toward deep night, softly twinkles.
+        const tw=0.82+0.18*Math.sin(spinY*7+p.x*40+p.y*33);
+        const g=Math.min(1,(0.35+night*0.85))*tw;
+        const rad=Math.max(0.7,Math.min(1.9,r*(1.05+night*0.5)));
+        // amber core
+        ctx.fillStyle="rgba(255,197,110,"+(g*(0.55+depth*0.4)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad,0,6.283); ctx.fill();
+        // faint bloom halo
+        ctx.fillStyle="rgba(255,170,70,"+(g*0.16*(0.4+depth*0.6)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad*2.1,0,6.283); ctx.fill();
+      }else{
+        // teal, day-lit brighter, night dimmer. Blend a warm tint into day-side
+        // land so continents read a touch golden under "sunlight".
+        const lightMul=0.42+0.85*day + 0.12;   // ~0.54 night .. ~1.39 full day
+        const a=Math.max(0.03,Math.min(0.95,al*lightMul));
+        let cr=56, cg=224, cb=200;
+        if(p.land && day>0.25){ cr=120; cg=232; cb=190; }  // sunlit land warms slightly
+        ctx.fillStyle="rgba("+cr+","+cg+","+cb+","+a.toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      }
     }
 
     // continent plate outlines: stroke each border as a poly-line of projected
