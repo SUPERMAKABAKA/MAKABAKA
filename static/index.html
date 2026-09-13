@@ -1090,8 +1090,8 @@ function makeStarfield(canvas){
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
     }
 
-    // occasional meteor
-    if(Math.random()<0.004*dt && meteors.length<2) spawnMeteor();
+    // meteors: higher spawn rate + larger concurrent cap for a denser shower
+    if(Math.random()<0.013*dt && meteors.length<6) spawnMeteor();
     for(let i=meteors.length-1;i>=0;i--){
       const m=meteors[i]; m.x+=m.vx*dt; m.y+=m.vy*dt; m.life+=dt;
       const k=1-m.life/m.max; if(k<=0){ meteors.splice(i,1); continue; }
