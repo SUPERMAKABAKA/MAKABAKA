@@ -616,6 +616,13 @@ function shopSearchUrl(rec){
   // Bing search allows embedding and shows shopping results; good default web view.
   return "https://www.bing.com/search?q="+encodeURIComponent(q+" buy")+"&form=QBLH";
 }
+// Real Amazon SEARCH url from the product title. The dataset's product_url is a
+// placeholder id, so instead of jumping to a dead product page we search Amazon
+// for the product name, which reliably lands on relevant live listings.
+function amazonSearchUrl(rec){
+  const q=(rec.title||rec.product_id||"product").trim();
+  return "https://www.amazon.com/s?k="+encodeURIComponent(q);
+}
 function setPanelTab(tab){
   const view=$("#ppView");
   view.classList.toggle("show-detail", tab==="detail");
@@ -631,7 +638,7 @@ function openProduct(rec,rank,card){
   const frame=$("#ppFrame");
   if(frame.getAttribute("src")!==webUrl) frame.setAttribute("src",webUrl);
   $("#ppUrl").textContent=webUrl.replace(/^https?:\/\//,"").slice(0,54);
-  const ext=$("#ppOpenExt"); ext.href=rec.product_url||"#";
+  const ext=$("#ppOpenExt"); ext.href=amazonSearchUrl(rec);
   // details tab content
   const pos=(rec.summary&&rec.summary.positives||[]);
   const neg=(rec.summary&&rec.summary.negatives||[]);
@@ -644,7 +651,7 @@ function openProduct(rec,rank,card){
       '<div class="sum neg"><div class="sum-h"><i></i>Cons</div><ul>'+
         (neg.length?neg.map(p=>'<li>'+esc(p)+'</li>').join(""):'<li>N/A</li>')+'</ul></div>'+
     '</div>'+
-    '<a class="pp-cta" href="'+esc(rec.product_url||"#")+'" target="_blank" rel="noopener">Open on Amazon '+svgArrow+'</a>';
+    '<a class="pp-cta" href="'+esc(amazonSearchUrl(rec))+'" target="_blank" rel="noopener">Open on Amazon '+svgArrow+'</a>';
   body.scrollTop=0;
   setPanelTab("web");                    // default to the embedded store page
   appEl.classList.add("panel-open");
@@ -707,7 +714,7 @@ function renderRecs(container,recs,status){
         '<div class="sum pos"><div class="sum-h"><i></i>Pros</div><ul>'+(pos.map(p=>'<li>'+esc(p)+'</li>').join("")||'<li>N/A</li>')+'</ul></div>'+
         '<div class="sum neg"><div class="sum-h"><i></i>Cons</div><ul>'+(neg.map(p=>'<li>'+esc(p)+'</li>').join("")||'<li>N/A</li>')+'</ul></div>'+
       '</div>'+
-      '<a class="rec-link" href="'+esc(r.product_url||"#")+'" target="_blank" rel="noopener">View product '+svgArrow+'</a>';
+      '<a class="rec-link" href="'+esc(amazonSearchUrl(r))+'" target="_blank" rel="noopener">View on Amazon '+svgArrow+'</a>';
     // clicking the card (but not the external link) opens the right product panel
     card.addEventListener("click",(e)=>{ if(e.target.closest(".rec-link")) return; openProduct(r,i+1,card); });
     wrap.appendChild(card); cards.push(card);
