@@ -810,8 +810,8 @@ function makeOrb(canvas,opts){
   // draw() only projects them; isLand() is never called per frame. dense fills
   // tightly (auth globe), sparse fills lightly (welcome stays restrained). A
   // hard cap keeps the total point budget in check so rAF stays smooth.
-  const FILL_STEP=DENSE?3.5:6;                 // finer than LAT/LON_STEP so interiors densify
-  const FILL_CAP=DENSE?1300:220;               // max fill points added (dense ~800-1300, sparse light)
+  const FILL_STEP=DENSE?2.4:4.5;               // smaller step => denser continent interiors (higher plate particle density)
+  const FILL_CAP=DENSE?2600:360;               // raised cap so the denser grid isn't clipped (dense continents read solid)
   let fillCount=0;
   for(let lat=-LAT_MAX; lat<=LAT_MAX && fillCount<FILL_CAP; lat+=FILL_STEP){
     const la=lat*D2R, cl=Math.cos(la);
