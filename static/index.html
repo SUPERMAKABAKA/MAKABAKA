@@ -139,6 +139,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .pp-close:active{transform:scale(.9)}
 .pp-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
 .pp-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:18px}
+/* tabbed panel: embedded web view + details */
+.pp-tabs{flex:none;display:flex;gap:4px;padding:8px 12px 0;border-bottom:1px solid var(--line)}
+.pp-tab{padding:8px 14px;border:none;background:none;color:var(--text-faint);font-family:var(--mono);
+  font-size:11.5px;letter-spacing:.04em;cursor:pointer;border-bottom:2px solid transparent;
+  transition:color .2s var(--ease),border-color .2s var(--ease)}
+.pp-tab:hover{color:var(--text-dim)}
+.pp-tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.pp-view{flex:1;min-height:0;position:relative}
+.pp-web{position:absolute;inset:0;display:flex;flex-direction:column}
+.pp-web-bar{flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line);
+  font-size:11.5px;color:var(--text-faint);font-family:var(--mono);background:rgba(255,255,255,.02)}
+.pp-web-url{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-dim)}
+.pp-open-ext{flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--accent);text-decoration:none;font-weight:600}
+.pp-open-ext svg{width:13px;height:13px;stroke:currentColor}
+.pp-iframe{flex:1;width:100%;border:none;background:#0b0f17}
+.pp-detail{position:absolute;inset:0;overflow-y:auto;padding:18px;display:none;flex-direction:column;gap:18px}
+.pp-view.show-detail .pp-web{display:none}
+.pp-view.show-detail .pp-detail{display:flex}
 .pp-rank{font-family:var(--mono);font-size:11px;color:var(--accent)}
 .pp-section-h{font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
   color:var(--text-faint);margin-bottom:9px;display:flex;align-items:center;gap:7px}
@@ -463,7 +481,20 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
         <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <div class="pp-body" id="ppBody"></div>
+    <div class="pp-tabs">
+      <button class="pp-tab on" id="ppTabWeb" data-tab="web">Store page</button>
+      <button class="pp-tab" id="ppTabDetail" data-tab="detail">Details</button>
+    </div>
+    <div class="pp-view" id="ppView">
+      <div class="pp-web">
+        <div class="pp-web-bar">
+          <span class="pp-web-url" id="ppUrl">-</span>
+          <a class="pp-open-ext" id="ppOpenExt" href="#" target="_blank" rel="noopener">Open on Amazon <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <iframe class="pp-iframe" id="ppFrame" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+      </div>
+      <div class="pp-detail" id="ppBody"></div>
+    </div>
   </aside>
 </div>
 
@@ -576,10 +607,32 @@ $("#sideToggle").onclick=()=>{ appEl.classList.toggle("side-collapsed"); };
 
 /* ===== right product panel (ChatGPT-style) ===== */
 let activeRecCard=null;
+// Build an embeddable store/search URL from the product title. Amazon blocks
+// iframing (X-Frame-Options), so we embed a search page that DOES allow framing
+// and points at the product; the "Open on Amazon" button still jumps to the
+// real product_url in a new tab.
+function shopSearchUrl(rec){
+  const q=(rec.title||rec.product_id||"product").trim();
+  // Bing search allows embedding and shows shopping results; good default web view.
+  return "https://www.bing.com/search?q="+encodeURIComponent(q+" buy")+"&form=QBLH";
+}
+function setPanelTab(tab){
+  const view=$("#ppView");
+  view.classList.toggle("show-detail", tab==="detail");
+  $("#ppTabWeb").classList.toggle("on", tab==="web");
+  $("#ppTabDetail").classList.toggle("on", tab==="detail");
+}
 function openProduct(rec,rank,card){
   if(!rec) return;
   $("#ppTitle").textContent=rec.title||rec.product_id||"Product";
   $("#ppRank").textContent=rank?("Pick #"+String(rank).padStart(2,"0")):"";
+  // embedded web view
+  const webUrl=shopSearchUrl(rec);
+  const frame=$("#ppFrame");
+  if(frame.getAttribute("src")!==webUrl) frame.setAttribute("src",webUrl);
+  $("#ppUrl").textContent=webUrl.replace(/^https?:\/\//,"").slice(0,54);
+  const ext=$("#ppOpenExt"); ext.href=rec.product_url||"#";
+  // details tab content
   const pos=(rec.summary&&rec.summary.positives||[]);
   const neg=(rec.summary&&rec.summary.negatives||[]);
   const body=$("#ppBody");
@@ -591,13 +644,16 @@ function openProduct(rec,rank,card){
       '<div class="sum neg"><div class="sum-h"><i></i>Cons</div><ul>'+
         (neg.length?neg.map(p=>'<li>'+esc(p)+'</li>').join(""):'<li>N/A</li>')+'</ul></div>'+
     '</div>'+
-    '<a class="pp-cta" href="'+esc(rec.product_url||"#")+'" target="_blank" rel="noopener">View product page '+svgArrow+'</a>';
+    '<a class="pp-cta" href="'+esc(rec.product_url||"#")+'" target="_blank" rel="noopener">Open on Amazon '+svgArrow+'</a>';
   body.scrollTop=0;
+  setPanelTab("web");                    // default to the embedded store page
   appEl.classList.add("panel-open");
   $("#productPanel").setAttribute("aria-hidden","false");
   if(activeRecCard) activeRecCard.classList.remove("active");
   if(card){ card.classList.add("active"); activeRecCard=card; }
 }
+$("#ppTabWeb").onclick=()=>setPanelTab("web");
+$("#ppTabDetail").onclick=()=>setPanelTab("detail");
 function closeProduct(){
   appEl.classList.remove("panel-open");
   $("#productPanel").setAttribute("aria-hidden","true");
