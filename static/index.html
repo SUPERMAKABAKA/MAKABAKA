@@ -966,15 +966,18 @@ function makeOrb(canvas,opts){
       // through the globe. Back-side / day-side points fall to the teal branch.
       // brighter on the day side and dimmed on the night side.
       if(p.land && p.city && night>0.12 && p.z>=0.02){
-        // warm city light: strengthens toward deep night, softly twinkles.
+        // city light in the teal family (no clashing amber): a bright near-white
+        // cyan core with a soft teal bloom, so lights glow like tech city clusters
+        // that harmonize with the accent palette. Strengthens toward deep night,
+        // softly twinkles.
         const tw=0.82+0.18*Math.sin(spinY*7+p.x*40+p.y*33);
         const g=Math.min(1,(0.35+night*0.85))*tw;
         const rad=Math.max(0.7,Math.min(1.9,r*(1.05+night*0.5)));
-        // amber core
-        ctx.fillStyle="rgba(255,197,110,"+(g*(0.55+depth*0.4)).toFixed(3)+")";
+        // bright cyan-white core
+        ctx.fillStyle="rgba(185,255,246,"+(g*(0.55+depth*0.4)).toFixed(3)+")";
         ctx.beginPath(); ctx.arc(p.sx,p.sy,rad,0,6.283); ctx.fill();
-        // faint bloom halo
-        ctx.fillStyle="rgba(255,170,70,"+(g*0.16*(0.4+depth*0.6)).toFixed(3)+")";
+        // soft teal bloom halo
+        ctx.fillStyle="rgba(72,226,208,"+(g*0.18*(0.4+depth*0.6)).toFixed(3)+")";
         ctx.beginPath(); ctx.arc(p.sx,p.sy,rad*2.1,0,6.283); ctx.fill();
       }else{
         // teal, day-lit brighter, night dimmer. Blend a warm tint into day-side
