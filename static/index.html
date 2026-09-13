@@ -208,6 +208,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .notice{font-size:12px;color:var(--text-faint);font-family:var(--mono);display:flex;gap:7px;align-items:center}
 .notice::before{content:"//";color:var(--accent);opacity:.6}
 
+/* ReAct plan card */
+.react{margin-top:14px;border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(56,224,200,.05),rgba(14,19,29,.3));
+  padding:14px 16px;animation:cardIn .5s var(--ease) both}
+.react-h{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:11px}
+.react-h::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);animation:breathe 1.6s var(--ease) infinite}
+.react-step{display:grid;grid-template-columns:64px 1fr;gap:8px 12px;align-items:baseline}
+.react-step+.react-step{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.react-k{font-family:var(--mono);font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em}
+.react-v{font-size:13px;color:var(--text-dim);line-height:1.55}
+.react-v.act{color:var(--text)}
+
+/* clarify option chips */
+.opts{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px;animation:fadeUp .5s var(--ease) both}
+.opt{padding:9px 15px;border-radius:999px;border:1px solid var(--line-strong);background:var(--bg-elev);
+  color:var(--text-dim);font-size:13px;font-family:var(--font);cursor:pointer;
+  transition:border-color .22s var(--ease),color .22s var(--ease),transform .15s var(--ease),box-shadow .25s var(--ease)}
+.opt:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px);box-shadow:0 8px 22px var(--accent-glow)}
+.opt:active{transform:scale(.96)}
+.opts.done .opt{opacity:.4;pointer-events:none}
+.opt.picked{border-color:var(--accent);color:#05221d;background:linear-gradient(135deg,var(--accent),var(--accent-deep));opacity:1}
+
+
 .composer{flex:none;padding:16px 28px 24px;border-top:1px solid var(--line);
   background:linear-gradient(180deg,transparent,rgba(8,11,18,.6))}
 .composer-inner{max-width:760px;margin:0 auto;position:relative}
@@ -528,6 +553,34 @@ function renderNotices(container,notices){
   n.innerHTML=notices.map(x=>'<div class="notice">'+esc(x)+'</div>').join("");
   container.appendChild(n); scrollDown();
 }
+function renderReact(container,steps){
+  if(!steps||!steps.length) return;
+  const box=document.createElement("div"); box.className="react";
+  let html='<div class="react-h">Nova reasoning</div>';
+  steps.forEach(st=>{
+    html+='<div class="react-step">'+
+      '<div class="react-k">Thought</div><div class="react-v">'+esc(st.thought||"")+'</div>'+
+      '<div class="react-k">Plan</div><div class="react-v">'+esc(st.plan||"")+'</div>'+
+      '<div class="react-k">Action</div><div class="react-v act">'+esc(st.action||"")+'</div>'+
+    '</div>';
+  });
+  box.innerHTML=html; container.appendChild(box); scrollDown();
+}
+function renderOptions(container,options){
+  if(!options||!options.length) return;
+  const wrap=document.createElement("div"); wrap.className="opts";
+  options.forEach(o=>{
+    const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=o;
+    b.addEventListener("click",()=>{
+      if(busy) return;
+      [...wrap.children].forEach(c=>c.classList.remove("picked"));
+      b.classList.add("picked"); wrap.classList.add("done");
+      input.value=o; doSend();
+    });
+    wrap.appendChild(b);
+  });
+  container.appendChild(wrap); scrollDown();
+}
 
 async function doSend(){
   const text=input.value.trim(); if(!text||busy) return;
@@ -562,9 +615,12 @@ async function doSend(){
     }
     caret.remove();
     if(recsData){
+      renderReact(body, recsData.react_steps);
       if(recsData.recommendations&&recsData.recommendations.length){
         renderRecs(body, recsData.recommendations, recsData.status);
         $("#topMeta").textContent="Recommended "+recsData.recommendations.length+" products";
+      } else {
+        renderOptions(body, recsData.options);
       }
       renderNotices(body, recsData.notices);
     }
@@ -754,8 +810,8 @@ function makeOrb(canvas,opts){
   // draw() only projects them; isLand() is never called per frame. dense fills
   // tightly (auth globe), sparse fills lightly (welcome stays restrained). A
   // hard cap keeps the total point budget in check so rAF stays smooth.
-  const FILL_STEP=DENSE?3.5:6;                 // finer than LAT/LON_STEP so interiors densify
-  const FILL_CAP=DENSE?1300:220;               // max fill points added (dense ~800-1300, sparse light)
+  const FILL_STEP=DENSE?2.4:4.5;               // smaller step => denser continent interiors (higher plate particle density)
+  const FILL_CAP=DENSE?2600:360;               // raised cap so the denser grid isn't clipped (dense continents read solid)
   let fillCount=0;
   for(let lat=-LAT_MAX; lat<=LAT_MAX && fillCount<FILL_CAP; lat+=FILL_STEP){
     const la=lat*D2R, cl=Math.cos(la);
@@ -763,7 +819,16 @@ function makeOrb(canvas,opts){
     for(let k=0;k<n && fillCount<FILL_CAP;k++){
       const lon=(k/n)*360-180;
       const v=latLonToVec(lat,lon);
-      if(isLand(v)){ pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true}); fillCount++; }
+      if(isLand(v)){
+        // deterministic pseudo-random per-point "city" flag: only a subset of
+        // land fill points glow on the night side, so lights read as scattered
+        // city clusters rather than a solid lit continent. Hash lat/lon so the
+        // pattern is stable across frames and screen sizes.
+        const h=Math.sin(lat*12.9898+lon*78.233)*43758.5453;
+        const city=(h-Math.floor(h))<0.34;
+        pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true,city});
+        fillCount++;
+      }
     }
   }
   // latitude ring definitions (horizontal rings, for faint connecting arcs)
@@ -800,7 +865,9 @@ function makeOrb(canvas,opts){
     let y=py*cosX - z*sinX;
     z=py*sinX + z*cosX;
     const persp=1/(2.2 - z);
-    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, z, persp};
+    // also return rotated world coords (x,y,z) so the day/night lighting can dot
+    // each point normal against a fixed sun direction in view space.
+    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, x, y, z, persp};
   }
 
   function draw(){
@@ -864,33 +931,64 @@ function makeOrb(canvas,opts){
     for(let i=0;i<pts.length;i++){
       const pt=pts[i];
       const p=project(pt.x,pt.y,pt.z,cosY,sinY,cosX,sinX);
-      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill;
+      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill; p.city=pt.city;
       proj.push(p);
     }
     proj.sort((a,b)=>a.z-b.z);
+    // Day/night lighting: a fixed sun direction in VIEW space (upper-left, a bit
+    // toward the viewer). Each point normal (its rotated x,y,z) is dotted with
+    // the sun to get illum in [-1..1]: >0 day side, <0 night side. As the globe
+    // spins, the terminator sweeps across, so regions cross from day to night.
+    // Day: cool teal, brighter. Night: much dimmer teal; land "city" points glow
+    // warm amber like satellite night imagery, brightest deep on the night side.
+    const SUN={x:0.42,y:-0.30,z:-0.85};      // sun BEHIND the viewer: night hemisphere faces us, so city lights sit on the front-center (not the edge)
+    const slen=Math.hypot(SUN.x,SUN.y,SUN.z);
     for(let i=0;i<proj.length;i++){
       const p=proj[i];
       const depth=(p.z+1)/2;                 // 0 back .. 1 front
-      // Perspective is deliberately WEAKENED here: instead of multiplying the
-      // radius by the raw persp (which blows up front-facing points into a few
-      // huge, jarring blobs), we fold it into a gentle factor and let depth do
-      // the real sizing. persp ~0.31 (back) .. ~0.83 (front) -> pf ~0.72 .. 0.93,
-      // so front points end up only slightly larger than back ones. Each radius
-      // is then hard-clamped with Math.min(CAP,...) so no point can spike, and
-      // floored with Math.max(0.5,...) so back points stay visible.
       const pf=0.6+0.4*p.persp;              // softened perspective contribution
+      // illum: dot(normal, sun) in [-1..1]. day = t in [0..1], night when <0.
+      const illum=(p.x*SUN.x + p.y*SUN.y + p.z*SUN.z)/slen;
+      const day=Math.max(0,illum);           // 0 on/again night .. 1 full day
+      const night=Math.max(0,-illum);        // 0 day .. 1 deep night
       let r,al;
       if(p.fill){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;   // continent fill: smaller/softer so plates read as solid, not clumped
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;
       }else if(p.equator){
-        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;   // equator now blends into the net, no longer a heavy line
+        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;
       }else if(p.land){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;   // plate faces: uniform small dots like fill points (no oversized particles)
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;
       }else{
-        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;  // oceans dimmer/smaller
+        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;
       }
-      ctx.fillStyle="rgba(56,224,200,"+al.toFixed(3)+")";
-      ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      // Night-side land "cities" glow amber, but ONLY on the near (front)
+      // hemisphere (p.z>=0.02) so lights never render on the far side showing
+      // through the globe. Back-side / day-side points fall to the teal branch.
+      // brighter on the day side and dimmed on the night side.
+      if(p.land && p.city && night>0.12 && p.z>=0.02){
+        // city light in the teal family (no clashing amber): a bright near-white
+        // cyan core with a soft teal bloom, so lights glow like tech city clusters
+        // that harmonize with the accent palette. Strengthens toward deep night,
+        // softly twinkles.
+        const tw=0.82+0.18*Math.sin(spinY*7+p.x*40+p.y*33);
+        const g=Math.min(1,(0.35+night*0.85))*tw;
+        const rad=Math.max(0.7,Math.min(1.9,r*(1.05+night*0.5)));
+        // bright cyan-white core
+        ctx.fillStyle="rgba(185,255,246,"+(g*(0.55+depth*0.4)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad,0,6.283); ctx.fill();
+        // soft teal bloom halo
+        ctx.fillStyle="rgba(72,226,208,"+(g*0.18*(0.4+depth*0.6)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad*2.1,0,6.283); ctx.fill();
+      }else{
+        // teal, day-lit brighter, night dimmer. Blend a warm tint into day-side
+        // land so continents read a touch golden under "sunlight".
+        const lightMul=0.42+0.85*day + 0.12;   // ~0.54 night .. ~1.39 full day
+        const a=Math.max(0.03,Math.min(0.95,al*lightMul));
+        let cr=56, cg=224, cb=200;
+        if(p.land && day>0.25){ cr=120; cg=232; cb=190; }  // sunlit land warms slightly
+        ctx.fillStyle="rgba("+cr+","+cg+","+cb+","+a.toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      }
     }
 
     // continent plate outlines: stroke each border as a poly-line of projected
@@ -949,31 +1047,37 @@ function makeStarfield(canvas){
     build();
   }
   function build(){
-    // density scales with area; deterministic-ish random is fine here
-    const n=Math.round(Math.min(220,Math.max(70,(W*H)/9000)));
+    // density scales with area; much denser now for a rich "starry sky" feel.
+    // smaller divisor => more stars; higher cap + floor so even small screens
+    // stay full of stars.
+    const n=Math.round(Math.min(620,Math.max(220,(W*H)/3400)));
     stars=[];
     for(let i=0;i<n;i++){
-      const cool=Math.random()<0.22;             // a few cool-white stars (same hue family)
+      const cool=Math.random()<0.24;             // a few cool-white stars (same hue family)
+      const hero=Math.random()<0.08;             // a handful of brighter "hero" stars
       stars.push({
         x:Math.random()*W, y:Math.random()*H,
-        r:Math.random()*1.3+0.3,
-        base:Math.random()*0.4+0.18,             // base opacity
-        amp:Math.random()*0.3+0.12,              // breathing amplitude
+        r:hero?(Math.random()*1.1+1.2):(Math.random()*1.1+0.25),
+        base:(hero?0.5:Math.random()*0.4+0.16),  // base opacity (hero brighter)
+        amp:Math.random()*0.32+0.12,             // breathing amplitude
         ph:Math.random()*6.283,                  // phase
         sp:Math.random()*0.35+0.08,              // twinkle speed
         vx:(Math.random()-0.5)*0.05,             // slow horizontal drift px/frame
-        vy:Math.random()*0.06+0.015,             // slow downward drift
-        cool
+        vy:Math.random()*0.06+0.012,             // slow downward drift
+        cool, hero
       });
     }
   }
   function spawnMeteor(){
     const fromLeft=Math.random()<0.5;
-    const x=fromLeft?-40:W*(0.3+Math.random()*0.7);
-    const y=Math.random()*H*0.5;
-    const ang=(Math.PI/180)*(fromLeft?(18+Math.random()*14):(150+Math.random()*14));
-    const speed=6+Math.random()*4;
-    meteors.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,life:0,max:34+Math.random()*22,len:60+Math.random()*50});
+    // start anywhere across the top band (not just off-screen left) so streaks
+    // are visible in the margins around the login card too.
+    const x=fromLeft?(-40+Math.random()*W*0.5):W*(0.5+Math.random()*0.6);
+    const y=Math.random()*H*0.7;
+    const ang=(Math.PI/180)*(fromLeft?(20+Math.random()*16):(146+Math.random()*16));
+    const speed=4.5+Math.random()*3.5;                       // a touch slower so they linger
+    meteors.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,
+      life:0,max:54+Math.random()*34,len:110+Math.random()*90});   // longer life + longer tail
   }
 
   function frame(now){
@@ -987,22 +1091,39 @@ function makeStarfield(canvas){
       if(s.y>H+2){ s.y=-2; s.x=Math.random()*W; }
       if(s.x<-2)s.x=W+2; else if(s.x>W+2)s.x=-2;
       const tw=s.base+Math.sin(t*s.sp+s.ph)*s.amp;
-      const a=Math.max(0,Math.min(0.85,tw));
-      ctx.fillStyle=s.cool?"rgba(200,244,238,"+a.toFixed(3)+")":"rgba(56,224,200,"+a.toFixed(3)+")";
+      const a=Math.max(0,Math.min(0.9,tw));
+      const col=s.cool?"200,244,238":"56,224,200";
+      // brighter stars get a soft glow halo so the field has depth/variety
+      if(s.hero){
+        ctx.fillStyle="rgba("+col+","+(a*0.18).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2.6,0,6.283); ctx.fill();
+      }
+      ctx.fillStyle="rgba("+col+","+a.toFixed(3)+")";
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
     }
 
-    // occasional meteor
-    if(Math.random()<0.004*dt && meteors.length<2) spawnMeteor();
+    // meteors: dense, bright shower. Higher spawn rate, larger cap, and each
+    // streak is thicker/brighter with a glowing head so it clearly reads even in
+    // the visible margins around the login card. Fade eased so it stays bright
+    // through most of its life instead of dimming instantly.
+    if(Math.random()<0.05*dt && meteors.length<10) spawnMeteor();
     for(let i=meteors.length-1;i>=0;i--){
       const m=meteors[i]; m.x+=m.vx*dt; m.y+=m.vy*dt; m.life+=dt;
-      const k=1-m.life/m.max; if(k<=0){ meteors.splice(i,1); continue; }
-      const nx=m.x-m.vx*(m.len/ (Math.hypot(m.vx,m.vy)||1)), ny=m.y-m.vy*(m.len/(Math.hypot(m.vx,m.vy)||1));
+      const kraw=1-m.life/m.max; if(kraw<=0){ meteors.splice(i,1); continue; }
+      const k=Math.sqrt(kraw);                          // ease fade -> stays visible longer
+      const inv=Math.hypot(m.vx,m.vy)||1;
+      const nx=m.x-m.vx*(m.len/inv), ny=m.y-m.vy*(m.len/inv);
       const g=ctx.createLinearGradient(m.x,m.y,nx,ny);
-      g.addColorStop(0,"rgba(200,244,238,"+(0.55*k).toFixed(3)+")");
+      g.addColorStop(0,"rgba(215,250,246,"+(0.95*k).toFixed(3)+")");
+      g.addColorStop(0.35,"rgba(90,235,215,"+(0.55*k).toFixed(3)+")");
       g.addColorStop(1,"rgba(56,224,200,0)");
-      ctx.strokeStyle=g; ctx.lineWidth=1.6; ctx.lineCap="round";
+      ctx.strokeStyle=g; ctx.lineWidth=2.4; ctx.lineCap="round";
       ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(nx,ny); ctx.stroke();
+      // glowing head
+      ctx.fillStyle="rgba(225,252,248,"+(0.9*k).toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(m.x,m.y,1.8,0,6.283); ctx.fill();
+      ctx.fillStyle="rgba(120,238,220,"+(0.28*k).toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(m.x,m.y,4.2,0,6.283); ctx.fill();
     }
   }
 
