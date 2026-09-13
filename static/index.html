@@ -961,9 +961,11 @@ function makeOrb(canvas,opts){
       }else{
         r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;
       }
-      // Night-side land "cities" glow amber; everything else uses teal that is
+      // Night-side land "cities" glow amber, but ONLY on the near (front)
+      // hemisphere (p.z>=0.02) so lights never render on the far side showing
+      // through the globe. Back-side / day-side points fall to the teal branch.
       // brighter on the day side and dimmed on the night side.
-      if(p.land && p.city && night>0.12){
+      if(p.land && p.city && night>0.12 && p.z>=0.02){
         // warm city light: strengthens toward deep night, softly twinkles.
         const tw=0.82+0.18*Math.sin(spinY*7+p.x*40+p.y*33);
         const g=Math.min(1,(0.35+night*0.85))*tw;
