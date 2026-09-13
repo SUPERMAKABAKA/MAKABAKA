@@ -941,7 +941,7 @@ function makeOrb(canvas,opts){
     // spins, the terminator sweeps across, so regions cross from day to night.
     // Day: cool teal, brighter. Night: much dimmer teal; land "city" points glow
     // warm amber like satellite night imagery, brightest deep on the night side.
-    const SUN={x:-0.55,y:-0.42,z:0.72};      // view-space sun (normalized-ish)
+    const SUN={x:0.42,y:-0.30,z:-0.85};      // sun BEHIND the viewer: night hemisphere faces us, so city lights sit on the front-center (not the edge)
     const slen=Math.hypot(SUN.x,SUN.y,SUN.z);
     for(let i=0;i<proj.length;i++){
       const p=proj[i];
