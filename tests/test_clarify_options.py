@@ -88,3 +88,30 @@ def test_profile_autonomous_skips_known_fields():
     assert s.pending_question is None
     assert s.clarify_options == []
     assert len(s.react_steps) == 1  # \u5c55\u793a\u201c\u9700\u6c42\u5df2\u6e05\u201d\u6b65\u9aa4
+
+
+def test_smalltalk_who_are_you_no_clarify_questions():
+    """\u95f2\u804a/\u5143\u95ee\u9898\uff08\u5982 who are you\uff09\u5e94\u7ed9\u4ecb\u7ecd\u6027\u56de\u590d\uff0c\u4e0d\u5f39\u9884\u7b97\u9009\u9879\u3002"""
+    from app.agents.clarify_agent import ClarifyAgent
+    from app.orchestrator.session import ConversationSession, ChatTurn
+    s = ConversationSession(session_id="chat")
+    s.messages.append(ChatTurn(role="user", content="who are you"))
+    ClarifyAgent().run(s)
+    assert s.pending_question is not None
+    assert "Nova" in s.pending_question
+    assert s.clarify_options == []
+    assert s.collected_needs.budget is None
+
+
+def test_shopping_intent_after_smalltalk():
+    """\u95f2\u804a\u540e\u7d27\u63a5\u8d2d\u7269\u8bf7\u6c42\u5e94\u6b63\u5e38\u8fdb\u5165\u6f84\u6e05\u3002"""
+    from app.agents.clarify_agent import ClarifyAgent
+    from app.orchestrator.session import ConversationSession, ChatTurn
+    s = ConversationSession(session_id="chat")
+    s.messages.append(ChatTurn(role="user", content="who are you"))
+    ClarifyAgent().run(s)
+    s.messages.append(ChatTurn(role="user", content="I want headphones"))
+    ClarifyAgent().run(s)
+    assert s.category == "headphones"
+    assert s.pending_question is not None
+    assert s.clarify_options  # \u6709\u9884\u7b97\u9009\u9879

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-__all__ = ["detect_category", "rule_options", "BUDGET_OPTIONS"]
+__all__ = ["detect_category", "rule_options", "BUDGET_OPTIONS", "is_shopping_intent", "smalltalk_reply"]
 
 # \u54c1\u7c7b\u5173\u952e\u8bcd\u8868\uff08\u82f1\u6587\u4e3a\u4e3b\uff0c\u517c\u5bb9\u5e38\u89c1\u4e2d\u6587\uff09\u3002\u952e\u4e3a\u89c4\u8303\u5316\u54c1\u7c7b\u540d\u3002
 _CATEGORY_KEYWORDS: dict[str, tuple[str, ...]] = {
@@ -80,3 +80,48 @@ def rule_options(feature: str, category: Optional[str]) -> list[str]:
     if feature == "preferences":
         return list(_PREF_OPTIONS.get(category or "", _GENERIC_PREFS))
     return []
+
+
+# 购物意图关键词：出现任一即视为带购物意图（除品类词外的通用词）。
+_SHOPPING_HINTS: tuple[str, ...] = (
+    "buy", "recommend", "recommendation", "looking for", "need a", "need an",
+    "want a", "want an", "want to buy", "budget", "cheap", "under $", "best",
+    "price", "shopping", "purchase", "gift", "买", "推荐", "预算", "想要",
+    "性价比", "适合", "需要",
+)
+
+# 常见闲聊/元问题提示词（“you are who”类对话）。
+_SMALLTALK_HINTS: tuple[str, ...] = (
+    "who are you", "what are you", "what can you do", "help", "hello", "hi ",
+    "hey", "how are you", "your name", "what is this", "你是谁", "你能",
+    "你好", "帮助", "这是什么", "怎么用",
+)
+
+
+def is_shopping_intent(text: Optional[str]) -> bool:
+    """判断文本是否带购物意图。
+
+    命中商品品类词、购物提示词或含数字（可能是预算）时视为购物意图。
+    """
+    if not text:
+        return False
+    low = text.lower()
+    if detect_category(low) is not None:
+        return True
+    for h in _SHOPPING_HINTS:
+        if h in low:
+            return True
+    # 含数字（常见于预算/型号）也往购物意图靠。
+    if any(ch.isdigit() for ch in low):
+        return True
+    return False
+
+
+def smalltalk_reply(text: Optional[str]) -> str:
+    """为闲聊/元问题返回确定性英文回复（介绍 Nova 与用法）。"""
+    return (
+        "I'm Nova, your shopping assistant. Tell me what you're looking to buy "
+        "(for example: \"noise cancelling headphones\" or \"a laptop for work\"), "
+        "and I'll ask a couple of quick questions and then recommend products "
+        "with reasons and real review highlights."
+    )

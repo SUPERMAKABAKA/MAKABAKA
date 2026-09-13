@@ -24,7 +24,12 @@ import json
 import re
 from typing import Optional
 
-from app.agents.category import detect_category, rule_options
+from app.agents.category import (
+    detect_category,
+    is_shopping_intent,
+    rule_options,
+    smalltalk_reply,
+)
 from app.interfaces.llm import LLMInterface
 from app.orchestrator.session import AgentError, ConversationSession, ReactStep
 
@@ -90,6 +95,15 @@ class ClarifyAgent:
             # 首轮时 pending_question 为 None，active 亦为 None。
             active = self._pending_feature(session.pending_question)
             confirming = self._is_confirm_question(session.pending_question)
+
+            # 意图识别：用户不是在回答澄清问题、且本轮不带购物意图（如“who are
+            # you”等闲聊/元问题）时，直接给出介绍性回复并让出，不强行进入
+            # 预算/偏好澄清。若已在收集需求中（active 不为空或已有已知需求）则不拦截。
+            if active is None and not self._has_any_needs(session)                     and latest is not None and not is_shopping_intent(latest):
+                session.pending_question = smalltalk_reply(latest)
+                session.clarify_options = []
+                session.react_steps = []
+                return session
 
             if latest is not None:
                 # 1) 上一轮是「确认既有画像值」且本轮为 yes/no：走 yes/no 更新（Req 4.3）。
@@ -307,6 +321,17 @@ class ClarifyAgent:
             needs.confirmed_features = {}
             session.pending_question = None
         session.category = detected
+
+    @staticmethod
+    def _has_any_needs(session: ConversationSession) -> bool:
+        """已收集到任一需求字段或已识别品类时返回 True（表示已在购物流程中）。"""
+        needs = session.collected_needs
+        return (
+            session.category is not None
+            or needs.budget is not None
+            or needs.purpose is not None
+            or bool(needs.preferences)
+        )
 
     def _next_missing_feature(self, session: ConversationSession) -> Optional[str]:
         """返回下一个仍需澄清的特征键，无则 ``None``。"""
