@@ -1047,21 +1047,24 @@ function makeStarfield(canvas){
     build();
   }
   function build(){
-    // density scales with area; deterministic-ish random is fine here
-    const n=Math.round(Math.min(220,Math.max(70,(W*H)/9000)));
+    // density scales with area; much denser now for a rich "starry sky" feel.
+    // smaller divisor => more stars; higher cap + floor so even small screens
+    // stay full of stars.
+    const n=Math.round(Math.min(620,Math.max(220,(W*H)/3400)));
     stars=[];
     for(let i=0;i<n;i++){
-      const cool=Math.random()<0.22;             // a few cool-white stars (same hue family)
+      const cool=Math.random()<0.24;             // a few cool-white stars (same hue family)
+      const hero=Math.random()<0.08;             // a handful of brighter "hero" stars
       stars.push({
         x:Math.random()*W, y:Math.random()*H,
-        r:Math.random()*1.3+0.3,
-        base:Math.random()*0.4+0.18,             // base opacity
-        amp:Math.random()*0.3+0.12,              // breathing amplitude
+        r:hero?(Math.random()*1.1+1.2):(Math.random()*1.1+0.25),
+        base:(hero?0.5:Math.random()*0.4+0.16),  // base opacity (hero brighter)
+        amp:Math.random()*0.32+0.12,             // breathing amplitude
         ph:Math.random()*6.283,                  // phase
         sp:Math.random()*0.35+0.08,              // twinkle speed
         vx:(Math.random()-0.5)*0.05,             // slow horizontal drift px/frame
-        vy:Math.random()*0.06+0.015,             // slow downward drift
-        cool
+        vy:Math.random()*0.06+0.012,             // slow downward drift
+        cool, hero
       });
     }
   }
@@ -1088,8 +1091,14 @@ function makeStarfield(canvas){
       if(s.y>H+2){ s.y=-2; s.x=Math.random()*W; }
       if(s.x<-2)s.x=W+2; else if(s.x>W+2)s.x=-2;
       const tw=s.base+Math.sin(t*s.sp+s.ph)*s.amp;
-      const a=Math.max(0,Math.min(0.85,tw));
-      ctx.fillStyle=s.cool?"rgba(200,244,238,"+a.toFixed(3)+")":"rgba(56,224,200,"+a.toFixed(3)+")";
+      const a=Math.max(0,Math.min(0.9,tw));
+      const col=s.cool?"200,244,238":"56,224,200";
+      // brighter stars get a soft glow halo so the field has depth/variety
+      if(s.hero){
+        ctx.fillStyle="rgba("+col+","+(a*0.18).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2.6,0,6.283); ctx.fill();
+      }
+      ctx.fillStyle="rgba("+col+","+a.toFixed(3)+")";
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
     }
 
