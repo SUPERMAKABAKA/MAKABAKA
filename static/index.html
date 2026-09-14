@@ -180,6 +180,70 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   .app:not(.side-collapsed) .side-toggle{left:224px}
   .product-panel{position:absolute;right:0;top:0;bottom:0;width:min(400px,88vw);z-index:7}
 }
+
+/* ===== floating Nova mascot (bottom-right) ===== */
+.nova-buddy{position:fixed;right:26px;bottom:26px;z-index:40;width:76px;height:88px;cursor:pointer;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));animation:buddyBob 4.2s var(--ease) infinite;
+  transition:transform .25s var(--ease)}
+.nova-buddy:hover{transform:translateY(-4px) scale(1.05)}
+.nova-buddy:active{transform:scale(.96)}
+@keyframes buddyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* soft glow pad beneath/behind the mascot */
+.nb-glow{position:absolute;left:50%;top:44%;width:96px;height:96px;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 68%);
+  filter:blur(4px);animation:buddyPulse 3.4s var(--ease) infinite}
+@keyframes buddyPulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(.9)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+/* orbiting spark */
+.nb-orbit{position:absolute;left:50%;top:42%;width:70px;height:70px;transform:translate(-50%,-50%);
+  animation:nbSpin 6s linear infinite;pointer-events:none}
+.nb-orbit::before{content:"";position:absolute;top:-2px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;
+  background:#bff9ee;box-shadow:0 0 8px var(--accent)}
+@keyframes nbSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+/* antenna */
+.nb-antenna{position:absolute;left:50%;top:6px;width:2px;height:13px;transform:translateX(-50%);
+  background:linear-gradient(var(--accent),transparent)}
+.nb-antenna::after{content:"";position:absolute;top:-5px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#c9fff4,var(--accent));box-shadow:0 0 10px var(--accent-glow);
+  animation:buddyPulse 2.2s var(--ease) infinite}
+/* body: rounded capsule with glassy gradient + rim light */
+.nb-body{position:absolute;left:50%;top:20px;width:64px;height:62px;transform:translateX(-50%);
+  border-radius:22px 22px 26px 26px;
+  background:linear-gradient(160deg,#123642,#0c2730 60%,#0a1f27);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(56,224,200,.35),0 0 22px var(--accent-glow)}
+/* visor face: dark glossy screen holding the eyes */
+.nb-visor{position:absolute;left:50%;top:14px;width:48px;height:32px;transform:translateX(-50%);
+  border-radius:16px;background:radial-gradient(120% 120% at 50% 20%,#06171c,#020b0e);
+  box-shadow:inset 0 0 0 1px rgba(56,224,200,.45),inset 0 6px 10px rgba(0,0,0,.6),0 0 12px rgba(56,224,200,.25);
+  overflow:hidden}
+.nb-visor::after{content:"";position:absolute;top:3px;left:6px;right:16px;height:8px;border-radius:8px;
+  background:linear-gradient(90deg,rgba(255,255,255,.16),transparent)}
+/* eyes */
+.nb-eye{position:absolute;top:12px;width:9px;height:11px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#d6fff8,var(--accent));
+  box-shadow:0 0 8px var(--accent);animation:buddyBlink 4.6s infinite}
+.nb-eye.l{left:12px}
+.nb-eye.r{right:12px}
+@keyframes buddyBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+/* cheek/status dot */
+.nb-cheek{position:absolute;bottom:9px;left:50%;width:16px;height:4px;transform:translateX(-50%);border-radius:4px;
+  background:rgba(56,224,200,.55);box-shadow:0 0 6px var(--accent-glow)}
+/* little arms */
+.nb-arm{position:absolute;top:40px;width:9px;height:18px;border-radius:6px;background:linear-gradient(#134049,#0a232b);
+  box-shadow:inset 0 0 0 1px rgba(56,224,200,.3)}
+.nb-arm.l{left:8px;transform:rotate(14deg);transform-origin:top center;animation:buddyArmL 4.2s var(--ease) infinite}
+.nb-arm.r{right:8px;transform:rotate(-14deg);transform-origin:top center;animation:buddyArmR 4.2s var(--ease) infinite}
+@keyframes buddyArmL{0%,100%{transform:rotate(14deg)}50%{transform:rotate(24deg)}}
+@keyframes buddyArmR{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(-24deg)}}
+/* tiny greeting tooltip on hover */
+.nb-tip{position:absolute;right:84px;bottom:26px;white-space:nowrap;padding:8px 12px;border-radius:10px;
+  background:rgba(14,19,29,.92);border:1px solid var(--line-strong);color:var(--text);font-size:12.5px;
+  opacity:0;transform:translateX(6px);pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease);
+  backdrop-filter:blur(10px)}
+.nb-tip::after{content:"";position:absolute;right:-5px;top:50%;margin-top:-5px;width:10px;height:10px;
+  background:rgba(14,19,29,.92);border-right:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);
+  transform:rotate(-45deg)}
+.nova-buddy:hover .nb-tip{opacity:1;transform:none}
+@media(max-width:560px){.nova-buddy{right:16px;bottom:16px;transform:scale(.9)}}
 .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 22px}
 .brand-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
 .brand-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
@@ -496,6 +560,23 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       <div class="pp-detail" id="ppBody"></div>
     </div>
   </aside>
+
+  <!-- floating Nova mascot -->
+  <div class="nova-buddy" id="novaBuddy" title="Nova" role="button" aria-label="Nova assistant">
+    <div class="nb-glow"></div>
+    <div class="nb-orbit"></div>
+    <div class="nb-antenna"></div>
+    <div class="nb-body">
+      <div class="nb-arm l"></div>
+      <div class="nb-arm r"></div>
+      <div class="nb-visor">
+        <div class="nb-eye l"></div>
+        <div class="nb-eye r"></div>
+        <div class="nb-cheek"></div>
+      </div>
+    </div>
+    <div class="nb-tip">Hi, I'm Nova. Ready to help you shop!</div>
+  </div>
 </div>
 
 <script>
