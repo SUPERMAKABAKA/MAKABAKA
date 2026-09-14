@@ -244,6 +244,43 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   transform:rotate(-45deg)}
 .nova-buddy:hover .nb-tip{opacity:1;transform:none}
 @media(max-width:560px){.nova-buddy{right:16px;bottom:16px;transform:scale(.9)}}
+
+/* mascot states */
+.nova-buddy.thinking .nb-eye{animation:buddyThink 1s var(--ease) infinite}
+@keyframes buddyThink{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1.5px) scaleY(.6)}}
+.nova-buddy.thinking .nb-orbit{animation:nbSpin 1.1s linear infinite}
+.nova-buddy.happy{animation:buddyHappy .6s var(--ease)}
+@keyframes buddyHappy{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-14px) scale(1.08)}60%{transform:translateY(-4px) scale(1.02)}}
+.nova-buddy.panel-open .nb-cheek{width:20px;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+/* hide the hover tip while the mini panel is open */
+.nova-buddy.panel-open .nb-tip{opacity:0!important}
+
+/* ===== floating mini panel popup ===== */
+.nb-panel{position:fixed;right:26px;bottom:126px;z-index:41;width:288px;
+  border:1px solid var(--line-strong);border-radius:18px;background:rgba(14,19,29,.94);
+  backdrop-filter:blur(20px);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(56,224,200,.12);
+  padding:16px;transform-origin:bottom right;opacity:0;transform:translateY(10px) scale(.94);
+  pointer-events:none;transition:opacity .24s var(--ease),transform .26s var(--ease)}
+.nb-panel.open{opacity:1;transform:none;pointer-events:auto}
+.nb-panel-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.nb-avatar{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d;font-weight:700;font-size:15px;
+  box-shadow:0 0 14px var(--accent-glow)}
+.nb-panel-name{font-weight:650;font-size:14px;letter-spacing:-.01em}
+.nb-panel-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+.nb-greet{font-size:13px;line-height:1.6;color:var(--text-dim);margin-bottom:12px}
+.nb-quick-label{font-size:10px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:8px}
+.nb-quicks{display:flex;flex-direction:column;gap:7px}
+.nb-quick{text-align:left;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg-elev);color:var(--text-dim);font-family:var(--font);font-size:12.5px;cursor:pointer;
+  transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease),transform .15s var(--ease)}
+.nb-quick:hover{border-color:var(--accent);color:var(--text);background:rgba(56,224,200,.06);transform:translateX(2px)}
+.nb-newchat{margin-top:11px;width:100%;padding:10px;border-radius:10px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d;font-weight:600;font-size:12.5px;
+  transition:transform .15s var(--ease),box-shadow .25s var(--ease)}
+.nb-newchat:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--accent-glow)}
+@media(max-width:560px){.nb-panel{right:16px;bottom:112px;width:min(288px,86vw)}}
 .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 22px}
 .brand-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
 .brand-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
@@ -577,6 +614,22 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
     </div>
     <div class="nb-tip">Hi, I'm Nova. Ready to help you shop!</div>
   </div>
+
+  <!-- Nova mini panel (opens on mascot click) -->
+  <div class="nb-panel" id="nbPanel" role="dialog" aria-label="Nova quick panel">
+    <div class="nb-panel-head">
+      <div class="nb-avatar">N</div>
+      <div><div class="nb-panel-name">Nova</div><div class="nb-panel-sub">Shopping Assistant</div></div>
+    </div>
+    <div class="nb-greet">Hey! Tell me what you're after and I'll find the best picks with real reviews. Try one of these:</div>
+    <div class="nb-quick-label">Quick starts</div>
+    <div class="nb-quicks">
+      <button class="nb-quick">Noise-cancelling headphones for commuting, budget 2000</button>
+      <button class="nb-quick">A gift for a cat lover</button>
+      <button class="nb-quick">A beginner-friendly coffee machine</button>
+    </div>
+    <button class="nb-newchat" id="nbNewChat">Start a new conversation</button>
+  </div>
 </div>
 
 <script>
@@ -742,6 +795,46 @@ function openProduct(rec,rank,card){
 }
 $("#ppTabWeb").onclick=()=>setPanelTab("web");
 $("#ppTabDetail").onclick=()=>setPanelTab("detail");
+
+/* ===== floating Nova mascot: state + mini panel ===== */
+const novaBuddy=$("#novaBuddy"), nbPanel=$("#nbPanel");
+let buddyStateTimer=null;
+// state: "idle" | "thinking" | "happy"
+function buddySetState(state){
+  if(!novaBuddy) return;
+  novaBuddy.classList.remove("thinking","happy");
+  if(buddyStateTimer){ clearTimeout(buddyStateTimer); buddyStateTimer=null; }
+  if(state==="thinking"){ novaBuddy.classList.add("thinking"); }
+  else if(state==="happy"){
+    novaBuddy.classList.add("happy");
+    buddyStateTimer=setTimeout(()=>novaBuddy.classList.remove("happy"),700);
+  }
+}
+function toggleBuddyPanel(force){
+  if(!nbPanel||!novaBuddy) return;
+  const open = force!==undefined ? force : !nbPanel.classList.contains("open");
+  nbPanel.classList.toggle("open",open);
+  novaBuddy.classList.toggle("panel-open",open);
+}
+if(novaBuddy){
+  novaBuddy.addEventListener("click",(e)=>{ e.stopPropagation(); toggleBuddyPanel(); });
+  // quick-start chips: fill the composer and send
+  nbPanel.querySelectorAll(".nb-quick").forEach(b=>{
+    b.addEventListener("click",()=>{
+      toggleBuddyPanel(false);
+      input.value=b.textContent; autosize(); sendBtn.disabled=busy||!input.value.trim();
+      input.focus();
+      if(!busy) doSend();
+    });
+  });
+  $("#nbNewChat").addEventListener("click",()=>{ toggleBuddyPanel(false); $("#newChat").click(); });
+  // click outside closes the mini panel
+  document.addEventListener("click",(e)=>{
+    if(nbPanel.classList.contains("open") && !nbPanel.contains(e.target) && !novaBuddy.contains(e.target)){
+      toggleBuddyPanel(false);
+    }
+  });
+}
 function closeProduct(){
   appEl.classList.remove("panel-open");
   $("#productPanel").setAttribute("aria-hidden","true");
@@ -847,7 +940,7 @@ function renderOptions(container,options){
 
 async function doSend(){
   const text=input.value.trim(); if(!text||busy) return;
-  busy=true; sendBtn.disabled=true;
+  busy=true; sendBtn.disabled=true; buddySetState("thinking");
   if(!histEl.querySelector(".hist-item.on")) pushHistory(text);
   addUser(text); input.value=""; autosize();
   const think=addThinking();
@@ -882,6 +975,7 @@ async function doSend(){
       if(recsData.recommendations&&recsData.recommendations.length){
         renderRecs(body, recsData.recommendations, recsData.status);
         $("#topMeta").textContent="Recommended "+recsData.recommendations.length+" products";
+        buddySetState("happy");
       } else {
         renderOptions(body, recsData.options);
       }
@@ -889,7 +983,8 @@ async function doSend(){
     }
   }catch(err){ think.remove(); const m=aiBubble();
     await typeFallback(m.querySelector(".body"),"Network error. Please check the server and retry."); }
-  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession(); }
+  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession();
+    if(!novaBuddy.classList.contains("happy")) buddySetState("idle"); }
 }
 function parseSSE(raw){
   let event="message",data="";
