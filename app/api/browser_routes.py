@@ -1,69 +1,75 @@
-"""Browser-agent SSE route with human-takeover.
+"""Persistent browser-session routes (method A).
 
-GET  /browser/amazon?q=<query>&sid=<session>
-  -> text/event-stream: step | needs_human | result | error | done
-POST /browser/continue?sid=<session>
-  -> resumes the paused agent after the human finished login/CAPTCHA in the window.
+GET  /browser/session?sid=<id>        -> SSE stream of the session's events
+                                         (ready | step | frame | result | needs_human | error | closed)
+POST /browser/search?sid=<id>&q=<q>    -> send a search command (reuses the same window)
+POST /browser/continue?sid=<id>        -> resume after human takeover
+POST /browser/close?sid=<id>           -> close the browser window
 
-The Playwright SYNC generator runs in a worker thread; events are pushed to an
-asyncio.Queue drained by the async SSE generator.
+The session owns a real Chrome window on its own thread; the SSE route just drains
+its event queue. Multiple searches reuse the one window (product tab switching).
 """
 
 from __future__ import annotations
 
 import asyncio
 import json
-import threading
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, StreamingResponse
 
-from app.browser.amazon_agent import (
-    continue_events,
-    make_continue_event,
-    run_amazon_search,
-)
+from app.browser.amazon_agent import get_or_create_session, sessions
 
 __all__ = ["router"]
 
 router = APIRouter()
 
 
+@router.post("/browser/search")
+async def browser_search(sid: str = "default", q: str = ""):
+    sess = get_or_create_session(sid)
+    sess.search(q)
+    return JSONResponse({"ok": True})
+
+
 @router.post("/browser/continue")
 async def browser_continue(sid: str = "default"):
-    ev = continue_events.get(sid)
-    if ev is not None:
-        ev.set()
+    sess = sessions.get(sid)
+    if sess is not None:
+        sess.resume()
         return JSONResponse({"ok": True})
-    return JSONResponse({"ok": False, "reason": "no active session"}, status_code=404)
+    return JSONResponse({"ok": False, "reason": "no session"}, status_code=404)
 
 
-@router.get("/browser/amazon")
-async def browser_amazon(q: str = "", sid: str = "default"):
+@router.post("/browser/close")
+async def browser_close(sid: str = "default"):
+    sess = sessions.get(sid)
+    if sess is not None:
+        sess.close()
+    return JSONResponse({"ok": True})
+
+
+@router.get("/browser/session")
+async def browser_session(sid: str = "default", q: str = ""):
+    sess = get_or_create_session(sid)
+    if q:
+        sess.search(q)
     loop = asyncio.get_running_loop()
-    queue: asyncio.Queue = asyncio.Queue()
-    _SENTINEL = object()
-    make_continue_event(sid)  # ready before the worker starts
-
-    def worker():
-        try:
-            for ev in run_amazon_search(q, sid):
-                loop.call_soon_threadsafe(queue.put_nowait, ev)
-        except Exception as exc:  # noqa: BLE001
-            loop.call_soon_threadsafe(queue.put_nowait, {"type": "error", "message": str(exc)})
-        finally:
-            loop.call_soon_threadsafe(queue.put_nowait, _SENTINEL)
 
     async def gen():
-        threading.Thread(target=worker, daemon=True).start()
         while True:
-            ev = await queue.get()
-            if ev is _SENTINEL:
-                break
+            # drain the thread-safe queue without blocking the event loop
+            try:
+                ev = await loop.run_in_executor(None, sess.events.get, True, 30)
+            except Exception:  # noqa: BLE001 - queue.Empty on timeout -> heartbeat
+                yield ": keep-alive\n\n"
+                if not sess.alive:
+                    break
+                continue
             etype = ev.get("type", "step")
             payload = {k: v for k, v in ev.items() if k != "type"}
             yield f"event: {etype}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
-            if etype == "done":
+            if etype == "closed":
                 break
 
     return StreamingResponse(
