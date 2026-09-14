@@ -281,6 +281,51 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   transition:transform .15s var(--ease),box-shadow .25s var(--ease)}
 .nb-newchat:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--accent-glow)}
 @media(max-width:560px){.nb-panel{right:16px;bottom:112px;width:min(288px,86vw)}}
+/* browse-live action in mini panel */
+.nb-browse{margin-top:8px;width:100%;padding:10px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--accent);background:rgba(56,224,200,.08);color:var(--accent);font-weight:600;font-size:12.5px;
+  transition:background .2s var(--ease),transform .15s var(--ease)}
+.nb-browse:hover{background:rgba(56,224,200,.16);transform:translateY(-1px)}
+
+/* ===== live browser modal (Nova operating Amazon) ===== */
+.bl-overlay{position:fixed;inset:0;z-index:60;background:rgba(4,7,12,.72);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:24px}
+.bl-overlay.open{display:flex;animation:fadeUp .3s var(--ease) both}
+.bl-modal{width:min(920px,96vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--line-strong);border-radius:18px;background:rgba(14,19,29,.96);
+  box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.bl-head{flex:none;display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.bl-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);
+  animation:breathe 1.6s var(--ease) infinite}
+.bl-title{font-weight:650;font-size:15px}
+.bl-sub{font-size:11.5px;color:var(--text-faint);font-family:var(--mono)}
+.bl-close{margin-left:auto;width:30px;height:30px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--bg-elev-2);color:var(--text-dim);cursor:pointer;display:grid;place-items:center}
+.bl-close:hover{border-color:var(--neg);color:var(--neg)}
+.bl-body{flex:1;min-height:0;display:grid;grid-template-columns:1fr 260px;gap:0}
+@media(max-width:680px){.bl-body{grid-template-columns:1fr}}
+.bl-stage{position:relative;background:#05070c;display:flex;align-items:center;justify-content:center;min-height:340px;overflow:hidden}
+.bl-shot{max-width:100%;max-height:64vh;display:block}
+.bl-stage-empty{color:var(--text-faint);font-family:var(--mono);font-size:12px}
+.bl-side{border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+@media(max-width:680px){.bl-side{border-left:none;border-top:1px solid var(--line)}}
+.bl-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.bl-step{font-size:12px;line-height:1.5;color:var(--text-dim);display:flex;gap:8px;align-items:flex-start}
+.bl-step::before{content:"";flex:none;width:6px;height:6px;margin-top:5px;border-radius:50%;background:var(--accent);opacity:.7}
+.bl-step.cur{color:var(--text)}
+.bl-human{margin:12px 14px;padding:12px;border-radius:12px;border:1px solid #f0b429;background:rgba(240,180,41,.08);display:none}
+.bl-human.show{display:block;animation:fadeUp .3s var(--ease) both}
+.bl-human-msg{font-size:12.5px;color:#f0c44a;line-height:1.55;margin-bottom:10px}
+.bl-continue{width:100%;padding:10px;border:none;border-radius:9px;cursor:pointer;font-weight:600;font-size:12.5px;
+  background:linear-gradient(135deg,#f0b429,#e0921a);color:#241700}
+.bl-continue:hover{filter:brightness(1.08)}
+.bl-foot{flex:none;padding:12px 14px;border-top:1px solid var(--line);display:flex;gap:8px}
+.bl-input{flex:1;padding:9px 12px;border-radius:9px;border:1px solid var(--line-strong);background:var(--bg-elev);
+  color:var(--text);font-size:12.5px;outline:none}
+.bl-input:focus{border-color:var(--accent)}
+.bl-go{padding:9px 16px;border:none;border-radius:9px;cursor:pointer;font-weight:600;font-size:12.5px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d}
+.bl-go:disabled{opacity:.4;cursor:not-allowed}
 .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 22px}
 .brand-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
 .brand-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
@@ -629,6 +674,35 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       <button class="nb-quick">A beginner-friendly coffee machine</button>
     </div>
     <button class="nb-newchat" id="nbNewChat">Start a new conversation</button>
+    <button class="nb-browse" id="nbBrowse">Watch me search Amazon live</button>
+  </div>
+
+  <!-- live browser modal: Nova operating a real Amazon window -->
+  <div class="bl-overlay" id="blOverlay">
+    <div class="bl-modal">
+      <div class="bl-head">
+        <span class="bl-dot"></span>
+        <div><div class="bl-title">Nova is browsing Amazon</div>
+          <div class="bl-sub" id="blStatus">Idle</div></div>
+        <button class="bl-close" id="blClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="bl-body">
+        <div class="bl-stage"><span class="bl-stage-empty" id="blEmpty">Enter a product and press Go. A real Chrome window will open and Nova will search Amazon like a human.</span><img class="bl-shot" id="blShot" alt="" style="display:none"></div>
+        <div class="bl-side">
+          <div class="bl-log" id="blLog"></div>
+          <div class="bl-human" id="blHuman">
+            <div class="bl-human-msg" id="blHumanMsg"></div>
+            <button class="bl-continue" id="blContinue">I've done it - Continue</button>
+          </div>
+        </div>
+      </div>
+      <div class="bl-foot">
+        <input class="bl-input" id="blInput" placeholder="e.g. sony wh-1000xm5 headphones">
+        <button class="bl-go" id="blGo">Go</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -828,6 +902,76 @@ if(novaBuddy){
     });
   });
   $("#nbNewChat").addEventListener("click",()=>{ toggleBuddyPanel(false); $("#newChat").click(); });
+  $("#nbBrowse").addEventListener("click",()=>{ toggleBuddyPanel(false); openBrowseLive(); });
+}
+
+/* ===== live browser: Nova operating a real Amazon window (SSE) ===== */
+let blSid=null, blActive=false;
+function openBrowseLive(){
+  $("#blOverlay").classList.add("open");
+  $("#blInput").focus();
+}
+function closeBrowseLive(){ $("#blOverlay").classList.remove("open"); }
+function blAddStep(text,cur){
+  const log=$("#blLog");
+  [...log.querySelectorAll(".bl-step.cur")].forEach(e=>e.classList.remove("cur"));
+  const d=document.createElement("div"); d.className="bl-step"+(cur?" cur":""); d.textContent=text;
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+}
+function blShowShot(b64){
+  if(!b64) return;
+  const img=$("#blShot"); img.src="data:image/png;base64,"+b64; img.style.display="block";
+  $("#blEmpty").style.display="none";
+}
+function blShowHuman(msg){
+  $("#blHumanMsg").textContent=msg||"Please complete the step in the browser window, then click Continue.";
+  $("#blHuman").classList.add("show");
+  $("#blStatus").textContent="Waiting for you";
+}
+function blHideHuman(){ $("#blHuman").classList.remove("show"); }
+async function blContinue(){
+  if(!blSid) return;
+  try{ await fetch("/browser/continue?sid="+encodeURIComponent(blSid),{method:"POST"}); }catch(e){}
+  blHideHuman(); $("#blStatus").textContent="Resuming...";
+}
+async function startBrowse(){
+  const q=$("#blInput").value.trim(); if(!q||blActive) return;
+  blActive=true; $("#blGo").disabled=true; $("#blLog").innerHTML=""; blHideHuman();
+  $("#blShot").style.display="none"; $("#blEmpty").style.display="";
+  $("#blEmpty").textContent="Opening a real Chrome window...";
+  $("#blStatus").textContent="Working";
+  blSid="bl-"+Math.random().toString(36).slice(2,9);
+  try{
+    const res=await fetch("/browser/amazon?q="+encodeURIComponent(q)+"&sid="+blSid);
+    const reader=res.body.getReader(); const dec=new TextDecoder(); let buf="";
+    while(true){
+      const {value,done}=await reader.read(); if(done) break;
+      buf+=dec.decode(value,{stream:true});
+      let idx;
+      while((idx=buf.indexOf("\n\n"))>=0){
+        const raw=buf.slice(0,idx); buf=buf.slice(idx+2);
+        const ev=parseSSE(raw); if(!ev) continue;
+        if(ev.event==="step"){ blAddStep(ev.data.message,true); blShowShot(ev.data.shot); }
+        else if(ev.event==="needs_human"){ blShowShot(ev.data.shot); blShowHuman(ev.data.message); }
+        else if(ev.event==="result"){
+          blShowShot(ev.data.shot);
+          const n=(ev.data.products||[]).length;
+          blAddStep("Found "+n+" products on Amazon.",true);
+          (ev.data.products||[]).forEach((p,i)=>blAddStep("#"+(i+1)+" "+(p.title||"")+(p.price?"  "+p.price:"")));
+          $("#blStatus").textContent="Done - "+n+" products";
+        }
+        else if(ev.event==="error"){ blAddStep("Error: "+(ev.data.message||"failed")); $("#blStatus").textContent="Error"; }
+        else if(ev.event==="done"){ $("#blStatus").textContent=$("#blStatus").textContent.startsWith("Done")?$("#blStatus").textContent:"Finished"; }
+      }
+    }
+  }catch(err){ blAddStep("Network error: "+err); $("#blStatus").textContent="Error"; }
+  finally{ blActive=false; $("#blGo").disabled=false; }
+}
+$("#blGo").addEventListener("click",startBrowse);
+$("#blInput").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); startBrowse(); }});
+$("#blContinue").addEventListener("click",blContinue);
+$("#blClose").addEventListener("click",closeBrowseLive);
+if(novaBuddy){
   // click outside closes the mini panel
   document.addEventListener("click",(e)=>{
     if(nbPanel.classList.contains("open") && !nbPanel.contains(e.target) && !novaBuddy.contains(e.target)){

@@ -12,12 +12,14 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.auth import router as auth_router
+from app.api.browser_routes import router as browser_router
 from app.api.routes import router as chat_router
 
 app = FastAPI(title="RAG Multi-Agent Shopping Assistant")
 
 app.include_router(chat_router)
 app.include_router(auth_router)
+app.include_router(browser_router)
 
 _STATIC_DIR = Path(__file__).parent / "static"
 

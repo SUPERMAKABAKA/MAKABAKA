@@ -16,3 +16,7 @@ python-dotenv>=1.0.0
 pytest>=8.0.0
 hypothesis>=6.100.0
 httpx>=0.27.0
+
+# 浏览器 agent(Nova 像人一样操作 Amazon)：安装后需 `python -m playwright install chromium`
+playwright>=1.62.0
+playwright-stealth>=2.0.0
