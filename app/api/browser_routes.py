@@ -106,14 +106,14 @@ async def browser_session(sid: str = "default", w: int = 0, h: int = 0, q: str =
                 idle += 1
                 if idle >= 500:  # ~20s heartbeat
                     idle = 0
-                    yield ": keep-alive\\n\\n"
+                    yield ": keep-alive\n\n"
                     if not sess.alive:
                         break
                 continue
             idle = 0
             etype = ev.get("type", "step")
             payload = {k: v for k, v in ev.items() if k != "type"}
-            yield f"event: {etype}\\ndata: {json.dumps(payload, ensure_ascii=False)}\\n\\n"
+            yield f"event: {etype}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
             if etype == "closed":
                 break
 
