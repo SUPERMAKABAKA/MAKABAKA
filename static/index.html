@@ -827,6 +827,34 @@ function closeProduct(){
   brSid=null;
 }
 $("#plContinue").addEventListener("click",plContinue);
+
+/* ===== floating Nova mascot: refs, state + mini panel ===== */
+const novaBuddy=$("#novaBuddy"), nbPanel=$("#nbPanel");
+let buddyStateTimer=null;
+function buddySetState(state){
+  if(!novaBuddy) return;
+  novaBuddy.classList.remove("thinking","happy");
+  if(buddyStateTimer){ clearTimeout(buddyStateTimer); buddyStateTimer=null; }
+  if(state==="thinking"){ novaBuddy.classList.add("thinking"); }
+  else if(state==="happy"){ novaBuddy.classList.add("happy"); buddyStateTimer=setTimeout(()=>novaBuddy.classList.remove("happy"),700); }
+}
+function toggleBuddyPanel(force){
+  if(!nbPanel||!novaBuddy) return;
+  const open = force!==undefined ? force : !nbPanel.classList.contains("open");
+  nbPanel.classList.toggle("open",open);
+  novaBuddy.classList.toggle("panel-open",open);
+}
+if(novaBuddy){
+  novaBuddy.addEventListener("click",(e)=>{ e.stopPropagation(); toggleBuddyPanel(); });
+  nbPanel.querySelectorAll(".nb-quick").forEach(b=>{
+    b.addEventListener("click",()=>{
+      toggleBuddyPanel(false);
+      input.value=b.textContent; autosize(); sendBtn.disabled=busy||!input.value.trim(); input.focus();
+      if(!busy) doSend();
+    });
+  });
+  $("#nbNewChat").addEventListener("click",()=>{ toggleBuddyPanel(false); $("#newChat").click(); });
+}
 if(novaBuddy){
   // click outside closes the mini panel
   document.addEventListener("click",(e)=>{
