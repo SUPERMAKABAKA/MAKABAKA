@@ -809,7 +809,13 @@ function ensureBrowserStream(){
     const n=(d.products||[]).length; $("#ppRank").textContent="Showing results ("+n+")"; });
   es.addEventListener("error",e=>{ try{const d=JSON.parse(e.data||"{}"); if(d.message) plAddStep("Error: "+d.message);}catch(_){} });
   es.addEventListener("closed",e=>{ es.close(); brStream=null; });
-  es.onerror=()=>{ /* browser will auto-reconnect EventSource */ };
+  // If the panel is closed (or too many errors), stop reconnecting to avoid piling
+  // up connections that could stall the server.
+  let errCount=0;
+  es.onerror=()=>{
+    errCount++;
+    if(errCount>=3 || !appEl.classList.contains("panel-open")){ es.close(); brStream=null; }
+  };
 }
 function closeProduct(){
   appEl.classList.remove("panel-open");

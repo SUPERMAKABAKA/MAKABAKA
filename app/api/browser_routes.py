@@ -54,18 +54,26 @@ async def browser_session(sid: str = "default", q: str = ""):
     sess = get_or_create_session(sid)
     if q:
         sess.search(q)
-    loop = asyncio.get_running_loop()
 
     async def gen():
+        import queue as _q
+        idle = 0
         while True:
-            # drain the thread-safe queue without blocking the event loop
+            # NON-BLOCKING poll of the thread-safe queue; never ties up a thread-pool
+            # thread (the previous run_in_executor approach could exhaust the pool and
+            # stall other endpoints like /chat/stream).
             try:
-                ev = await loop.run_in_executor(None, sess.events.get, True, 30)
-            except Exception:  # noqa: BLE001 - queue.Empty on timeout -> heartbeat
-                yield ": keep-alive\n\n"
-                if not sess.alive:
-                    break
+                ev = sess.events.get_nowait()
+            except _q.Empty:
+                await asyncio.sleep(0.15)
+                idle += 1
+                if idle >= 200:  # ~30s -> heartbeat to keep the connection alive
+                    idle = 0
+                    yield ": keep-alive\n\n"
+                    if not sess.alive:
+                        break
                 continue
+            idle = 0
             etype = ev.get("type", "step")
             payload = {k: v for k, v in ev.items() if k != "type"}
             yield f"event: {etype}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
