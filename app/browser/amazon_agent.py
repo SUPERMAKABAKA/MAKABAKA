@@ -192,8 +192,8 @@ class BrowserSession:
             try:
                 self._emit({"type": "step", "message": "Starting remote browser..."})
                 launch_kw = dict(
-                    headless=True,
-                    args=["--disable-blink-features=AutomationControlled"],
+                    headless=False,
+                    args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
                     user_agent=_UA, viewport={"width": self.vw, "height": self.vh}, locale="en-US",
                 )
                 try:
