@@ -21,20 +21,24 @@ from app.orchestrator.session import ConversationSession
 
 def route_after_profile(
     s: ConversationSession,
-) -> Literal["clarify", "error"]:
-    """Profile 完成后固定进入 clarify；失败则进入 error (Req 8.3/8.4)。"""
-    return "error" if s.error else "clarify"
+) -> Literal["conversation", "error"]:
+    """Profile 完成后进入 conversation（LLM 主导）；失败则 error (Req 8.3/8.4)。"""
+    return "error" if s.error else "conversation"
 
 
-def route_after_clarify(
+def route_after_conversation(
     s: ConversationSession,
 ) -> Literal["await_user", "retrieval", "error"]:
-    """需求未收集完则让出等待用户，收集完则进入检索 (Req 4.4/4.5/8.4)。"""
+    """依 Conversation_Agent 产出的 intent 路由：
+
+    - ``chat``    → 让出等待用户（END），展示自然回复/选项；
+    - ``recommend`` → 进入 RAG 检索管线。
+    """
     if s.error:
         return "error"
-    if s.needs_complete():
+    if s.intent == "recommend":
         return "retrieval"
-    return "await_user"  # 仍有待澄清项，产出 pending_question 并让出
+    return "await_user"
 
 
 def route_after_retrieval(
@@ -95,14 +99,14 @@ class AgentBundle:
 
     Attributes:
         profile: Profile_Agent，加载画像并预填需求。
-        clarify: Clarify_Agent，多轮澄清，可暂停节点。
+        conversation: Conversation_Agent，LLM 主导的对话大脑，可暂停节点。
         retrieval: Retrieval_Agent，基于 RAG 的相似度检索。
         web_search: Web_Search_Agent，补充联网信息与社媒测评。
         recommendation: Recommendation_Agent，综合生成推荐列表。
     """
 
     profile: object
-    clarify: object
+    conversation: object
     retrieval: object
     web_search: object
     recommendation: object
@@ -148,7 +152,7 @@ def build_orchestrator(agents: AgentBundle):
 
     # 节点：每个 Agent 的 run 适配为 (state) -> partial_state_update
     graph.add_node("profile", _as_update(agents.profile))
-    graph.add_node("clarify", _as_update(agents.clarify))
+    graph.add_node("conversation", _as_update(agents.conversation))
     graph.add_node("retrieval", _as_update(agents.retrieval))
     graph.add_node("web_search", _as_update(agents.web_search))
     graph.add_node("recommendation", _as_update(agents.recommendation))
@@ -160,13 +164,13 @@ def build_orchestrator(agents: AgentBundle):
     graph.add_conditional_edges(
         "profile",
         route_after_profile,
-        {"clarify": "clarify", "error": END},
+        {"conversation": "conversation", "error": END},
     )
 
     # clarify：需求未收集完 -> 让出等待用户（END）；收集完 -> retrieval
     graph.add_conditional_edges(
-        "clarify",
-        route_after_clarify,
+        "conversation",
+        route_after_conversation,
         {"await_user": END, "retrieval": "retrieval", "error": END},
     )
 
@@ -215,6 +219,7 @@ def build_default_orchestrator(container, store, embedder, profile_source):
     """
     # 延迟导入，避免 graph 模块在导入期强耦合具体 Agent 实现。
     from app.agents.clarify_agent import ClarifyAgent
+    from app.agents.conversation_agent import ConversationAgent
     from app.agents.profile_agent import ProfileAgent
     from app.agents.recommendation_agent import RecommendationAgent
     from app.agents.retrieval_agent import RetrievalAgent
@@ -225,7 +230,7 @@ def build_default_orchestrator(container, store, embedder, profile_source):
 
     bundle = AgentBundle(
         profile=ProfileAgent(profile_source),
-        clarify=ClarifyAgent(llm),
+        conversation=ConversationAgent(llm, fallback=ClarifyAgent(llm)),
         retrieval=RetrievalAgent(store, embedder),
         web_search=WebSearchAgent(web_search),
         recommendation=RecommendationAgent(llm),

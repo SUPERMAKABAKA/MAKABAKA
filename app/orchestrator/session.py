@@ -26,6 +26,16 @@ class CollectedNeeds(BaseModel):
     confirmed_features: dict[str, bool] = Field(default_factory=dict)  # yes/no 确认结果
 
 
+class ReactStep(BaseModel):
+    """ReAct 展示步骤：向前端呈现「思考-计划-行动」链路（展示层，非 LLM 推理循环）。"""
+
+    thought: str
+    plan: str
+    action: str
+
+
+
+
 class RetrievedRecord(BaseModel):
     product_id: str
     source_url: str
@@ -65,6 +75,8 @@ class ConversationSession(BaseModel):
                    "web_search", "recommendation", "done", "error"] = "profile"
     pace: Literal["direct", "guided"] = "guided"
     cold_start: bool = False               # Req 3.2
+    intent: Literal["chat", "recommend"] = "chat"  # Conversation_Agent 产出：聊天还是该推荐
+    category: Optional[str] = None         # 当前会话识别出的商品品类（换品类视为新需求）
     error: Optional[AgentError] = None     # Req 8.4
 
     # Profile / 需求
@@ -74,6 +86,8 @@ class ConversationSession(BaseModel):
     # 对话
     messages: list[ChatTurn] = Field(default_factory=list)
     pending_question: Optional[str] = None  # clarify 让出时产出的问题
+    clarify_options: list[str] = Field(default_factory=list)  # 当前澄清问题的可选项（供前端按钮选择）
+    react_steps: list[ReactStep] = Field(default_factory=list)  # ReAct 展示步骤（思考-计划-行动）
 
     # Agent 中间结果
     retrieval_results: list[RetrievedRecord] = Field(default_factory=list)

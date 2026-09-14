@@ -1,4 +1,4 @@
-﻿"""对话接口 /chat 与 /chat/stream 路由。
+"""对话接口 /chat 与 /chat/stream 路由。
 
 - ``POST /chat``：一次性返回完整响应（Req 9.1~9.5, 8.4）。
 - ``POST /chat/stream``：Server-Sent Events 流式返回助手文本与推荐结果，
@@ -87,6 +87,9 @@ def _to_chat_response(result: ConversationSession) -> ChatResponse:
         recommendations=result.recommendations,
         recommendation_status=result.recommendation_status,
         notices=_notices_from(result),
+        options=list(result.clarify_options),
+        react_steps=[step.model_dump() for step in result.react_steps],
+        intent=result.intent,
     )
 
 
@@ -181,6 +184,9 @@ async def chat_stream(request: Request, authorization: Optional[str] = Header(de
             "status": result.recommendation_status,
             "notices": _notices_from(result),
             "stage": result.stage,
+            "options": list(result.clarify_options),
+            "react_steps": [step.model_dump() for step in result.react_steps],
+            "intent": result.intent,
         }
         yield f"event: recommendations\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
         yield "event: done\ndata: {}\n\n"

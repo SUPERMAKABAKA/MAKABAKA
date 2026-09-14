@@ -99,9 +99,204 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .seg button.on{background:var(--bg-elev-2);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
 
 /* ===== APP ===== */
-.app{position:relative;z-index:2;display:grid;grid-template-columns:264px 1fr;height:100dvh}
+/* 3-column app shell: [collapsible left history] [chat] [right product panel].
+   Column widths animate so the sidebar collapse and the product panel slide are
+   smooth. Panel width is 0 until .panel-open; sidebar shrinks to 0 on .side-collapsed. */
+.app{position:relative;z-index:2;display:grid;grid-template-columns:264px minmax(0,1fr) 0px;height:100dvh;
+  transition:grid-template-columns .34s var(--ease)}
+.app.side-collapsed{grid-template-columns:0px minmax(0,1fr) 0px}
+.app.panel-open{grid-template-columns:264px minmax(0,1fr) 400px}
+.app.side-collapsed.panel-open{grid-template-columns:0px minmax(0,1fr) 400px}
 .side{border-right:1px solid var(--line);background:rgba(14,19,29,.6);backdrop-filter:blur(20px);
-  display:flex;flex-direction:column;padding:20px 16px}
+  display:flex;flex-direction:column;padding:20px 16px;overflow:hidden;min-width:0;
+  transition:opacity .28s var(--ease),padding .28s var(--ease)}
+.app.side-collapsed .side{opacity:0;padding-left:0;padding-right:0;pointer-events:none}
+/* floating toggle to collapse/expand the left history sidebar */
+.side-toggle{position:absolute;top:16px;left:16px;z-index:6;width:34px;height:34px;border-radius:9px;
+  border:1px solid var(--line-strong);background:rgba(14,19,29,.82);backdrop-filter:blur(10px);
+  color:var(--text-dim);display:grid;place-items:center;cursor:pointer;
+  transition:border-color .22s var(--ease),color .22s var(--ease),transform .15s var(--ease),left .34s var(--ease)}
+.side-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.side-toggle:active{transform:scale(.92)}
+.side-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* when expanded, tuck the toggle inside the sidebar header area */
+.app:not(.side-collapsed) .side-toggle{left:224px;background:transparent;border-color:transparent}
+.app:not(.side-collapsed) .side-toggle:hover{background:var(--bg-elev-2);border-color:var(--line-strong)}
+
+/* ===== right product panel (ChatGPT-style canvas) ===== */
+.product-panel{border-left:1px solid var(--line);background:rgba(11,15,23,.86);backdrop-filter:blur(22px);
+  display:flex;flex-direction:column;min-width:0;overflow:hidden;
+  opacity:0;transform:translateX(24px);transition:opacity .3s var(--ease),transform .34s var(--ease)}
+.app.panel-open .product-panel{opacity:1;transform:none}
+.pp-head{flex:none;display:flex;align-items:flex-start;gap:10px;justify-content:space-between;
+  padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.pp-eyebrow{font-size:10.5px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.pp-title{font-size:16px;font-weight:650;letter-spacing:-.01em;line-height:1.3}
+.pp-close{flex:none;width:30px;height:30px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--bg-elev-2);color:var(--text-dim);display:grid;place-items:center;cursor:pointer;
+  transition:border-color .2s var(--ease),color .2s var(--ease),transform .15s var(--ease)}
+.pp-close:hover{border-color:var(--neg);color:var(--neg)}
+.pp-close:active{transform:scale(.9)}
+.pp-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.pp-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:18px}
+/* product-name tabs (recommended items) */
+.pp-prodtabs{flex:none;display:flex;gap:6px;padding:10px 12px;overflow-x:auto;border-bottom:1px solid var(--line);
+  scrollbar-width:thin}
+.pp-prodtabs::-webkit-scrollbar{height:6px}
+.pp-prodtab{flex:none;max-width:180px;padding:7px 12px;border-radius:999px;border:1px solid var(--line-strong);
+  background:var(--bg-elev);color:var(--text-dim);font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease)}
+.pp-prodtab:hover{border-color:var(--accent);color:var(--text)}
+.pp-prodtab.on{border-color:var(--accent);color:#05221d;background:linear-gradient(135deg,var(--accent),var(--accent-deep));font-weight:600}
+/* interactive remote-browser stage: the frame fills the panel width and is clickable */
+.pl-stage{flex:1;min-height:0;background:#05070c;display:block;overflow:hidden;position:relative;outline:none}
+.pl-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:none;
+  cursor:pointer;user-select:none;-webkit-user-drag:none}
+.pl-empty{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--text-faint);font-family:var(--mono);font-size:11.5px;padding:18px;text-align:center;line-height:1.6;max-width:88%}
+.pl-hint{position:absolute;left:8px;bottom:8px;font-size:10.5px;font-family:var(--mono);color:var(--text-faint);
+  background:rgba(4,7,12,.7);padding:4px 8px;border-radius:7px;display:none;pointer-events:none}
+.pl-stage.live .pl-hint{display:block}
+.pl-stage.focused{box-shadow:inset 0 0 0 2px var(--accent)}
+.pl-log{flex:none;max-height:26%;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
+.pl-step{font-size:12px;line-height:1.5;color:var(--text-dim);display:flex;gap:8px;align-items:flex-start}
+.pl-step::before{content:"";flex:none;width:6px;height:6px;margin-top:5px;border-radius:50%;background:var(--accent);opacity:.7}
+.pl-step.cur{color:var(--text)}
+.pl-human{flex:none;margin:0 14px 12px;padding:12px;border-radius:12px;border:1px solid #f0b429;background:rgba(240,180,41,.08);display:none}
+.pl-human.show{display:block;animation:fadeUp .3s var(--ease) both}
+.pl-human-msg{font-size:12px;color:#f0c44a;line-height:1.55;margin-bottom:10px}
+.pl-continue{width:100%;padding:10px;border:none;border-radius:9px;cursor:pointer;font-weight:600;font-size:12.5px;
+  background:linear-gradient(135deg,#f0b429,#e0921a);color:#241700}
+.pl-continue:hover{filter:brightness(1.08)}
+.pp-rank{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.pp-section-h{font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.pp-reason{font-size:13.5px;line-height:1.7;color:var(--text-dim)}
+.pp-sum{display:flex;flex-direction:column;gap:12px}
+.pp-sum .sum{background:rgba(255,255,255,.02)}
+.pp-cta{display:inline-flex;align-items:center;gap:8px;justify-content:center;padding:12px;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d;font-weight:600;font-size:13.5px;
+  text-decoration:none;transition:transform .18s var(--ease),box-shadow .25s var(--ease)}
+.pp-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px var(--accent-glow)}
+.pp-cta svg{width:15px;height:15px;stroke:currentColor}
+/* rec cards become clickable to open the panel */
+.rec{cursor:pointer}
+.rec.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-glow),0 16px 40px rgba(0,0,0,.4)}
+.rec-open-hint{font-size:11px;font-family:var(--mono);color:var(--text-faint);margin-top:2px}
+
+/* narrow screens: sidebar + panel float above chat instead of squeezing it */
+@media(max-width:900px){
+  .app,.app.panel-open,.app.side-collapsed,.app.side-collapsed.panel-open{grid-template-columns:0px minmax(0,1fr) 0px}
+  .side{position:absolute;left:0;top:0;bottom:0;width:264px;z-index:7;border-right:1px solid var(--line)}
+  .app:not(.side-collapsed) .side-toggle{left:224px}
+  .product-panel{position:absolute;right:0;top:0;bottom:0;width:min(400px,88vw);z-index:7}
+}
+
+/* ===== floating Nova mascot (bottom-right) ===== */
+.nova-buddy{position:fixed;right:26px;bottom:26px;z-index:40;width:76px;height:88px;cursor:pointer;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));animation:buddyBob 4.2s var(--ease) infinite;
+  transition:transform .25s var(--ease)}
+.nova-buddy:hover{transform:translateY(-4px) scale(1.05)}
+.nova-buddy:active{transform:scale(.96)}
+@keyframes buddyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* soft glow pad beneath/behind the mascot */
+.nb-glow{position:absolute;left:50%;top:44%;width:96px;height:96px;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 68%);
+  filter:blur(4px);animation:buddyPulse 3.4s var(--ease) infinite}
+@keyframes buddyPulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(.9)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+/* orbiting spark */
+.nb-orbit{position:absolute;left:50%;top:42%;width:70px;height:70px;transform:translate(-50%,-50%);
+  animation:nbSpin 6s linear infinite;pointer-events:none}
+.nb-orbit::before{content:"";position:absolute;top:-2px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;
+  background:#bff9ee;box-shadow:0 0 8px var(--accent)}
+@keyframes nbSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+/* antenna */
+.nb-antenna{position:absolute;left:50%;top:6px;width:2px;height:13px;transform:translateX(-50%);
+  background:linear-gradient(var(--accent),transparent)}
+.nb-antenna::after{content:"";position:absolute;top:-5px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#c9fff4,var(--accent));box-shadow:0 0 10px var(--accent-glow);
+  animation:buddyPulse 2.2s var(--ease) infinite}
+/* body: rounded capsule with glassy gradient + rim light */
+.nb-body{position:absolute;left:50%;top:20px;width:64px;height:62px;transform:translateX(-50%);
+  border-radius:22px 22px 26px 26px;
+  background:linear-gradient(160deg,#123642,#0c2730 60%,#0a1f27);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(56,224,200,.35),0 0 22px var(--accent-glow)}
+/* visor face: dark glossy screen holding the eyes */
+.nb-visor{position:absolute;left:50%;top:14px;width:48px;height:32px;transform:translateX(-50%);
+  border-radius:16px;background:radial-gradient(120% 120% at 50% 20%,#06171c,#020b0e);
+  box-shadow:inset 0 0 0 1px rgba(56,224,200,.45),inset 0 6px 10px rgba(0,0,0,.6),0 0 12px rgba(56,224,200,.25);
+  overflow:hidden}
+.nb-visor::after{content:"";position:absolute;top:3px;left:6px;right:16px;height:8px;border-radius:8px;
+  background:linear-gradient(90deg,rgba(255,255,255,.16),transparent)}
+/* eyes */
+.nb-eye{position:absolute;top:12px;width:9px;height:11px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#d6fff8,var(--accent));
+  box-shadow:0 0 8px var(--accent);animation:buddyBlink 4.6s infinite}
+.nb-eye.l{left:12px}
+.nb-eye.r{right:12px}
+@keyframes buddyBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+/* cheek/status dot */
+.nb-cheek{position:absolute;bottom:9px;left:50%;width:16px;height:4px;transform:translateX(-50%);border-radius:4px;
+  background:rgba(56,224,200,.55);box-shadow:0 0 6px var(--accent-glow)}
+/* little arms */
+.nb-arm{position:absolute;top:40px;width:9px;height:18px;border-radius:6px;background:linear-gradient(#134049,#0a232b);
+  box-shadow:inset 0 0 0 1px rgba(56,224,200,.3)}
+.nb-arm.l{left:8px;transform:rotate(14deg);transform-origin:top center;animation:buddyArmL 4.2s var(--ease) infinite}
+.nb-arm.r{right:8px;transform:rotate(-14deg);transform-origin:top center;animation:buddyArmR 4.2s var(--ease) infinite}
+@keyframes buddyArmL{0%,100%{transform:rotate(14deg)}50%{transform:rotate(24deg)}}
+@keyframes buddyArmR{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(-24deg)}}
+/* tiny greeting tooltip on hover */
+.nb-tip{position:absolute;right:84px;bottom:26px;white-space:nowrap;padding:8px 12px;border-radius:10px;
+  background:rgba(14,19,29,.92);border:1px solid var(--line-strong);color:var(--text);font-size:12.5px;
+  opacity:0;transform:translateX(6px);pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease);
+  backdrop-filter:blur(10px)}
+.nb-tip::after{content:"";position:absolute;right:-5px;top:50%;margin-top:-5px;width:10px;height:10px;
+  background:rgba(14,19,29,.92);border-right:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);
+  transform:rotate(-45deg)}
+.nova-buddy:hover .nb-tip{opacity:1;transform:none}
+@media(max-width:560px){.nova-buddy{right:16px;bottom:16px;transform:scale(.9)}}
+
+/* mascot states */
+.nova-buddy.thinking .nb-eye{animation:buddyThink 1s var(--ease) infinite}
+@keyframes buddyThink{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1.5px) scaleY(.6)}}
+.nova-buddy.thinking .nb-orbit{animation:nbSpin 1.1s linear infinite}
+.nova-buddy.happy{animation:buddyHappy .6s var(--ease)}
+@keyframes buddyHappy{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-14px) scale(1.08)}60%{transform:translateY(-4px) scale(1.02)}}
+.nova-buddy.panel-open .nb-cheek{width:20px;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+/* hide the hover tip while the mini panel is open */
+.nova-buddy.panel-open .nb-tip{opacity:0!important}
+
+/* ===== floating mini panel popup ===== */
+.nb-panel{position:fixed;right:26px;bottom:126px;z-index:41;width:288px;
+  border:1px solid var(--line-strong);border-radius:18px;background:rgba(14,19,29,.94);
+  backdrop-filter:blur(20px);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(56,224,200,.12);
+  padding:16px;transform-origin:bottom right;opacity:0;transform:translateY(10px) scale(.94);
+  pointer-events:none;transition:opacity .24s var(--ease),transform .26s var(--ease)}
+.nb-panel.open{opacity:1;transform:none;pointer-events:auto}
+.nb-panel-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.nb-avatar{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d;font-weight:700;font-size:15px;
+  box-shadow:0 0 14px var(--accent-glow)}
+.nb-panel-name{font-weight:650;font-size:14px;letter-spacing:-.01em}
+.nb-panel-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+.nb-greet{font-size:13px;line-height:1.6;color:var(--text-dim);margin-bottom:12px}
+.nb-quick-label{font-size:10px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:8px}
+.nb-quicks{display:flex;flex-direction:column;gap:7px}
+.nb-quick{text-align:left;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg-elev);color:var(--text-dim);font-family:var(--font);font-size:12.5px;cursor:pointer;
+  transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease),transform .15s var(--ease)}
+.nb-quick:hover{border-color:var(--accent);color:var(--text);background:rgba(56,224,200,.06);transform:translateX(2px)}
+.nb-newchat{margin-top:11px;width:100%;padding:10px;border-radius:10px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#05221d;font-weight:600;font-size:12.5px;
+  transition:transform .15s var(--ease),box-shadow .25s var(--ease)}
+.nb-newchat:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--accent-glow)}
+@media(max-width:560px){.nb-panel{right:16px;bottom:112px;width:min(288px,86vw)}}
+/* browse-live action in mini panel */
+.nb-browse{margin-top:8px;width:100%;padding:10px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--accent);background:rgba(56,224,200,.08);color:var(--accent);font-weight:600;font-size:12.5px;
+  transition:background .2s var(--ease),transform .15s var(--ease)}
+.nb-browse:hover{background:rgba(56,224,200,.16);transform:translateY(-1px)}
+
 .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 22px}
 .brand-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
 .brand-sub{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
@@ -207,6 +402,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .notices{margin-top:12px;display:flex;flex-direction:column;gap:6px}
 .notice{font-size:12px;color:var(--text-faint);font-family:var(--mono);display:flex;gap:7px;align-items:center}
 .notice::before{content:"//";color:var(--accent);opacity:.6}
+
+/* ReAct plan card */
+.react{margin-top:14px;border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(56,224,200,.05),rgba(14,19,29,.3));
+  padding:14px 16px;animation:cardIn .5s var(--ease) both}
+.react-h{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:11px}
+.react-h::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent);animation:breathe 1.6s var(--ease) infinite}
+.react-step{display:grid;grid-template-columns:64px 1fr;gap:8px 12px;align-items:baseline}
+.react-step+.react-step{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.react-k{font-family:var(--mono);font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em}
+.react-v{font-size:13px;color:var(--text-dim);line-height:1.55}
+.react-v.act{color:var(--text)}
+
+/* clarify option chips */
+.opts{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px;animation:fadeUp .5s var(--ease) both}
+.opt{padding:9px 15px;border-radius:999px;border:1px solid var(--line-strong);background:var(--bg-elev);
+  color:var(--text-dim);font-size:13px;font-family:var(--font);cursor:pointer;
+  transition:border-color .22s var(--ease),color .22s var(--ease),transform .15s var(--ease),box-shadow .25s var(--ease)}
+.opt:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px);box-shadow:0 8px 22px var(--accent-glow)}
+.opt:active{transform:scale(.96)}
+.opts.done .opt{opacity:.4;pointer-events:none}
+.opt.picked{border-color:var(--accent);color:#05221d;background:linear-gradient(135deg,var(--accent),var(--accent-deep));opacity:1}
+
 
 .composer{flex:none;padding:16px 28px 24px;border-top:1px solid var(--line);
   background:linear-gradient(180deg,transparent,rgba(8,11,18,.6))}
@@ -316,6 +536,9 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 
 <!-- ===== APP SCREEN ===== -->
 <div class="app hidden" id="appScreen">
+  <button class="side-toggle" id="sideToggle" title="Toggle history" aria-label="Toggle history sidebar">
+    <svg viewBox="0 0 24 24"><path d="M9 4v16M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
   <aside class="side">
     <div class="brand">
       <div class="brand-mark"></div>
@@ -364,6 +587,60 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       </div>
     </div>
   </main>
+  <aside class="product-panel" id="productPanel" aria-hidden="true">
+    <div class="pp-head">
+      <div>
+        <div class="pp-eyebrow">Live on Amazon</div>
+        <div class="pp-title" id="ppTitle">Recommendations</div>
+        <div class="pp-rank" id="ppRank"></div>
+      </div>
+      <button class="pp-close" id="ppClose" title="Close" aria-label="Close product panel">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="pp-prodtabs" id="ppProdTabs"></div>
+    <div class="pl-stage" id="plStage" tabindex="0">
+      <span class="pl-empty" id="plEmpty">Pick a product above. A remote browser opens Amazon here - click, scroll and type directly in this panel to operate it.</span>
+      <img class="pl-shot" id="plShot" alt="remote browser" draggable="false">
+      <div class="pl-hint" id="plHint">Click the frame, then type. Scroll to move the page.</div>
+    </div>
+    <div class="pl-human" id="plHuman"><div class="pl-human-msg" id="plHumanMsg"></div><button class="pl-continue" id="plContinue">I've done it - Continue</button></div>
+    <div class="pl-log" id="plLog"></div>
+  </aside>
+
+  <!-- floating Nova mascot -->
+  <div class="nova-buddy" id="novaBuddy" title="Nova" role="button" aria-label="Nova assistant">
+    <div class="nb-glow"></div>
+    <div class="nb-orbit"></div>
+    <div class="nb-antenna"></div>
+    <div class="nb-body">
+      <div class="nb-arm l"></div>
+      <div class="nb-arm r"></div>
+      <div class="nb-visor">
+        <div class="nb-eye l"></div>
+        <div class="nb-eye r"></div>
+        <div class="nb-cheek"></div>
+      </div>
+    </div>
+    <div class="nb-tip">Hi, I'm Nova. Ready to help you shop!</div>
+  </div>
+
+  <!-- Nova mini panel (opens on mascot click) -->
+  <div class="nb-panel" id="nbPanel" role="dialog" aria-label="Nova quick panel">
+    <div class="nb-panel-head">
+      <div class="nb-avatar">N</div>
+      <div><div class="nb-panel-name">Nova</div><div class="nb-panel-sub">Shopping Assistant</div></div>
+    </div>
+    <div class="nb-greet">Hey! Tell me what you're after and I'll find the best picks with real reviews. Try one of these:</div>
+    <div class="nb-quick-label">Quick starts</div>
+    <div class="nb-quicks">
+      <button class="nb-quick">Noise-cancelling headphones for commuting, budget 2000</button>
+      <button class="nb-quick">A gift for a cat lover</button>
+      <button class="nb-quick">A beginner-friendly coffee machine</button>
+    </div>
+    <button class="nb-newchat" id="nbNewChat">Start a new conversation</button>
+  </div>
+
 </div>
 
 <script>
@@ -447,6 +724,7 @@ function switchToSession(id){
   saveSession();
   sessionId=id;
   streamInner.innerHTML=sessions[id].html;
+  if(typeof closeProduct==="function") closeProduct();
   welcome.style.display="none"; stopWelcomeVisuals();
   [...histEl.children].forEach(h=>h.classList.toggle("on",h.dataset.session===id));
   $("#topMeta").textContent="Tell me what you want to buy";
@@ -462,10 +740,208 @@ document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
 $("#newChat").onclick=()=>{
   saveSession();
   sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome);
+  if(typeof closeProduct==="function") closeProduct();
   welcome.style.display=""; $("#topMeta").textContent="Tell me what you want to buy";
   [...histEl.children].forEach(h=>h.classList.remove("on"));
   startWelcomeVisuals();
 };
+
+/* ===== left history sidebar collapse/expand ===== */
+const appEl=$("#appScreen");
+$("#sideToggle").onclick=()=>{ appEl.classList.toggle("side-collapsed"); };
+
+/* ===== right panel: recommended products + live real Amazon browsing ===== */
+let activeRecCard=null;
+let brSid=null, brStream=null, brProducts=[], brActive=false;
+
+function plAddStep(text,cur){
+  const log=$("#plLog");
+  [...log.querySelectorAll(".pl-step.cur")].forEach(e=>e.classList.remove("cur"));
+  const d=document.createElement("div"); d.className="pl-step"+(cur?" cur":""); d.textContent=text;
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+}
+function plShowShot(b64){
+  if(!b64) return;
+  const img=$("#plShot"); img.src="data:image/png;base64,"+b64; img.style.display="block";
+  $("#plEmpty").style.display="none";
+}
+function plShowHuman(msg){
+  $("#plHumanMsg").textContent=msg||"Please finish this in the Chrome window, then click Continue.";
+  $("#plHuman").classList.add("show"); $("#ppRank").textContent="Waiting for you";
+}
+function plHideHuman(){ $("#plHuman").classList.remove("show"); }
+async function plContinue(){
+  if(!brSid) return;
+  try{ await fetch("/browser/continue?sid="+encodeURIComponent(brSid),{method:"POST"}); }catch(e){}
+  plHideHuman(); $("#ppRank").textContent="Resuming...";
+}
+
+// open the panel with the recommended products; auto-browse the first one
+let brFrameW=900, brFrameH=700, brLive=false;
+function openRecommendationsPanel(recs){
+  brProducts=(recs||[]).map(r=>({title:(r.title||r.product_id||"Product"), q:(r.title||r.product_id||"product")}));
+  if(!brProducts.length) return;
+  const tabs=$("#ppProdTabs"); tabs.innerHTML="";
+  brProducts.forEach((p,i)=>{
+    const b=document.createElement("button"); b.className="pp-prodtab"+(i===0?" on":"");
+    b.textContent=p.title; b.title=p.title;
+    b.addEventListener("click",()=>selectProduct(i));
+    tabs.appendChild(b);
+  });
+  $("#ppTitle").textContent="Live on Amazon";
+  $("#plLog").innerHTML=""; plHideHuman();
+  $("#plShot").style.display="none"; $("#plEmpty").style.display="";
+  appEl.classList.add("panel-open"); $("#productPanel").setAttribute("aria-hidden","false");
+  // wait for the panel slide-in transition to finish so the stage has its FINAL
+  // width before we measure the viewport (otherwise the frame overflows the panel).
+  setTimeout(()=>{ ensureBrowserStream(); selectProduct(0); observeStageSize(); }, 380);
+}
+function selectProduct(i){
+  const tabs=$("#ppProdTabs").children;
+  [...tabs].forEach((t,k)=>t.classList.toggle("on",k===i));
+  const p=brProducts[i]; if(!p) return;
+  $("#ppRank").textContent="Opening #"+(i+1);
+  $("#plLog").innerHTML="";
+  fetch("/browser/search?sid="+encodeURIComponent(brSid)+"&q="+encodeURIComponent(p.q),{method:"POST"}).catch(()=>{});
+}
+// server viewport = the stage's ACTUAL pixel size, so the frame is 1:1 with what
+// the panel shows (no overflow, no horizontal scrollbar). Uses clientWidth/Height
+// (excludes borders) for an exact match to the <img> render box.
+let _lastVW=0,_lastVH=0;
+function panelViewport(){
+  const stage=$("#plStage");
+  const w=Math.max(320,Math.round(stage.clientWidth||stage.getBoundingClientRect().width));
+  const h=Math.max(320,Math.round(stage.clientHeight||stage.getBoundingClientRect().height));
+  return {w,h};
+}
+function sendViewport(){
+  if(!brSid) return;
+  const {w,h}=panelViewport();
+  if(w===_lastVW && h===_lastVH) return;   // avoid spamming on identical sizes
+  _lastVW=w; _lastVH=h;
+  fetch("/browser/viewport?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h,{method:"POST"}).catch(()=>{});
+}
+// re-send viewport whenever the stage box actually changes size (sidebar collapse,
+// window resize, etc.) so the remote browser always matches the panel.
+let _stageRO=null;
+function observeStageSize(){
+  const stage=$("#plStage"); if(!stage||_stageRO) return;
+  if(typeof ResizeObserver==="undefined"){ return; }
+  let t=null;
+  _stageRO=new ResizeObserver(()=>{ clearTimeout(t); t=setTimeout(()=>{ if(brStream) sendViewport(); },250); });
+  _stageRO.observe(stage);
+}
+// map a mouse event on the <img> to remote page coordinates
+function frameCoords(ev){
+  const img=$("#plShot"); const r=img.getBoundingClientRect();
+  const sx=(ev.clientX-r.left), sy=(ev.clientY-r.top);
+  // the img is displayed at r.width x r.height; the remote frame is brFrameW x brFrameH
+  const x=Math.max(0,Math.min(brFrameW, sx*(brFrameW/Math.max(1,r.width))));
+  const y=Math.max(0,Math.min(brFrameH, sy*(brFrameH/Math.max(1,r.height))));
+  return {x,y};
+}
+function ensureBrowserStream(){
+  if(brStream){ sendViewport(); return; }
+  brSid=brSid||("br-"+Math.random().toString(36).slice(2,9));
+  _lastVW=0; _lastVH=0;
+  const {w,h}=panelViewport();
+  const es=new EventSource("/browser/session?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h);
+  brStream=es;
+  es.addEventListener("ready",e=>{ $("#ppRank").textContent="Remote browser ready"; });
+  es.addEventListener("frame",e=>{ const d=JSON.parse(e.data||"{}");
+    if(d.w) brFrameW=d.w; if(d.h) brFrameH=d.h;
+    const img=$("#plShot"); img.src="data:image/jpeg;base64,"+d.shot; img.style.display="block";
+    $("#plEmpty").style.display="none"; $("#plStage").classList.add("live");
+  });
+  es.addEventListener("step",e=>{ const d=JSON.parse(e.data||"{}"); if(d.message) plAddStep(d.message,true); });
+  es.addEventListener("needs_human",e=>{ const d=JSON.parse(e.data||"{}"); plShowHuman(d.message); });
+  es.addEventListener("result",e=>{ const d=JSON.parse(e.data||"{}");
+    const n=(d.products||[]).length; $("#ppRank").textContent="Interactive - "+n+" results"; });
+  es.addEventListener("error",e=>{ try{const d=JSON.parse(e.data||"{}"); if(d.message) plAddStep("Error: "+d.message);}catch(_){} });
+  es.addEventListener("closed",e=>{ es.close(); brStream=null; $("#plStage").classList.remove("live"); });
+  let errCount=0;
+  es.onerror=()=>{
+    errCount++;
+    if(errCount>=3 || !appEl.classList.contains("panel-open")){ es.close(); brStream=null; }
+  };
+}
+// ---- forward user interaction on the frame to the remote browser ----
+(function wireRemoteInput(){
+  const stage=$("#plStage"), img=$("#plShot");
+  if(!stage) return;
+  stage.addEventListener("click",(ev)=>{
+    if(img.style.display==="none"||!brSid) return;
+    const {x,y}=frameCoords(ev);
+    stage.focus(); stage.classList.add("focused");
+    fetch("/browser/click?sid="+encodeURIComponent(brSid)+"&x="+x.toFixed(0)+"&y="+y.toFixed(0),{method:"POST"}).catch(()=>{});
+  });
+  stage.addEventListener("wheel",(ev)=>{
+    if(img.style.display==="none"||!brSid) return;
+    ev.preventDefault();
+    fetch("/browser/scroll?sid="+encodeURIComponent(brSid)+"&dy="+Math.round(ev.deltaY),{method:"POST"}).catch(()=>{});
+  },{passive:false});
+  stage.addEventListener("blur",()=>stage.classList.remove("focused"));
+  stage.addEventListener("keydown",(ev)=>{
+    if(!brSid||img.style.display==="none") return;
+    const special={Enter:"Enter",Backspace:"Backspace",Tab:"Tab",Escape:"Escape",
+      ArrowUp:"ArrowUp",ArrowDown:"ArrowDown",ArrowLeft:"ArrowLeft",ArrowRight:"ArrowRight",Delete:"Delete"};
+    if(special[ev.key]){ ev.preventDefault();
+      fetch("/browser/key?sid="+encodeURIComponent(brSid)+"&k="+encodeURIComponent(special[ev.key]),{method:"POST"}).catch(()=>{});
+    } else if(ev.key.length===1 && !ev.ctrlKey && !ev.metaKey){ ev.preventDefault();
+      fetch("/browser/type?sid="+encodeURIComponent(brSid)+"&t="+encodeURIComponent(ev.key),{method:"POST"}).catch(()=>{});
+    }
+  });
+})();
+// re-send viewport when the panel/window resizes (self-adaptive to sidebar size)
+let brResizeTimer=null;
+window.addEventListener("resize",()=>{ clearTimeout(brResizeTimer); brResizeTimer=setTimeout(()=>{ if(brStream) sendViewport(); },300); });
+function closeProduct(){
+  appEl.classList.remove("panel-open");
+  $("#productPanel").setAttribute("aria-hidden","true");
+  if(activeRecCard){ activeRecCard.classList.remove("active"); activeRecCard=null; }
+  // close the real Chrome window + stream
+  if(brSid){ fetch("/browser/close?sid="+encodeURIComponent(brSid),{method:"POST"}).catch(()=>{}); }
+  if(brStream){ brStream.close(); brStream=null; }
+  brSid=null;
+}
+$("#plContinue").addEventListener("click",plContinue);
+
+/* ===== floating Nova mascot: refs, state + mini panel ===== */
+const novaBuddy=$("#novaBuddy"), nbPanel=$("#nbPanel");
+let buddyStateTimer=null;
+function buddySetState(state){
+  if(!novaBuddy) return;
+  novaBuddy.classList.remove("thinking","happy");
+  if(buddyStateTimer){ clearTimeout(buddyStateTimer); buddyStateTimer=null; }
+  if(state==="thinking"){ novaBuddy.classList.add("thinking"); }
+  else if(state==="happy"){ novaBuddy.classList.add("happy"); buddyStateTimer=setTimeout(()=>novaBuddy.classList.remove("happy"),700); }
+}
+function toggleBuddyPanel(force){
+  if(!nbPanel||!novaBuddy) return;
+  const open = force!==undefined ? force : !nbPanel.classList.contains("open");
+  nbPanel.classList.toggle("open",open);
+  novaBuddy.classList.toggle("panel-open",open);
+}
+if(novaBuddy){
+  novaBuddy.addEventListener("click",(e)=>{ e.stopPropagation(); toggleBuddyPanel(); });
+  nbPanel.querySelectorAll(".nb-quick").forEach(b=>{
+    b.addEventListener("click",()=>{
+      toggleBuddyPanel(false);
+      input.value=b.textContent; autosize(); sendBtn.disabled=busy||!input.value.trim(); input.focus();
+      if(!busy) doSend();
+    });
+  });
+  $("#nbNewChat").addEventListener("click",()=>{ toggleBuddyPanel(false); $("#newChat").click(); });
+}
+if(novaBuddy){
+  // click outside closes the mini panel
+  document.addEventListener("click",(e)=>{
+    if(nbPanel.classList.contains("open") && !nbPanel.contains(e.target) && !novaBuddy.contains(e.target)){
+      toggleBuddyPanel(false);
+    }
+  });
+}
+$("#ppClose").onclick=closeProduct;
 /* Create a history entry bound to the current session and wire up switching */
 function pushHistory(text){
   const title=text.length>42?text.slice(0,42)+"...":text;
@@ -499,22 +975,31 @@ function appendToken(body,text,caret){
 }
 function renderRecs(container,recs,status){
   const wrap=document.createElement("div"); wrap.className="recs";
+  const cards=[];
   recs.forEach((r,i)=>{
     const pos=(r.summary&&r.summary.positives||[]).slice(0,3);
     const neg=(r.summary&&r.summary.negatives||[]).slice(0,3);
     const card=document.createElement("div"); card.className="rec"; card.style.animationDelay=(i*90)+"ms";
     card.innerHTML=
-      '<div class="rec-head"><div class="rec-title">'+esc(r.title||r.product_id)+'</div>'+
+      '<div class="rec-head"><div><div class="rec-title">'+esc(r.title||r.product_id)+'</div>'+
+      '<div class="rec-open-hint">Click to browse on Amazon -></div></div>'+
       '<div class="rec-rank">#'+String(i+1).padStart(2,"0")+'</div></div>'+
       '<div class="rec-reason">'+esc(r.reason||"")+'</div>'+
       '<div class="rec-summary">'+
         '<div class="sum pos"><div class="sum-h"><i></i>Pros</div><ul>'+(pos.map(p=>'<li>'+esc(p)+'</li>').join("")||'<li>N/A</li>')+'</ul></div>'+
         '<div class="sum neg"><div class="sum-h"><i></i>Cons</div><ul>'+(neg.map(p=>'<li>'+esc(p)+'</li>').join("")||'<li>N/A</li>')+'</ul></div>'+
-      '</div>'+
-      '<a class="rec-link" href="'+esc(r.product_url||"#")+'" target="_blank" rel="noopener">View product '+svgArrow+'</a>';
-    wrap.appendChild(card);
+      '</div>';
+    // clicking a card opens the live panel and browses THAT product on Amazon
+    card.addEventListener("click",()=>{
+      [...wrap.querySelectorAll(".rec.active")].forEach(e=>e.classList.remove("active"));
+      card.classList.add("active"); activeRecCard=card;
+      openRecommendationsPanel(recs); selectProduct(i);
+    });
+    wrap.appendChild(card); cards.push(card);
   });
   container.appendChild(wrap);
+  // auto-open the panel and browse the top pick on the real Amazon window
+  if(recs.length){ if(cards[0]) cards[0].classList.add("active"); activeRecCard=cards[0]||null; openRecommendationsPanel(recs); }
   if(status==="insufficient"){
     const n=document.createElement("div"); n.className="notices";
     n.innerHTML='<div class="notice">Few items matched. Showing all available results.</div>';
@@ -528,10 +1013,38 @@ function renderNotices(container,notices){
   n.innerHTML=notices.map(x=>'<div class="notice">'+esc(x)+'</div>').join("");
   container.appendChild(n); scrollDown();
 }
+function renderReact(container,steps){
+  if(!steps||!steps.length) return;
+  const box=document.createElement("div"); box.className="react";
+  let html='<div class="react-h">Nova reasoning</div>';
+  steps.forEach(st=>{
+    html+='<div class="react-step">'+
+      '<div class="react-k">Thought</div><div class="react-v">'+esc(st.thought||"")+'</div>'+
+      '<div class="react-k">Plan</div><div class="react-v">'+esc(st.plan||"")+'</div>'+
+      '<div class="react-k">Action</div><div class="react-v act">'+esc(st.action||"")+'</div>'+
+    '</div>';
+  });
+  box.innerHTML=html; container.appendChild(box); scrollDown();
+}
+function renderOptions(container,options){
+  if(!options||!options.length) return;
+  const wrap=document.createElement("div"); wrap.className="opts";
+  options.forEach(o=>{
+    const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=o;
+    b.addEventListener("click",()=>{
+      if(busy) return;
+      [...wrap.children].forEach(c=>c.classList.remove("picked"));
+      b.classList.add("picked"); wrap.classList.add("done");
+      input.value=o; doSend();
+    });
+    wrap.appendChild(b);
+  });
+  container.appendChild(wrap); scrollDown();
+}
 
 async function doSend(){
   const text=input.value.trim(); if(!text||busy) return;
-  busy=true; sendBtn.disabled=true;
+  busy=true; sendBtn.disabled=true; buddySetState("thinking");
   if(!histEl.querySelector(".hist-item.on")) pushHistory(text);
   addUser(text); input.value=""; autosize();
   const think=addThinking();
@@ -562,15 +1075,20 @@ async function doSend(){
     }
     caret.remove();
     if(recsData){
+      renderReact(body, recsData.react_steps);
       if(recsData.recommendations&&recsData.recommendations.length){
         renderRecs(body, recsData.recommendations, recsData.status);
         $("#topMeta").textContent="Recommended "+recsData.recommendations.length+" products";
+        buddySetState("happy");
+      } else {
+        renderOptions(body, recsData.options);
       }
       renderNotices(body, recsData.notices);
     }
   }catch(err){ think.remove(); const m=aiBubble();
     await typeFallback(m.querySelector(".body"),"Network error. Please check the server and retry."); }
-  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession(); }
+  finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession();
+    if(!novaBuddy.classList.contains("happy")) buddySetState("idle"); }
 }
 function parseSSE(raw){
   let event="message",data="";
@@ -754,8 +1272,8 @@ function makeOrb(canvas,opts){
   // draw() only projects them; isLand() is never called per frame. dense fills
   // tightly (auth globe), sparse fills lightly (welcome stays restrained). A
   // hard cap keeps the total point budget in check so rAF stays smooth.
-  const FILL_STEP=DENSE?3.5:6;                 // finer than LAT/LON_STEP so interiors densify
-  const FILL_CAP=DENSE?1300:220;               // max fill points added (dense ~800-1300, sparse light)
+  const FILL_STEP=DENSE?2.4:4.5;               // smaller step => denser continent interiors (higher plate particle density)
+  const FILL_CAP=DENSE?2600:360;               // raised cap so the denser grid isn't clipped (dense continents read solid)
   let fillCount=0;
   for(let lat=-LAT_MAX; lat<=LAT_MAX && fillCount<FILL_CAP; lat+=FILL_STEP){
     const la=lat*D2R, cl=Math.cos(la);
@@ -763,7 +1281,16 @@ function makeOrb(canvas,opts){
     for(let k=0;k<n && fillCount<FILL_CAP;k++){
       const lon=(k/n)*360-180;
       const v=latLonToVec(lat,lon);
-      if(isLand(v)){ pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true}); fillCount++; }
+      if(isLand(v)){
+        // deterministic pseudo-random per-point "city" flag: only a subset of
+        // land fill points glow on the night side, so lights read as scattered
+        // city clusters rather than a solid lit continent. Hash lat/lon so the
+        // pattern is stable across frames and screen sizes.
+        const h=Math.sin(lat*12.9898+lon*78.233)*43758.5453;
+        const city=(h-Math.floor(h))<0.34;
+        pts.push({x:v.x,y:v.y,z:v.z,land:true,equator:false,fill:true,city});
+        fillCount++;
+      }
     }
   }
   // latitude ring definitions (horizontal rings, for faint connecting arcs)
@@ -800,7 +1327,9 @@ function makeOrb(canvas,opts){
     let y=py*cosX - z*sinX;
     z=py*sinX + z*cosX;
     const persp=1/(2.2 - z);
-    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, z, persp};
+    // also return rotated world coords (x,y,z) so the day/night lighting can dot
+    // each point normal against a fixed sun direction in view space.
+    return {sx:cxp + x*R*persp*2.2, sy:cyp + y*R*persp*2.2, x, y, z, persp};
   }
 
   function draw(){
@@ -864,33 +1393,64 @@ function makeOrb(canvas,opts){
     for(let i=0;i<pts.length;i++){
       const pt=pts[i];
       const p=project(pt.x,pt.y,pt.z,cosY,sinY,cosX,sinX);
-      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill;
+      p.land=pt.land; p.equator=pt.equator; p.fill=pt.fill; p.city=pt.city;
       proj.push(p);
     }
     proj.sort((a,b)=>a.z-b.z);
+    // Day/night lighting: a fixed sun direction in VIEW space (upper-left, a bit
+    // toward the viewer). Each point normal (its rotated x,y,z) is dotted with
+    // the sun to get illum in [-1..1]: >0 day side, <0 night side. As the globe
+    // spins, the terminator sweeps across, so regions cross from day to night.
+    // Day: cool teal, brighter. Night: much dimmer teal; land "city" points glow
+    // warm amber like satellite night imagery, brightest deep on the night side.
+    const SUN={x:0.42,y:-0.30,z:-0.85};      // sun BEHIND the viewer: night hemisphere faces us, so city lights sit on the front-center (not the edge)
+    const slen=Math.hypot(SUN.x,SUN.y,SUN.z);
     for(let i=0;i<proj.length;i++){
       const p=proj[i];
       const depth=(p.z+1)/2;                 // 0 back .. 1 front
-      // Perspective is deliberately WEAKENED here: instead of multiplying the
-      // radius by the raw persp (which blows up front-facing points into a few
-      // huge, jarring blobs), we fold it into a gentle factor and let depth do
-      // the real sizing. persp ~0.31 (back) .. ~0.83 (front) -> pf ~0.72 .. 0.93,
-      // so front points end up only slightly larger than back ones. Each radius
-      // is then hard-clamped with Math.min(CAP,...) so no point can spike, and
-      // floored with Math.max(0.5,...) so back points stay visible.
       const pf=0.6+0.4*p.persp;              // softened perspective contribution
+      // illum: dot(normal, sun) in [-1..1]. day = t in [0..1], night when <0.
+      const illum=(p.x*SUN.x + p.y*SUN.y + p.z*SUN.z)/slen;
+      const day=Math.max(0,illum);           // 0 on/again night .. 1 full day
+      const night=Math.max(0,-illum);        // 0 day .. 1 deep night
       let r,al;
       if(p.fill){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;   // continent fill: smaller/softer so plates read as solid, not clumped
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.28+depth*0.5;
       }else if(p.equator){
-        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;   // equator now blends into the net, no longer a heavy line
+        r=Math.max(0.5,Math.min(2.2,(0.6+depth*1.3)*pf)); al=0.16+depth*0.3;
       }else if(p.land){
-        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;   // plate faces: uniform small dots like fill points (no oversized particles)
+        r=Math.max(0.5,Math.min(1.4,(0.7+depth*1.5)*pf)); al=0.3+depth*0.5;
       }else{
-        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;  // oceans dimmer/smaller
+        r=Math.max(0.5,Math.min(1.6,(0.5+depth*1.2)*pf)); al=0.09+depth*0.26;
       }
-      ctx.fillStyle="rgba(56,224,200,"+al.toFixed(3)+")";
-      ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      // Night-side land "cities" glow amber, but ONLY on the near (front)
+      // hemisphere (p.z>=0.02) so lights never render on the far side showing
+      // through the globe. Back-side / day-side points fall to the teal branch.
+      // brighter on the day side and dimmed on the night side.
+      if(p.land && p.city && night>0.12 && p.z>=0.02){
+        // city light in the teal family (no clashing amber): a bright near-white
+        // cyan core with a soft teal bloom, so lights glow like tech city clusters
+        // that harmonize with the accent palette. Strengthens toward deep night,
+        // softly twinkles.
+        const tw=0.82+0.18*Math.sin(spinY*7+p.x*40+p.y*33);
+        const g=Math.min(1,(0.35+night*0.85))*tw;
+        const rad=Math.max(0.7,Math.min(1.9,r*(1.05+night*0.5)));
+        // bright cyan-white core
+        ctx.fillStyle="rgba(185,255,246,"+(g*(0.55+depth*0.4)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad,0,6.283); ctx.fill();
+        // soft teal bloom halo
+        ctx.fillStyle="rgba(72,226,208,"+(g*0.18*(0.4+depth*0.6)).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,rad*2.1,0,6.283); ctx.fill();
+      }else{
+        // teal, day-lit brighter, night dimmer. Blend a warm tint into day-side
+        // land so continents read a touch golden under "sunlight".
+        const lightMul=0.42+0.85*day + 0.12;   // ~0.54 night .. ~1.39 full day
+        const a=Math.max(0.03,Math.min(0.95,al*lightMul));
+        let cr=56, cg=224, cb=200;
+        if(p.land && day>0.25){ cr=120; cg=232; cb=190; }  // sunlit land warms slightly
+        ctx.fillStyle="rgba("+cr+","+cg+","+cb+","+a.toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(p.sx,p.sy,r,0,6.283); ctx.fill();
+      }
     }
 
     // continent plate outlines: stroke each border as a poly-line of projected
@@ -949,31 +1509,37 @@ function makeStarfield(canvas){
     build();
   }
   function build(){
-    // density scales with area; deterministic-ish random is fine here
-    const n=Math.round(Math.min(220,Math.max(70,(W*H)/9000)));
+    // density scales with area; much denser now for a rich "starry sky" feel.
+    // smaller divisor => more stars; higher cap + floor so even small screens
+    // stay full of stars.
+    const n=Math.round(Math.min(620,Math.max(220,(W*H)/3400)));
     stars=[];
     for(let i=0;i<n;i++){
-      const cool=Math.random()<0.22;             // a few cool-white stars (same hue family)
+      const cool=Math.random()<0.24;             // a few cool-white stars (same hue family)
+      const hero=Math.random()<0.08;             // a handful of brighter "hero" stars
       stars.push({
         x:Math.random()*W, y:Math.random()*H,
-        r:Math.random()*1.3+0.3,
-        base:Math.random()*0.4+0.18,             // base opacity
-        amp:Math.random()*0.3+0.12,              // breathing amplitude
+        r:hero?(Math.random()*1.1+1.2):(Math.random()*1.1+0.25),
+        base:(hero?0.5:Math.random()*0.4+0.16),  // base opacity (hero brighter)
+        amp:Math.random()*0.32+0.12,             // breathing amplitude
         ph:Math.random()*6.283,                  // phase
         sp:Math.random()*0.35+0.08,              // twinkle speed
         vx:(Math.random()-0.5)*0.05,             // slow horizontal drift px/frame
-        vy:Math.random()*0.06+0.015,             // slow downward drift
-        cool
+        vy:Math.random()*0.06+0.012,             // slow downward drift
+        cool, hero
       });
     }
   }
   function spawnMeteor(){
     const fromLeft=Math.random()<0.5;
-    const x=fromLeft?-40:W*(0.3+Math.random()*0.7);
-    const y=Math.random()*H*0.5;
-    const ang=(Math.PI/180)*(fromLeft?(18+Math.random()*14):(150+Math.random()*14));
-    const speed=6+Math.random()*4;
-    meteors.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,life:0,max:34+Math.random()*22,len:60+Math.random()*50});
+    // start anywhere across the top band (not just off-screen left) so streaks
+    // are visible in the margins around the login card too.
+    const x=fromLeft?(-40+Math.random()*W*0.5):W*(0.5+Math.random()*0.6);
+    const y=Math.random()*H*0.7;
+    const ang=(Math.PI/180)*(fromLeft?(20+Math.random()*16):(146+Math.random()*16));
+    const speed=4.5+Math.random()*3.5;                       // a touch slower so they linger
+    meteors.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,
+      life:0,max:54+Math.random()*34,len:110+Math.random()*90});   // longer life + longer tail
   }
 
   function frame(now){
@@ -987,22 +1553,39 @@ function makeStarfield(canvas){
       if(s.y>H+2){ s.y=-2; s.x=Math.random()*W; }
       if(s.x<-2)s.x=W+2; else if(s.x>W+2)s.x=-2;
       const tw=s.base+Math.sin(t*s.sp+s.ph)*s.amp;
-      const a=Math.max(0,Math.min(0.85,tw));
-      ctx.fillStyle=s.cool?"rgba(200,244,238,"+a.toFixed(3)+")":"rgba(56,224,200,"+a.toFixed(3)+")";
+      const a=Math.max(0,Math.min(0.9,tw));
+      const col=s.cool?"200,244,238":"56,224,200";
+      // brighter stars get a soft glow halo so the field has depth/variety
+      if(s.hero){
+        ctx.fillStyle="rgba("+col+","+(a*0.18).toFixed(3)+")";
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2.6,0,6.283); ctx.fill();
+      }
+      ctx.fillStyle="rgba("+col+","+a.toFixed(3)+")";
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
     }
 
-    // occasional meteor
-    if(Math.random()<0.004*dt && meteors.length<2) spawnMeteor();
+    // meteors: dense, bright shower. Higher spawn rate, larger cap, and each
+    // streak is thicker/brighter with a glowing head so it clearly reads even in
+    // the visible margins around the login card. Fade eased so it stays bright
+    // through most of its life instead of dimming instantly.
+    if(Math.random()<0.05*dt && meteors.length<10) spawnMeteor();
     for(let i=meteors.length-1;i>=0;i--){
       const m=meteors[i]; m.x+=m.vx*dt; m.y+=m.vy*dt; m.life+=dt;
-      const k=1-m.life/m.max; if(k<=0){ meteors.splice(i,1); continue; }
-      const nx=m.x-m.vx*(m.len/ (Math.hypot(m.vx,m.vy)||1)), ny=m.y-m.vy*(m.len/(Math.hypot(m.vx,m.vy)||1));
+      const kraw=1-m.life/m.max; if(kraw<=0){ meteors.splice(i,1); continue; }
+      const k=Math.sqrt(kraw);                          // ease fade -> stays visible longer
+      const inv=Math.hypot(m.vx,m.vy)||1;
+      const nx=m.x-m.vx*(m.len/inv), ny=m.y-m.vy*(m.len/inv);
       const g=ctx.createLinearGradient(m.x,m.y,nx,ny);
-      g.addColorStop(0,"rgba(200,244,238,"+(0.55*k).toFixed(3)+")");
+      g.addColorStop(0,"rgba(215,250,246,"+(0.95*k).toFixed(3)+")");
+      g.addColorStop(0.35,"rgba(90,235,215,"+(0.55*k).toFixed(3)+")");
       g.addColorStop(1,"rgba(56,224,200,0)");
-      ctx.strokeStyle=g; ctx.lineWidth=1.6; ctx.lineCap="round";
+      ctx.strokeStyle=g; ctx.lineWidth=2.4; ctx.lineCap="round";
       ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(nx,ny); ctx.stroke();
+      // glowing head
+      ctx.fillStyle="rgba(225,252,248,"+(0.9*k).toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(m.x,m.y,1.8,0,6.283); ctx.fill();
+      ctx.fillStyle="rgba(120,238,220,"+(0.28*k).toFixed(3)+")";
+      ctx.beginPath(); ctx.arc(m.x,m.y,4.2,0,6.283); ctx.fill();
     }
   }
 

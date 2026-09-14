@@ -20,11 +20,18 @@ Clarify_Agent 是**可暂停节点**：仍有缺失项时把下一个问题写�
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Optional
 
+from app.agents.category import (
+    detect_category,
+    is_shopping_intent,
+    rule_options,
+    smalltalk_reply,
+)
 from app.interfaces.llm import LLMInterface
-from app.orchestrator.session import AgentError, ConversationSession
+from app.orchestrator.session import AgentError, ConversationSession, ReactStep
 
 __all__ = ["ClarifyAgent"]
 
@@ -81,10 +88,22 @@ class ClarifyAgent:
         try:
             latest = self._latest_user_message(session)
 
+            # 品类切换检测：同一会话内换了新品类 → 重置需求，重新澄清。
+            self._maybe_reset_on_new_category(session, latest)
+
             # 记住上一轮正在问的字段（pending-field 驱动本轮回答的路由）。
             # 首轮时 pending_question 为 None，active 亦为 None。
             active = self._pending_feature(session.pending_question)
             confirming = self._is_confirm_question(session.pending_question)
+
+            # 意图识别：用户不是在回答澄清问题、且本轮不带购物意图（如“who are
+            # you”等闲聊/元问题）时，直接给出介绍性回复并让出，不强行进入
+            # 预算/偏好澄清。若已在收集需求中（active 不为空或已有已知需求）则不拦截。
+            if active is None and not self._has_any_needs(session)                     and latest is not None and not is_shopping_intent(latest):
+                session.pending_question = smalltalk_reply(latest)
+                session.clarify_options = []
+                session.react_steps = []
+                return session
 
             if latest is not None:
                 # 1) 上一轮是「确认既有画像值」且本轮为 yes/no：走 yes/no 更新（Req 4.3）。
@@ -101,8 +120,13 @@ class ClarifyAgent:
             # 4) 判定是否收集完：完成则清空 pending_question，否则产出下一个问题。
             if session.needs_complete():
                 session.pending_question = None
+                session.clarify_options = []
+                session.react_steps = self._build_react_steps(session, next_feature=None)
             else:
+                next_feature = self._next_missing_feature(session)
                 session.pending_question = self._next_question(session)
+                session.clarify_options = self._build_options(session, next_feature)
+                session.react_steps = self._build_react_steps(session, next_feature)
 
             return session
         except Exception as exc:  # noqa: BLE001 - 统一转为可传播的 AgentError（Req 8.4）
@@ -273,6 +297,147 @@ class ClarifyAgent:
             profile_value = getattr(profile, feature, None)
             if profile_value is not None:
                 setattr(needs, feature, profile_value)
+
+    # ---- 品类切换与自主判断 ----
+
+    def _maybe_reset_on_new_category(
+        self, session: ConversationSession, latest: Optional[str]
+    ) -> None:
+        """同一会话内检测到新品类时重置需求，触发重新澄清。
+
+        “新产品”定义：从最新用户消息识别出的品类，与会话已记录的
+        ``session.category`` 不同（且不为空）时视为换品类。首轮（会话未记录
+        品类）不算切换，仅记录品类。切品类时清空已收集需求与确认状态，
+        使后续重新提问（避免拿上一个品类的预算/偏好误推新品类）。
+        """
+        detected = detect_category(latest)
+        if detected is None:
+            return
+        if session.category is not None and detected != session.category:
+            needs = session.collected_needs
+            needs.budget = None
+            needs.purpose = None
+            needs.preferences = None
+            needs.confirmed_features = {}
+            session.pending_question = None
+        session.category = detected
+
+    @staticmethod
+    def _has_any_needs(session: ConversationSession) -> bool:
+        """已收集到任一需求字段或已识别品类时返回 True（表示已在购物流程中）。"""
+        needs = session.collected_needs
+        return (
+            session.category is not None
+            or needs.budget is not None
+            or needs.purpose is not None
+            or bool(needs.preferences)
+        )
+
+    def _next_missing_feature(self, session: ConversationSession) -> Optional[str]:
+        """返回下一个仍需澄清的特征键，无则 ``None``。"""
+        missing = self._missing_features(session)
+        return missing[0] if missing else None
+
+    # ---- 选项生成（LLM 优先，失败回退规则） ----
+
+    def _build_options(
+        self, session: ConversationSession, feature: Optional[str]
+    ) -> list:
+        """为当前澄清特征生成可选项。
+
+        优先用 LLM 根据品类生成（返回 JSON 字符串数组）；无 LLM / 调用失败 /
+        解析失败时回退到确定性规则档位（``rule_options``）。``purpose`` 由用户
+        自由描述，不给选项。
+        """
+        if feature is None or feature == "purpose":
+            return []
+        rule = rule_options(feature, session.category)
+        if self._llm is None:
+            return rule
+        llm_opts = self._llm_options(session, feature)
+        return llm_opts if llm_opts else rule
+
+    def _llm_options(
+        self, session: ConversationSession, feature: str
+    ) -> Optional[list]:
+        """用 LLM 生成选项，返回字符串列表；失败返回 ``None`` 以便回退。"""
+        category = session.category or "product"
+        if feature == "budget":
+            prompt = (
+                "List 4-5 concise budget range options a shopper could pick for a "
+                f"{category}. Return ONLY a JSON array of short English strings, no "
+                "markdown, no extra text."
+            )
+        else:  # preferences
+            prompt = (
+                "List 4 concise preference options a shopper could pick for a "
+                f"{category} (e.g. key features they care about). Return ONLY a JSON "
+                "array of short English strings, no markdown, no extra text."
+            )
+        try:
+            raw = self._llm.generate(prompt)
+        except Exception:  # noqa: BLE001 - 调用失败回退规则
+            return None
+        return self._parse_options(raw)
+
+    @staticmethod
+    def _parse_options(text: Optional[str]) -> Optional[list]:
+        """从 LLM 输出解析 JSON 字符串数组；容忍代码围栏；失败返回 ``None``。"""
+        if not text:
+            return None
+        cleaned = text.strip()
+        fence = re.match(r"^```[a-zA-Z]*\s*(.*?)\s*```$", cleaned, re.DOTALL)
+        if fence:
+            cleaned = fence.group(1).strip()
+        start = cleaned.find("[")
+        end = cleaned.rfind("]")
+        if start == -1 or end == -1 or end <= start:
+            return None
+        try:
+            arr = json.loads(cleaned[start:end + 1])
+        except (ValueError, TypeError):
+            return None
+        if not isinstance(arr, list) or not arr:
+            return None
+        opts = [str(x).strip() for x in arr if str(x).strip()]
+        return opts or None
+
+    # ---- ReAct 展示步骤 ----
+
+    def _build_react_steps(
+        self, session: ConversationSession, next_feature: Optional[str]
+    ) -> list:
+        """构造展示层 ReAct 链路（思考-计划-行动），供前端展示。
+
+        非 LLM 推理循环，而是基于当前状态的确定性描述：体现“是否有画像/
+        是否换品类/下一步问什么”的推理。
+        """
+        cat = session.category or "your request"
+        has_profile = session.user_profile is not None
+        if next_feature is None:
+            thought = (
+                f"Needs for {cat} are clear"
+                + (" (profile filled the gaps)" if has_profile else "")
+                + "."
+            )
+            return [ReactStep(
+                thought=thought,
+                plan="Retrieve matching products and summarize real reviews.",
+                action="Generating recommendations.",
+            )]
+
+        if has_profile:
+            thought = (
+                f"Profile covers some fields for {cat}, but '{next_feature}' is "
+                "still unknown."
+            )
+        else:
+            thought = f"New request for {cat}; missing '{next_feature}'."
+        return [ReactStep(
+            thought=thought,
+            plan=f"Ask the shopper to pick a '{next_feature}' option.",
+            action="Presenting choices below.",
+        )]
 
     # ---- 提问生成 ----
 
