@@ -92,11 +92,19 @@ class BrowserSession:
                 pass
 
     def _frame(self, page):
+        # returns (b64, real_w, real_h); dimensions come from the actual page
+        # viewport so click mapping stays correct regardless of window chrome.
         try:
-            raw = page.screenshot(type="jpeg", quality=55)
-            return base64.b64encode(raw).decode("ascii")
+            raw = page.screenshot(type="jpeg", quality=50, caret="hide", animations="disabled")
+            try:
+                vp = page.viewport_size or {}
+                rw = int(vp.get("width") or self.vw)
+                rh = int(vp.get("height") or self.vh)
+            except Exception:  # noqa: BLE001
+                rw, rh = self.vw, self.vh
+            return base64.b64encode(raw).decode("ascii"), rw, rh
         except Exception:  # noqa: BLE001
-            return None
+            return None, self.vw, self.vh
 
     def _state(self, page) -> str:
         try:
@@ -193,7 +201,9 @@ class BrowserSession:
                 self._emit({"type": "step", "message": "Starting remote browser..."})
                 launch_kw = dict(
                     headless=False,
-                    args=["--disable-blink-features=AutomationControlled", "--start-maximized"],
+                    args=["--disable-blink-features=AutomationControlled",
+                          f"--window-size={self.vw},{self.vh + 120}",
+                          "--window-position=40,40"],
                     user_agent=_UA, viewport={"width": self.vw, "height": self.vh}, locale="en-US",
                 )
                 try:
@@ -244,12 +254,13 @@ class BrowserSession:
                             page.keyboard.press(arg)
                         except Exception:  # noqa: BLE001
                             pass
-                    # stream frames ~8 fps
+                    # stream frames ~3 fps: high-frequency screenshots on a HEADFUL
+                    # window cause visible flicker; 3 fps is smooth enough and stops it.
                     now = time.time()
-                    if now - last > 0.12:
-                        f = self._frame(page)
-                        if f:
-                            self._emit({"type": "frame", "shot": f, "w": self.vw, "h": self.vh})
+                    if now - last > 0.33:
+                        shot, rw, rh = self._frame(page)
+                        if shot:
+                            self._emit({"type": "frame", "shot": shot, "w": rw, "h": rh})
                         last = now
                     time.sleep(0.02)
             except Exception as exc:  # noqa: BLE001
