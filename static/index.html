@@ -149,10 +149,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .pp-prodtab:hover{border-color:var(--accent);color:var(--text)}
 .pp-prodtab.on{border-color:var(--accent);color:#05221d;background:linear-gradient(135deg,var(--accent),var(--accent-deep));font-weight:600}
 /* interactive remote-browser stage: the frame fills the panel width and is clickable */
-.pl-stage{flex:1;min-height:0;background:#05070c;display:flex;align-items:flex-start;justify-content:center;
-  overflow:hidden;position:relative;outline:none}
-.pl-shot{width:100%;height:auto;display:none;cursor:pointer;user-select:none;-webkit-user-drag:none}
-.pl-empty{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;padding:18px;text-align:center;line-height:1.6;max-width:320px;margin:auto}
+.pl-stage{flex:1;min-height:0;background:#05070c;display:block;overflow:hidden;position:relative;outline:none}
+.pl-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:none;
+  cursor:pointer;user-select:none;-webkit-user-drag:none}
+.pl-empty{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--text-faint);font-family:var(--mono);font-size:11.5px;padding:18px;text-align:center;line-height:1.6;max-width:88%}
 .pl-hint{position:absolute;left:8px;bottom:8px;font-size:10.5px;font-family:var(--mono);color:var(--text-faint);
   background:rgba(4,7,12,.7);padding:4px 8px;border-radius:7px;display:none;pointer-events:none}
 .pl-stage.live .pl-hint{display:block}
@@ -792,8 +792,9 @@ function openRecommendationsPanel(recs){
   $("#plLog").innerHTML=""; plHideHuman();
   $("#plShot").style.display="none"; $("#plEmpty").style.display="";
   appEl.classList.add("panel-open"); $("#productPanel").setAttribute("aria-hidden","false");
-  ensureBrowserStream();
-  selectProduct(0);
+  // wait for the panel slide-in transition to finish so the stage has its FINAL
+  // width before we measure the viewport (otherwise the frame overflows the panel).
+  setTimeout(()=>{ ensureBrowserStream(); selectProduct(0); observeStageSize(); }, 380);
 }
 function selectProduct(i){
   const tabs=$("#ppProdTabs").children;
@@ -803,18 +804,32 @@ function selectProduct(i){
   $("#plLog").innerHTML="";
   fetch("/browser/search?sid="+encodeURIComponent(brSid)+"&q="+encodeURIComponent(p.q),{method:"POST"}).catch(()=>{});
 }
-// current displayed size of the remote-browser frame (= server viewport for 1:1 mapping)
+// server viewport = the stage's ACTUAL pixel size, so the frame is 1:1 with what
+// the panel shows (no overflow, no horizontal scrollbar). Uses clientWidth/Height
+// (excludes borders) for an exact match to the <img> render box.
+let _lastVW=0,_lastVH=0;
 function panelViewport(){
-  const stage=$("#plStage"); const r=stage.getBoundingClientRect();
-  const w=Math.max(360,Math.round(r.width));
-  // keep a browser-like aspect; height = remaining panel space (min 360)
-  const h=Math.max(360,Math.round(r.height));
+  const stage=$("#plStage");
+  const w=Math.max(320,Math.round(stage.clientWidth||stage.getBoundingClientRect().width));
+  const h=Math.max(320,Math.round(stage.clientHeight||stage.getBoundingClientRect().height));
   return {w,h};
 }
 function sendViewport(){
   if(!brSid) return;
   const {w,h}=panelViewport();
+  if(w===_lastVW && h===_lastVH) return;   // avoid spamming on identical sizes
+  _lastVW=w; _lastVH=h;
   fetch("/browser/viewport?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h,{method:"POST"}).catch(()=>{});
+}
+// re-send viewport whenever the stage box actually changes size (sidebar collapse,
+// window resize, etc.) so the remote browser always matches the panel.
+let _stageRO=null;
+function observeStageSize(){
+  const stage=$("#plStage"); if(!stage||_stageRO) return;
+  if(typeof ResizeObserver==="undefined"){ return; }
+  let t=null;
+  _stageRO=new ResizeObserver(()=>{ clearTimeout(t); t=setTimeout(()=>{ if(brStream) sendViewport(); },250); });
+  _stageRO.observe(stage);
 }
 // map a mouse event on the <img> to remote page coordinates
 function frameCoords(ev){
@@ -828,6 +843,7 @@ function frameCoords(ev){
 function ensureBrowserStream(){
   if(brStream){ sendViewport(); return; }
   brSid=brSid||("br-"+Math.random().toString(36).slice(2,9));
+  _lastVW=0; _lastVH=0;
   const {w,h}=panelViewport();
   const es=new EventSource("/browser/session?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h);
   brStream=es;

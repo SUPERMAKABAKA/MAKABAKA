@@ -166,8 +166,8 @@ class BrowserSession:
         self._emit({"type": "result", "products": products})
 
     def _apply_viewport(self, page, w, h):
-        w = max(360, min(1600, int(w)))
-        h = max(360, min(1400, int(h)))
+        w = max(320, min(1600, int(w)))
+        h = max(320, min(1400, int(h)))
         self.vw, self.vh = w, h
         try:
             page.set_viewport_size({"width": w, "height": h})
