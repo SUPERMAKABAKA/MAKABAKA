@@ -33,6 +33,22 @@ class ChatResponse(BaseModel):
     intent: str = "chat"  # chat / recommend
 
 
+class ConsultationRequest(BaseModel):
+    """基于当前会话推荐商品发起模拟客服咨询。"""
+
+    session_id: str
+    message: str = "请像人工客服一样介绍这些推荐商品，并说明各自优缺点。"
+    product_ids: list[str] = Field(default_factory=list)
+
+
+class ConsultationResponse(BaseModel):
+    """模拟客服的可解释回复及其引用的推荐商品。"""
+
+    session_id: str
+    reply: str
+    recommendations: list[ProductRecommendation] = Field(default_factory=list)
+
+
 class ErrorResponse(BaseModel):
     """错误响应模型 (Req 9.4)。"""
 

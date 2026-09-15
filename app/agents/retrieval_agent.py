@@ -66,6 +66,7 @@ class RetrievalAgent:
                     source_url=h.metadata["source_url"],  # Req 5.2
                     matched_text=h.metadata["original_text"],
                     relevance_score=1.0 / (1.0 + h.distance),
+                    detail=str(h.metadata.get("detail") or "") or None,
                 )
                 for h in hits
             ]

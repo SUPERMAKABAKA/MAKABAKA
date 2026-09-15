@@ -403,6 +403,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   color:var(--accent);text-decoration:none;transition:gap .25s var(--ease)}
 .rec-link:hover{gap:11px}
 .rec-link svg{width:14px;height:14px;stroke:currentColor}
+.rec-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.rec-action{border:1px solid var(--line-strong);border-radius:10px;padding:10px 14px;
+  background:var(--bg-elev);color:var(--text-dim);font:500 12px var(--font);cursor:pointer;
+  transition:border-color .22s var(--ease),color .22s var(--ease),transform .18s var(--ease),box-shadow .22s var(--ease)}
+.rec-action:hover{border-color:var(--accent);color:var(--text);transform:translateY(-1px);box-shadow:0 8px 22px var(--accent-glow)}
+.rec-action.primary{background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  border-color:transparent;color:#05221d;font-weight:700}
+.rec-action:disabled{opacity:.55;cursor:wait;transform:none;box-shadow:none}
+.consult-status{flex-basis:100%;font:11px var(--mono);color:var(--text-faint)}
+.consultation{margin-top:14px;border:1px solid rgba(56,224,200,.35);border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(56,224,200,.08),rgba(14,19,29,.34));padding:16px;
+  animation:cardIn .5s var(--ease) both}
+.consultation-head{font:600 12px var(--mono);letter-spacing:.08em;color:var(--accent);margin-bottom:10px}
+.consultation-body{font-size:13px;line-height:1.75;color:var(--text-dim);white-space:pre-wrap}
 .notices{margin-top:12px;display:flex;flex-direction:column;gap:6px}
 .notice{font-size:12px;color:var(--text-faint);font-family:var(--mono);display:flex;gap:7px;align-items:center}
 .notice::before{content:"//";color:var(--accent);opacity:.6}
@@ -919,6 +933,28 @@ function appendToken(body,text,caret){
   const span=document.createElement("span"); span.className="tok"; span.textContent=text;
   body.insertBefore(span,caret); scrollDown();
 }
+async function requestConsultation(recs,container,button,statusEl){
+  const old=container.querySelector(".consultation"); if(old) old.remove();
+  button.disabled=true; button.textContent="正在生成模拟客服建议…";
+  if(statusEl) statusEl.textContent="正在读取推荐商品详情、口碑和评分信息…";
+  try{
+    const res=await fetch("/consult",{method:"POST",headers:{"Content-Type":"application/json",...(token?{"Authorization":"Bearer "+token}:{})},
+      body:JSON.stringify({session_id:sessionId,
+        message:"请像人工客服一样介绍这些推荐商品，并根据评分、商品信息、好评和差评说明优缺点。",
+        product_ids:recs.map(r=>r.product_id)} )});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error||"客服内容生成失败");
+    const box=document.createElement("div"); box.className="consultation";
+    const head=document.createElement("div"); head.className="consultation-head"; head.textContent="模拟人工客服建议";
+    const body=document.createElement("div"); body.className="consultation-body"; body.textContent=data.reply||"未返回客服内容";
+    box.append(head,body); container.appendChild(box);
+    button.textContent="已生成模拟客服建议";
+    if(statusEl) statusEl.textContent=`已基于 ${data.recommendations.length} 个推荐商品生成咨询内容。`;
+  }catch(err){
+    button.textContent="重新咨询模拟人工客服";
+    if(statusEl) statusEl.textContent=err.message||"未生成咨询内容，请重试。";
+  }finally{ button.disabled=false; scrollDown(); }
+}
 function renderRecs(container,recs,status){
   const wrap=document.createElement("div"); wrap.className="recs";
   const cards=[];
@@ -944,6 +980,19 @@ function renderRecs(container,recs,status){
     wrap.appendChild(card); cards.push(card);
   });
   container.appendChild(wrap);
+  const actions=document.createElement("div"); actions.className="rec-actions";
+  const openAll=document.createElement("button"); openAll.type="button"; openAll.className="rec-action";
+  openAll.textContent="打开所有推荐商品";
+  openAll.addEventListener("click",()=>{ openRecommendationsPanel(recs); selectProduct(0); });
+  const consultAll=document.createElement("button"); consultAll.type="button"; consultAll.className="rec-action primary";
+  consultAll.textContent="打开所有推荐商品并咨询模拟人工客服";
+  const statusEl=document.createElement("div"); statusEl.className="consult-status";
+  statusEl.textContent=`商品已整理：${recs.length} 个，可打开商品或咨询模拟人工客服。`;
+  consultAll.addEventListener("click",()=>{
+    openRecommendationsPanel(recs); selectProduct(0);
+    requestConsultation(recs,container,consultAll,statusEl);
+  });
+  actions.append(openAll,consultAll,statusEl); container.appendChild(actions);
   // auto-open the panel and browse the top pick on the real Amazon window
   if(recs.length){ if(cards[0]) cards[0].classList.add("active"); activeRecCard=cards[0]||null; openRecommendationsPanel(recs); }
   if(status==="insufficient"){

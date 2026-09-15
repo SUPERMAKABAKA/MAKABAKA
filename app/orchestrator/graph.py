@@ -198,7 +198,7 @@ def build_orchestrator(agents: AgentBundle):
     return graph.compile()
 
 
-def build_default_orchestrator(container, store, embedder, profile_source):
+def build_default_orchestrator(container, store, embedder, profile_source, catalog=None):
     """便捷工厂：用 Container 与 RAG 组件装配 5 个 Agent 并编译图。
 
     从 ``Container`` 取 ``llm()`` / ``web_search()`` 装配 Clarify / Recommendation
@@ -233,6 +233,6 @@ def build_default_orchestrator(container, store, embedder, profile_source):
         conversation=ConversationAgent(llm, fallback=ClarifyAgent(llm)),
         retrieval=RetrievalAgent(store, embedder),
         web_search=WebSearchAgent(web_search),
-        recommendation=RecommendationAgent(llm),
+        recommendation=RecommendationAgent(llm, catalog=catalog),
     )
     return build_orchestrator(bundle), bundle

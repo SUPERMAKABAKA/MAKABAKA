@@ -28,6 +28,7 @@ from typing import Optional
 
 from app.interfaces.llm import LLMInterface
 from app.orchestrator.models import ProductRecommendation, ReviewSummary
+from app.repositories.product_catalog import ProductCatalog
 from app.orchestrator.session import (
     AgentError,
     ConversationSession,
@@ -47,7 +48,11 @@ class RecommendationAgent:
 
     name = "recommendation"
 
-    def __init__(self, llm: Optional[LLMInterface] = None) -> None:
+    def __init__(
+        self,
+        llm: Optional[LLMInterface] = None,
+        catalog: Optional[ProductCatalog] = None,
+    ) -> None:
         """初始化 Recommendation_Agent。
 
         Args:
@@ -55,6 +60,7 @@ class RecommendationAgent:
                 （Req 2.1, 2.4）。为 ``None`` 时使用确定性模板生成理由。
         """
         self._llm = llm
+        self._catalog = catalog
 
     def run(self, session: ConversationSession) -> ConversationSession:
         """生成推荐列表并更新会话状态 (Req 7.1–7.6, 8.2)。
@@ -151,12 +157,23 @@ class RecommendationAgent:
         cleaned = self._clean_llm(reason) if reason else ""
         reason = cleaned or self._build_reason(record, web_info, session)
         summary = self._build_summary(web_info)
+        catalog_product = self._catalog.get(record.product_id) if self._catalog else None
+        detail = (
+            (catalog_product.detail if catalog_product else "")
+            or record.detail
+            or record.matched_text
+        )
         return ProductRecommendation(
             product_id=record.product_id,
             title=title,
             reason=reason,
             product_url=record.source_url,  # Req 7.4
             summary=summary,
+            detail=detail,
+            price=catalog_product.price if catalog_product else None,
+            rating=catalog_product.rating if catalog_product else None,
+            review_count=len(catalog_product.reviews) if catalog_product else 0,
+            relevance_score=record.relevance_score,
         )
 
     @staticmethod
