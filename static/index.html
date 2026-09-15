@@ -598,9 +598,9 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       </a>
     </div>
     <div class="pp-webwrap" id="ppWebwrap">
-      <span class="pl-empty" id="plEmpty">Pick a product above. Its shopping results load right here - click, scroll and open links inside this panel.</span>
+      <span class="pl-empty" id="plEmpty">Pick a product above. AliExpress results load right here - click, scroll and open products inside this panel.</span>
       <iframe class="pp-webframe" id="ppWebframe" title="product search"
-        referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
     </div>
   </aside>
 
@@ -750,12 +750,14 @@ $("#sideToggle").onclick=()=>{ appEl.classList.toggle("side-collapsed"); };
 let activeRecCard=null;
 let brProducts=[];
 // Build an embeddable shopping-search URL that ALLOWS iframing (Amazon/Google block
-// framing; Bing shopping search does not). Clicking a product loads its results
-// right inside the panel iframe - native click/scroll/link, zero anti-bot.
+// framing (Amazon/Shopee/Lazada block it via X-Frame-Options / CSP frame-ancestors;
+// AliExpress allows it). Clicking a product loads its results right inside the panel
+// iframe - native click/scroll/link, zero anti-bot.
 function embedSearchUrl(q){
-  return "https://www.bing.com/search?q="+encodeURIComponent(q+" buy shopping")+"&form=QBLH";
+  return "https://www.aliexpress.com/wholesale?SearchText="+encodeURIComponent(q);
 }
-function amazonUrl(q){
+function extShopUrl(q){
+  // external "open on Amazon" jump for the real product page in a new tab
   return "https://www.amazon.com/s?k="+encodeURIComponent(q);
 }
 function openRecommendationsPanel(recs){
@@ -782,7 +784,7 @@ function selectProduct(i){
   $("#ppWebwrap").classList.add("live");
   $("#plEmpty").style.display="none";
   $("#ppUrl").textContent=url.replace(/^https?:\/\//,"").slice(0,52);
-  $("#ppExt").href=amazonUrl(p.q);
+  $("#ppExt").href=extShopUrl(p.q);
   $("#ppRank").textContent="Viewing #"+(i+1);
 }
 function closeProduct(){
