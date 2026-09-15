@@ -161,16 +161,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .pp-url{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-faint)}
 .pp-ext{flex:none;display:inline-flex;align-items:center;gap:5px;color:var(--accent);text-decoration:none;font-weight:600}
 .pp-ext svg{width:12px;height:12px;stroke:currentColor}
-.pp-local-product{flex:none;max-height:42%;overflow:auto;padding:15px 16px;border-bottom:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(56,224,200,.08),rgba(14,19,29,.28));color:var(--text-dim)}
-.pp-local-product .pp-local-title{font-size:15px;font-weight:650;color:var(--text);line-height:1.4;margin-bottom:9px}
-.pp-local-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.pp-local-badge{font:10.5px var(--mono);color:var(--accent);border:1px solid var(--line-strong);border-radius:999px;padding:4px 7px}
-.pp-local-detail{font-size:12.5px;line-height:1.65;margin-bottom:10px;color:var(--text-dim)}
-.pp-local-section{font:10.5px var(--mono);letter-spacing:.08em;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase}
-.pp-local-list{margin:0;padding-left:17px;color:var(--text-dim);font-size:12px;line-height:1.6}
-.pp-local-list li+li{margin-top:2px}
-.pp-webwrap{flex:1;min-height:180px;position:relative;background:#fff;overflow:hidden}
+.pp-webwrap{flex:1;min-height:0;position:relative;background:#fff;overflow:hidden}
 /* the embedded desktop site is rendered at a fixed logical width (--fw) then
    scaled DOWN to fit the panel, so the WHOLE page fits with no horizontal
    scrollbar and shrinks/grows as the panel resizes. width/height and scale are
@@ -633,10 +624,6 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
-    <div class="pp-local-product" id="ppLocalProduct" aria-live="polite">
-      <div class="pp-local-title">商品信息</div>
-      <div class="pp-local-detail">选择推荐商品后，这里会显示商品详情、口碑和推荐理由。</div>
-    </div>
     <div class="pp-webwrap" id="ppWebwrap">
       <span class="pl-empty" id="plEmpty">Pick a product above. AliExpress results load right here - click, scroll and open products inside this panel.</span>
       <iframe class="pp-webframe" id="ppWebframe" title="product search"
@@ -801,11 +788,7 @@ function extShopUrl(q){
   return "https://www.amazon.com/s?k="+encodeURIComponent(q);
 }
 function openRecommendationsPanel(recs){
-  brProducts=(recs||[]).map(r=>({
-    rec:r,
-    title:(r.title||r.product_id||"Product"),
-    q:(r.title||r.product_id||"product")
-  }));
+  brProducts=(recs||[]).map(r=>({title:(r.title||r.product_id||"Product"), q:(r.title||r.product_id||"product")}));
   if(!brProducts.length) return;
   const tabs=$("#ppProdTabs"); tabs.innerHTML="";
   brProducts.forEach((p,i)=>{
@@ -834,38 +817,18 @@ function fitEmbed(){
   frame.style.height=Math.ceil(ch/scale)+"px";     // fill panel height after scaling
   frame.style.transform="scale("+scale.toFixed(4)+")";
 }
-function renderLocalProduct(rec){
-  const box=$("#ppLocalProduct"); if(!box) return;
-  const title=esc(rec.title||rec.product_id||"推荐商品");
-  const detail=esc(rec.detail||rec.reason||"暂无商品详情");
-  const positives=(rec.summary&&rec.summary.positives||[]).slice(0,3);
-  const negatives=(rec.summary&&rec.summary.negatives||[]).slice(0,3);
-  const rating=rec.rating!==null&&rec.rating!==undefined ? `评分 ${esc(Number(rec.rating).toFixed(1))}/5` : "评分未提供";
-  const price=rec.price!==null&&rec.price!==undefined ? `价格 ${esc(rec.price)}` : "价格未提供";
-  const list=(items,empty)=>items.length ? items.map(item=>`<li>${esc(item)}</li>`).join("") : `<li>${empty}</li>`;
-  box.innerHTML=`<div class="pp-local-title">${title}</div>
-    <div class="pp-local-meta"><span class="pp-local-badge">${rating}</span><span class="pp-local-badge">${price}</span><span class="pp-local-badge">${rec.review_count||0} 条商品评论</span></div>
-    <div class="pp-local-section">商品详情</div><div class="pp-local-detail">${detail}</div>
-    <div class="pp-local-section">推荐理由</div><div class="pp-local-detail">${esc(rec.reason||"基于当前需求匹配")}</div>
-    <div class="pp-local-section">用户好评</div><ul class="pp-local-list">${list(positives,"暂无好评摘要")}</ul>
-    <div class="pp-local-section">需要留意</div><ul class="pp-local-list">${list(negatives,"暂无差评摘要")}</ul>`;
-}
 function selectProduct(i){
   const tabs=$("#ppProdTabs").children;
   [...tabs].forEach((t,k)=>t.classList.toggle("on",k===i));
   const p=brProducts[i]; if(!p) return;
-  const rec=p.rec||{};
-  renderLocalProduct(rec);
   const url=embedSearchUrl(p.q);
-  const frame=$("#ppWebframe"), wrap=$("#ppWebwrap"), empty=$("#plEmpty");
-  frame.onload=()=>{ if(empty) empty.style.display="none"; };
-  frame.onerror=()=>{ if(empty){ empty.textContent="外部商品页暂时无法嵌入，右侧已保留本地商品信息；可点击 Amazon 在新标签页打开。"; empty.style.display="block"; } };
+  const frame=$("#ppWebframe");
   frame.src=url;
-  wrap.classList.add("live");
+  $("#ppWebwrap").classList.add("live");
   requestAnimationFrame(fitEmbed);
-  if(empty){ empty.textContent="正在加载外部商品页；商品详情已在上方显示。"; empty.style.display="block"; }
+  $("#plEmpty").style.display="none";
   $("#ppUrl").textContent=url.replace(/^https?:\/\//,"").slice(0,52);
-  $("#ppExt").href=rec.product_url||extShopUrl(p.q);
+  $("#ppExt").href=extShopUrl(p.q);
   $("#ppRank").textContent="Viewing #"+(i+1);
 }
 // ---- draggable resizer: user can widen/narrow the panel; iframe follows live ----
