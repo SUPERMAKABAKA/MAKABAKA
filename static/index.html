@@ -162,6 +162,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 .pp-ext{flex:none;display:inline-flex;align-items:center;gap:5px;color:var(--accent);text-decoration:none;font-weight:600}
 .pp-ext svg{width:12px;height:12px;stroke:currentColor}
 .pp-webwrap{flex:1;min-height:0;position:relative;background:#fff;overflow:hidden}
+/* 模拟客服总结区：固定在右侧面板底部，与商品浏览区并存，不覆盖商品 */
+.pp-consult{flex:none;max-height:38%;overflow-y:auto;border-top:1px solid var(--line);
+  padding:14px 16px;background:linear-gradient(180deg,rgba(56,224,200,.06),rgba(11,15,23,.9))}
+.pp-consult-head{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.pp-consult-head::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent)}
+.pp-consult-body{font-size:12.5px;line-height:1.7;color:var(--text-dim);white-space:pre-wrap}
 /* the embedded desktop site is rendered at a fixed logical width (--fw) then
    scaled DOWN to fit the panel, so the WHOLE page fits with no horizontal
    scrollbar and shrinks/grows as the panel resizes. width/height and scale are
@@ -629,6 +637,10 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       <iframe class="pp-webframe" id="ppWebframe" title="product search"
         referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
     </div>
+    <div class="pp-consult" id="ppConsult" aria-live="polite">
+      <div class="pp-consult-head">模拟人工客服</div>
+      <div class="pp-consult-body" id="ppConsultBody">尚未进行模拟客服咨询。点击“打开所有推荐商品并咨询模拟人工客服”，我会基于右侧展示的推荐商品做总结。</div>
+    </div>
   </aside>
 
   <!-- floating Nova mascot -->
@@ -934,9 +946,12 @@ function appendToken(body,text,caret){
   body.insertBefore(span,caret); scrollDown();
 }
 async function requestConsultation(recs,container,button,statusEl){
-  const old=container.querySelector(".consultation"); if(old) old.remove();
+  // 客服结果显示在右侧面板底部的独立客服区，基于右侧已展示的推荐商品做总结，
+  // 不覆盖推荐商品卡片，也不覆盖右侧商品浏览区。
+  const consultBody=$("#ppConsultBody");
   button.disabled=true; button.textContent="正在生成模拟客服建议…";
   if(statusEl) statusEl.textContent="正在读取推荐商品详情、口碑和评分信息…";
+  if(consultBody) consultBody.textContent="正在基于右侧推荐商品生成模拟客服总结…";
   try{
     const res=await fetch("/consult",{method:"POST",headers:{"Content-Type":"application/json",...(token?{"Authorization":"Bearer "+token}:{})},
       body:JSON.stringify({session_id:sessionId,
@@ -944,13 +959,11 @@ async function requestConsultation(recs,container,button,statusEl){
         product_ids:recs.map(r=>r.product_id)} )});
     const data=await res.json();
     if(!res.ok) throw new Error(data.error||"客服内容生成失败");
-    const box=document.createElement("div"); box.className="consultation";
-    const head=document.createElement("div"); head.className="consultation-head"; head.textContent="模拟人工客服建议";
-    const body=document.createElement("div"); body.className="consultation-body"; body.textContent=data.reply||"未返回客服内容";
-    box.append(head,body); container.appendChild(box);
+    if(consultBody) consultBody.textContent=data.reply||"未返回客服内容";
     button.textContent="已生成模拟客服建议";
-    if(statusEl) statusEl.textContent=`已基于 ${data.recommendations.length} 个推荐商品生成咨询内容。`;
+    if(statusEl) statusEl.textContent=`已基于 ${data.recommendations.length} 个推荐商品生成咨询内容（见右侧客服区）。`;
   }catch(err){
+    if(consultBody) consultBody.textContent=err.message||"未生成咨询内容，请重试。";
     button.textContent="重新咨询模拟人工客服";
     if(statusEl) statusEl.textContent=err.message||"未生成咨询内容，请重试。";
   }finally{ button.disabled=false; scrollDown(); }

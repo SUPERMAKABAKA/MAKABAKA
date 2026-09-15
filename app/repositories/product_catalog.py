@@ -36,6 +36,19 @@ class ProductCatalog:
         assert self._products is not None
         return self._products.get(product_id)
 
+    def find_by_terms(self, terms: list[str]) -> list[CatalogProduct]:
+        """返回详情中包含任一关键词的商品，保持数据集原始顺序。"""
+        self._ensure_loaded()
+        assert self._products is not None
+        if not terms:
+            return []
+        matched: list[CatalogProduct] = []
+        for product in self._products.values():
+            haystack = product.detail or ""
+            if any(term in haystack for term in terms):
+                matched.append(product)
+        return matched
+
     def _ensure_loaded(self) -> None:
         if self._products is not None:
             return

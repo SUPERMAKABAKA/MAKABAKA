@@ -77,6 +77,12 @@ class RecommendationAgent:
         try:
             # 按 product_id 去重得到候选，保持相关度顺序 (Req 7.1)
             candidates = self._dedupe_candidates(session.retrieval_results)
+
+            # 品类约束：确定性 embedding 语义弱，检索可能跑偏（问“耳机”返回厨具）。
+            # 若识别到品类，则用商品目录按品类关键词过滤/补齐候选，确保推荐商品
+            # 都是用户所问品类的真实数据集商品。
+            candidates = self._apply_category_filter(candidates, session)
+
             web_index = self._index_web_results(session.web_results)
 
             # 计算目标数量 (Req 7.2, 7.3)
@@ -109,6 +115,54 @@ class RecommendationAgent:
                 message=f"生成推荐失败：{exc}",
             )
         return session
+
+    def _apply_category_filter(
+        self,
+        candidates: list[RetrievedRecord],
+        session: ConversationSession,
+    ) -> list[RetrievedRecord]:
+        """用识别到的品类约束候选，保证推荐商品都属于用户所问品类。
+
+        1. 保留检索候选中详情/文本命中品类关键词的记录（保持相关度顺序）；
+        2. 若数量不足，用商品目录中同品类的其他商品补齐（数据集顺序）；
+        3. 无品类或目录不可用时，返回原候选（保持既有行为）。
+        """
+        from app.agents.category import category_query_terms
+
+        terms = category_query_terms(session.category)
+        if not terms:
+            return candidates
+
+        # 仅按商品详情（detail）匹配品类，不用评论文本（matched_text），避免
+        # 评论里偶然出现的关键词导致不相关品类误命中（如“降噪”出现在其他评论）。
+        def _detail_of(record: RetrievedRecord) -> str:
+            product = self._catalog.get(record.product_id) if self._catalog else None
+            return (product.detail if product else "") or record.detail or ""
+
+        def _hit(text: str) -> bool:
+            return any(term in text for term in terms)
+
+        in_category = [r for r in candidates if _hit(_detail_of(r))]
+
+        if self._catalog is None:
+            return in_category or candidates
+
+        seen = {r.product_id for r in in_category}
+        for product in self._catalog.find_by_terms(terms):
+            if product.product_id in seen:
+                continue
+            in_category.append(
+                RetrievedRecord(
+                    product_id=product.product_id,
+                    source_url=product.source_url,
+                    matched_text=product.detail,
+                    relevance_score=0.0,  # 兜底补齐，排在检索命中之后
+                    detail=product.detail or None,
+                )
+            )
+            seen.add(product.product_id)
+
+        return in_category or candidates
 
     @staticmethod
     def _dedupe_candidates(
@@ -153,16 +207,17 @@ class RecommendationAgent:
 
         ``reason`` 为批量生成的预填理由；为空时逐条回退到 ``_build_reason``。
         """
-        title = self._resolve_title(record, web_info)
-        cleaned = self._clean_llm(reason) if reason else ""
-        reason = cleaned or self._build_reason(record, web_info, session)
-        summary = self._build_summary(web_info)
         catalog_product = self._catalog.get(record.product_id) if self._catalog else None
         detail = (
             (catalog_product.detail if catalog_product else "")
             or record.detail
             or record.matched_text
         )
+        # 标题优先用真实商品名（商品详情首行），其次联网信息，最后 product_id。
+        title = self._resolve_title(record, web_info, detail)
+        cleaned = self._clean_llm(reason) if reason else ""
+        reason = cleaned or self._build_reason(record, web_info, session)
+        summary = self._build_summary(web_info)
         return ProductRecommendation(
             product_id=record.product_id,
             title=title,
@@ -177,8 +232,23 @@ class RecommendationAgent:
         )
 
     @staticmethod
-    def _resolve_title(record: RetrievedRecord, web_info: Optional[WebInfo]) -> str:
-        """确定商品标题：优先联网商品信息首行，否则回退到 product_id。"""
+    def _resolve_title(
+        record: RetrievedRecord,
+        web_info: Optional[WebInfo],
+        detail: str = "",
+    ) -> str:
+        """确定商品标题。
+
+        优先使用真实商品详情首行（如“索尼 WH-1000XM5 无线降噪头戴式耳机”），
+        其次联网商品信息首行，最后回退到 product_id。避免展示评测模板文案
+        （“XX 属于 YY 品类的热门单品”）作为商品名。
+        """
+        if detail:
+            first_line = detail.strip().splitlines()[0].strip()
+            # 取详情首行的商品名部分（截断到第一个逗号前，去掉规格描述）。
+            name = first_line.split("，")[0].strip()
+            if name:
+                return name
         if web_info is not None and web_info.product_info:
             first_line = web_info.product_info.strip().splitlines()[0].strip()
             if first_line:
