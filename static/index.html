@@ -102,11 +102,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
 /* 3-column app shell: [collapsible left history] [chat] [right product panel].
    Column widths animate so the sidebar collapse and the product panel slide are
    smooth. Panel width is 0 until .panel-open; sidebar shrinks to 0 on .side-collapsed. */
-.app{position:relative;z-index:2;display:grid;grid-template-columns:264px minmax(0,1fr) 0px;height:100dvh;
+.app{--pw:clamp(360px, 40vw, 640px);position:relative;z-index:2;display:grid;
+  grid-template-columns:264px minmax(0,1fr) 0px;height:100dvh;
   transition:grid-template-columns .34s var(--ease)}
 .app.side-collapsed{grid-template-columns:0px minmax(0,1fr) 0px}
-.app.panel-open{grid-template-columns:264px minmax(0,1fr) 400px}
-.app.side-collapsed.panel-open{grid-template-columns:0px minmax(0,1fr) 400px}
+.app.panel-open{grid-template-columns:264px minmax(0,1fr) var(--pw)}
+.app.side-collapsed.panel-open{grid-template-columns:0px minmax(0,1fr) var(--pw)}
+.app.resizing{transition:none}
+.app.resizing .product-panel,.app.resizing .pp-webframe{pointer-events:none}
+/* drag handle on the left edge of the product panel */
+.pp-resizer{position:absolute;left:-3px;top:0;bottom:0;width:6px;cursor:col-resize;z-index:8;
+  background:transparent;transition:background .2s var(--ease)}
+.pp-resizer:hover,.app.resizing .pp-resizer{background:var(--accent-glow)}
 .side{border-right:1px solid var(--line);background:rgba(14,19,29,.6);backdrop-filter:blur(20px);
   display:flex;flex-direction:column;padding:20px 16px;overflow:hidden;min-width:0;
   transition:opacity .28s var(--ease),padding .28s var(--ease)}
@@ -148,25 +155,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   text-overflow:ellipsis;transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease)}
 .pp-prodtab:hover{border-color:var(--accent);color:var(--text)}
 .pp-prodtab.on{border-color:var(--accent);color:#05221d;background:linear-gradient(135deg,var(--accent),var(--accent-deep));font-weight:600}
-/* interactive remote-browser stage: the frame fills the panel width and is clickable */
-.pl-stage{flex:1;min-height:0;background:#05070c;display:block;overflow:hidden;position:relative;outline:none}
-.pl-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:none;
-  cursor:pointer;user-select:none;-webkit-user-drag:none}
-.pl-empty{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--text-faint);font-family:var(--mono);font-size:11.5px;padding:18px;text-align:center;line-height:1.6;max-width:88%}
-.pl-hint{position:absolute;left:8px;bottom:8px;font-size:10.5px;font-family:var(--mono);color:var(--text-faint);
-  background:rgba(4,7,12,.7);padding:4px 8px;border-radius:7px;display:none;pointer-events:none}
-.pl-stage.live .pl-hint{display:block}
-.pl-stage.focused{box-shadow:inset 0 0 0 2px var(--accent)}
-.pl-log{flex:none;max-height:26%;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
-.pl-step{font-size:12px;line-height:1.5;color:var(--text-dim);display:flex;gap:8px;align-items:flex-start}
-.pl-step::before{content:"";flex:none;width:6px;height:6px;margin-top:5px;border-radius:50%;background:var(--accent);opacity:.7}
-.pl-step.cur{color:var(--text)}
-.pl-human{flex:none;margin:0 14px 12px;padding:12px;border-radius:12px;border:1px solid #f0b429;background:rgba(240,180,41,.08);display:none}
-.pl-human.show{display:block;animation:fadeUp .3s var(--ease) both}
-.pl-human-msg{font-size:12px;color:#f0c44a;line-height:1.55;margin-bottom:10px}
-.pl-continue{width:100%;padding:10px;border:none;border-radius:9px;cursor:pointer;font-weight:600;font-size:12.5px;
-  background:linear-gradient(135deg,#f0b429,#e0921a);color:#241700}
-.pl-continue:hover{filter:brightness(1.08)}
+/* in-panel embedded browser (iframe): native click/scroll/link inside the sidebar */
+.pp-bwbar{flex:none;display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.02);font-family:var(--mono);font-size:11px}
+.pp-url{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-faint)}
+.pp-ext{flex:none;display:inline-flex;align-items:center;gap:5px;color:var(--accent);text-decoration:none;font-weight:600}
+.pp-ext svg{width:12px;height:12px;stroke:currentColor}
+.pp-webwrap{flex:1;min-height:0;position:relative;background:#fff;overflow:hidden}
+/* the embedded desktop site is rendered at a fixed logical width (--fw) then
+   scaled DOWN to fit the panel, so the WHOLE page fits with no horizontal
+   scrollbar and shrinks/grows as the panel resizes. width/height and scale are
+   set from JS (fitEmbed). */
+.pp-webframe{position:absolute;left:0;top:0;border:none;display:none;background:#fff;
+  transform-origin:top left}
+.pp-webwrap.live .pp-webframe{display:block}
+.pl-empty{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--text-faint);
+  font-family:var(--mono);font-size:11.5px;padding:18px;text-align:center;line-height:1.6;max-width:88%}
 .pp-rank{font-family:var(--mono);font-size:11px;color:var(--accent)}
 .pp-section-h{font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
   color:var(--text-faint);margin-bottom:9px;display:flex;align-items:center;gap:7px}
@@ -188,7 +192,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);
   .app,.app.panel-open,.app.side-collapsed,.app.side-collapsed.panel-open{grid-template-columns:0px minmax(0,1fr) 0px}
   .side{position:absolute;left:0;top:0;bottom:0;width:264px;z-index:7;border-right:1px solid var(--line)}
   .app:not(.side-collapsed) .side-toggle{left:224px}
-  .product-panel{position:absolute;right:0;top:0;bottom:0;width:min(400px,88vw);z-index:7}
+  .product-panel{position:absolute;right:0;top:0;bottom:0;width:min(var(--pw),92vw);z-index:7}
 }
 
 /* ===== floating Nova mascot (bottom-right) ===== */
@@ -588,6 +592,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
     </div>
   </main>
   <aside class="product-panel" id="productPanel" aria-hidden="true">
+    <div class="pp-resizer" id="ppResizer" title="Drag to resize"></div>
     <div class="pp-head">
       <div>
         <div class="pp-eyebrow">Live on Amazon</div>
@@ -599,13 +604,17 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
       </button>
     </div>
     <div class="pp-prodtabs" id="ppProdTabs"></div>
-    <div class="pl-stage" id="plStage" tabindex="0">
-      <span class="pl-empty" id="plEmpty">Pick a product above. A remote browser opens Amazon here - click, scroll and type directly in this panel to operate it.</span>
-      <img class="pl-shot" id="plShot" alt="remote browser" draggable="false">
-      <div class="pl-hint" id="plHint">Click the frame, then type. Scroll to move the page.</div>
+    <div class="pp-bwbar">
+      <span class="pp-url" id="ppUrl">-</span>
+      <a class="pp-ext" id="ppExt" href="#" target="_blank" rel="noopener" title="Open on Amazon">Amazon
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
-    <div class="pl-human" id="plHuman"><div class="pl-human-msg" id="plHumanMsg"></div><button class="pl-continue" id="plContinue">I've done it - Continue</button></div>
-    <div class="pl-log" id="plLog"></div>
+    <div class="pp-webwrap" id="ppWebwrap">
+      <span class="pl-empty" id="plEmpty">Pick a product above. AliExpress results load right here - click, scroll and open products inside this panel.</span>
+      <iframe class="pp-webframe" id="ppWebframe" title="product search"
+        referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
   </aside>
 
   <!-- floating Nova mascot -->
@@ -750,34 +759,20 @@ $("#newChat").onclick=()=>{
 const appEl=$("#appScreen");
 $("#sideToggle").onclick=()=>{ appEl.classList.toggle("side-collapsed"); };
 
-/* ===== right panel: recommended products + live real Amazon browsing ===== */
+/* ===== right panel: recommended products + in-panel embedded shopping browser ===== */
 let activeRecCard=null;
-let brSid=null, brStream=null, brProducts=[], brActive=false;
-
-function plAddStep(text,cur){
-  const log=$("#plLog");
-  [...log.querySelectorAll(".pl-step.cur")].forEach(e=>e.classList.remove("cur"));
-  const d=document.createElement("div"); d.className="pl-step"+(cur?" cur":""); d.textContent=text;
-  log.appendChild(d); log.scrollTop=log.scrollHeight;
+let brProducts=[];
+// Build an embeddable shopping-search URL that ALLOWS iframing (Amazon/Google block
+// framing (Amazon/Shopee/Lazada block it via X-Frame-Options / CSP frame-ancestors;
+// AliExpress allows it). Clicking a product loads its results right inside the panel
+// iframe - native click/scroll/link, zero anti-bot.
+function embedSearchUrl(q){
+  return "https://www.aliexpress.com/wholesale?SearchText="+encodeURIComponent(q);
 }
-function plShowShot(b64){
-  if(!b64) return;
-  const img=$("#plShot"); img.src="data:image/png;base64,"+b64; img.style.display="block";
-  $("#plEmpty").style.display="none";
+function extShopUrl(q){
+  // external "open on Amazon" jump for the real product page in a new tab
+  return "https://www.amazon.com/s?k="+encodeURIComponent(q);
 }
-function plShowHuman(msg){
-  $("#plHumanMsg").textContent=msg||"Please finish this in the Chrome window, then click Continue.";
-  $("#plHuman").classList.add("show"); $("#ppRank").textContent="Waiting for you";
-}
-function plHideHuman(){ $("#plHuman").classList.remove("show"); }
-async function plContinue(){
-  if(!brSid) return;
-  try{ await fetch("/browser/continue?sid="+encodeURIComponent(brSid),{method:"POST"}); }catch(e){}
-  plHideHuman(); $("#ppRank").textContent="Resuming...";
-}
-
-// open the panel with the recommended products; auto-browse the first one
-let brFrameW=900, brFrameH=700, brLive=false;
 function openRecommendationsPanel(recs){
   brProducts=(recs||[]).map(r=>({title:(r.title||r.product_id||"Product"), q:(r.title||r.product_id||"product")}));
   if(!brProducts.length) return;
@@ -788,123 +783,74 @@ function openRecommendationsPanel(recs){
     b.addEventListener("click",()=>selectProduct(i));
     tabs.appendChild(b);
   });
-  $("#ppTitle").textContent="Live on Amazon";
-  $("#plLog").innerHTML=""; plHideHuman();
-  $("#plShot").style.display="none"; $("#plEmpty").style.display="";
+  $("#ppTitle").textContent="Shopping browser";
   appEl.classList.add("panel-open"); $("#productPanel").setAttribute("aria-hidden","false");
-  // wait for the panel slide-in transition to finish so the stage has its FINAL
-  // width before we measure the viewport (otherwise the frame overflows the panel).
-  setTimeout(()=>{ ensureBrowserStream(); selectProduct(0); observeStageSize(); }, 380);
+  selectProduct(0);
+  setTimeout(fitEmbed, 400);   // after slide-in transition, panel has final width
+}
+// Fit the embedded desktop site into the panel width: render the iframe at a fixed
+// logical width (FW) and scale it DOWN so the whole page fits (no horizontal scroll),
+// growing/shrinking as the panel resizes.
+const EMBED_FW=1180;
+function fitEmbed(){
+  const wrap=$("#ppWebwrap"), frame=$("#ppWebframe");
+  if(!wrap||!frame) return;
+  const cw=wrap.clientWidth||wrap.getBoundingClientRect().width;
+  const ch=wrap.clientHeight||wrap.getBoundingClientRect().height;
+  if(cw<10||ch<10) return;
+  const scale=cw/EMBED_FW;
+  frame.style.width=EMBED_FW+"px";
+  frame.style.height=Math.ceil(ch/scale)+"px";     // fill panel height after scaling
+  frame.style.transform="scale("+scale.toFixed(4)+")";
 }
 function selectProduct(i){
   const tabs=$("#ppProdTabs").children;
   [...tabs].forEach((t,k)=>t.classList.toggle("on",k===i));
   const p=brProducts[i]; if(!p) return;
-  $("#ppRank").textContent="Opening #"+(i+1);
-  $("#plLog").innerHTML="";
-  fetch("/browser/search?sid="+encodeURIComponent(brSid)+"&q="+encodeURIComponent(p.q),{method:"POST"}).catch(()=>{});
+  const url=embedSearchUrl(p.q);
+  const frame=$("#ppWebframe");
+  frame.src=url;
+  $("#ppWebwrap").classList.add("live");
+  requestAnimationFrame(fitEmbed);
+  $("#plEmpty").style.display="none";
+  $("#ppUrl").textContent=url.replace(/^https?:\/\//,"").slice(0,52);
+  $("#ppExt").href=extShopUrl(p.q);
+  $("#ppRank").textContent="Viewing #"+(i+1);
 }
-// server viewport = the stage's ACTUAL pixel size, so the frame is 1:1 with what
-// the panel shows (no overflow, no horizontal scrollbar). Uses clientWidth/Height
-// (excludes borders) for an exact match to the <img> render box.
-let _lastVW=0,_lastVH=0;
-function panelViewport(){
-  const stage=$("#plStage");
-  const w=Math.max(320,Math.round(stage.clientWidth||stage.getBoundingClientRect().width));
-  const h=Math.max(320,Math.round(stage.clientHeight||stage.getBoundingClientRect().height));
-  return {w,h};
-}
-function sendViewport(){
-  if(!brSid) return;
-  const {w,h}=panelViewport();
-  if(w===_lastVW && h===_lastVH) return;   // avoid spamming on identical sizes
-  _lastVW=w; _lastVH=h;
-  fetch("/browser/viewport?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h,{method:"POST"}).catch(()=>{});
-}
-// re-send viewport whenever the stage box actually changes size (sidebar collapse,
-// window resize, etc.) so the remote browser always matches the panel.
-let _stageRO=null;
-function observeStageSize(){
-  const stage=$("#plStage"); if(!stage||_stageRO) return;
-  if(typeof ResizeObserver==="undefined"){ return; }
-  let t=null;
-  _stageRO=new ResizeObserver(()=>{ clearTimeout(t); t=setTimeout(()=>{ if(brStream) sendViewport(); },250); });
-  _stageRO.observe(stage);
-}
-// map a mouse event on the <img> to remote page coordinates
-function frameCoords(ev){
-  const img=$("#plShot"); const r=img.getBoundingClientRect();
-  const sx=(ev.clientX-r.left), sy=(ev.clientY-r.top);
-  // the img is displayed at r.width x r.height; the remote frame is brFrameW x brFrameH
-  const x=Math.max(0,Math.min(brFrameW, sx*(brFrameW/Math.max(1,r.width))));
-  const y=Math.max(0,Math.min(brFrameH, sy*(brFrameH/Math.max(1,r.height))));
-  return {x,y};
-}
-function ensureBrowserStream(){
-  if(brStream){ sendViewport(); return; }
-  brSid=brSid||("br-"+Math.random().toString(36).slice(2,9));
-  _lastVW=0; _lastVH=0;
-  const {w,h}=panelViewport();
-  const es=new EventSource("/browser/session?sid="+encodeURIComponent(brSid)+"&w="+w+"&h="+h);
-  brStream=es;
-  es.addEventListener("ready",e=>{ $("#ppRank").textContent="Remote browser ready"; });
-  es.addEventListener("frame",e=>{ const d=JSON.parse(e.data||"{}");
-    if(d.w) brFrameW=d.w; if(d.h) brFrameH=d.h;
-    const img=$("#plShot"); img.src="data:image/jpeg;base64,"+d.shot; img.style.display="block";
-    $("#plEmpty").style.display="none"; $("#plStage").classList.add("live");
-  });
-  es.addEventListener("step",e=>{ const d=JSON.parse(e.data||"{}"); if(d.message) plAddStep(d.message,true); });
-  es.addEventListener("needs_human",e=>{ const d=JSON.parse(e.data||"{}"); plShowHuman(d.message); });
-  es.addEventListener("result",e=>{ const d=JSON.parse(e.data||"{}");
-    const n=(d.products||[]).length; $("#ppRank").textContent="Interactive - "+n+" results"; });
-  es.addEventListener("error",e=>{ try{const d=JSON.parse(e.data||"{}"); if(d.message) plAddStep("Error: "+d.message);}catch(_){} });
-  es.addEventListener("closed",e=>{ es.close(); brStream=null; $("#plStage").classList.remove("live"); });
-  let errCount=0;
-  es.onerror=()=>{
-    errCount++;
-    if(errCount>=3 || !appEl.classList.contains("panel-open")){ es.close(); brStream=null; }
-  };
-}
-// ---- forward user interaction on the frame to the remote browser ----
-(function wireRemoteInput(){
-  const stage=$("#plStage"), img=$("#plShot");
-  if(!stage) return;
-  stage.addEventListener("click",(ev)=>{
-    if(img.style.display==="none"||!brSid) return;
-    const {x,y}=frameCoords(ev);
-    stage.focus(); stage.classList.add("focused");
-    fetch("/browser/click?sid="+encodeURIComponent(brSid)+"&x="+x.toFixed(0)+"&y="+y.toFixed(0),{method:"POST"}).catch(()=>{});
-  });
-  stage.addEventListener("wheel",(ev)=>{
-    if(img.style.display==="none"||!brSid) return;
-    ev.preventDefault();
-    fetch("/browser/scroll?sid="+encodeURIComponent(brSid)+"&dy="+Math.round(ev.deltaY),{method:"POST"}).catch(()=>{});
-  },{passive:false});
-  stage.addEventListener("blur",()=>stage.classList.remove("focused"));
-  stage.addEventListener("keydown",(ev)=>{
-    if(!brSid||img.style.display==="none") return;
-    const special={Enter:"Enter",Backspace:"Backspace",Tab:"Tab",Escape:"Escape",
-      ArrowUp:"ArrowUp",ArrowDown:"ArrowDown",ArrowLeft:"ArrowLeft",ArrowRight:"ArrowRight",Delete:"Delete"};
-    if(special[ev.key]){ ev.preventDefault();
-      fetch("/browser/key?sid="+encodeURIComponent(brSid)+"&k="+encodeURIComponent(special[ev.key]),{method:"POST"}).catch(()=>{});
-    } else if(ev.key.length===1 && !ev.ctrlKey && !ev.metaKey){ ev.preventDefault();
-      fetch("/browser/type?sid="+encodeURIComponent(brSid)+"&t="+encodeURIComponent(ev.key),{method:"POST"}).catch(()=>{});
-    }
-  });
+// ---- draggable resizer: user can widen/narrow the panel; iframe follows live ----
+(function wirePanelResizer(){
+  const rz=$("#ppResizer"); if(!rz) return;
+  let dragging=false;
+  function px(e){ return (e.touches?e.touches[0].clientX:e.clientX); }
+  function onMove(e){
+    if(!dragging) return;
+    // panel occupies the right edge; width = distance from cursor to right edge
+    const w=Math.max(300, Math.min(window.innerWidth-320, window.innerWidth-px(e)));
+    appEl.style.setProperty("--pw", w+"px");
+    fitEmbed();
+  }
+  function stop(){ if(!dragging) return; dragging=false; appEl.classList.remove("resizing");
+    document.removeEventListener("mousemove",onMove); document.removeEventListener("mouseup",stop);
+    document.removeEventListener("touchmove",onMove); document.removeEventListener("touchend",stop); }
+  function start(e){ dragging=true; appEl.classList.add("resizing"); e.preventDefault();
+    document.addEventListener("mousemove",onMove); document.addEventListener("mouseup",stop);
+    document.addEventListener("touchmove",onMove,{passive:false}); document.addEventListener("touchend",stop); }
+  rz.addEventListener("mousedown",start);
+  rz.addEventListener("touchstart",start,{passive:false});
 })();
-// re-send viewport when the panel/window resizes (self-adaptive to sidebar size)
-let brResizeTimer=null;
-window.addEventListener("resize",()=>{ clearTimeout(brResizeTimer); brResizeTimer=setTimeout(()=>{ if(brStream) sendViewport(); },300); });
+// keep the embedded page fitted on window resize + whenever the panel box changes
+window.addEventListener("resize",()=>{ if(appEl.classList.contains("panel-open")) fitEmbed(); });
+if(typeof ResizeObserver!=="undefined"){
+  const wrap=$("#ppWebwrap");
+  if(wrap){ new ResizeObserver(()=>{ if(appEl.classList.contains("panel-open")) fitEmbed(); }).observe(wrap); }
+}
 function closeProduct(){
   appEl.classList.remove("panel-open");
   $("#productPanel").setAttribute("aria-hidden","true");
   if(activeRecCard){ activeRecCard.classList.remove("active"); activeRecCard=null; }
-  // close the real Chrome window + stream
-  if(brSid){ fetch("/browser/close?sid="+encodeURIComponent(brSid),{method:"POST"}).catch(()=>{}); }
-  if(brStream){ brStream.close(); brStream=null; }
-  brSid=null;
+  const frame=$("#ppWebframe"); if(frame){ frame.src="about:blank"; }
+  $("#ppWebwrap").classList.remove("live"); $("#plEmpty").style.display="";
 }
-$("#plContinue").addEventListener("click",plContinue);
 
 /* ===== floating Nova mascot: refs, state + mini panel ===== */
 const novaBuddy=$("#novaBuddy"), nbPanel=$("#nbPanel");
