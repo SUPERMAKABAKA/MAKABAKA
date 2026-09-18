@@ -1,0 +1,369 @@
+{
+  "task": "7",
+  "title": "验证登录成功进入 app",
+  "result": "static_source_contract_and_minidom_pass_runtime_unavailable",
+  "productionFilesModified": [],
+  "source": {
+    "path": "static/index.html",
+    "sha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "inlineScriptSha256": "591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4",
+    "inlineScriptCharacters": 74626,
+    "inlineScriptArtifact": "task7-login-success-inline-script.js"
+  },
+  "sourceContracts": {
+    "checks": [
+      {
+        "name": "auth submit handler exists",
+        "passed": true,
+        "lines": [
+          1
+        ],
+        "pattern": "^"
+      },
+      {
+        "name": "auth request uses dynamic endpoint and POST",
+        "passed": true,
+        "lines": [
+          8
+        ],
+        "pattern": "fetch\\(\"/auth/\"\\+mode\\s*,\\s*\\{method:\"POST\""
+      },
+      {
+        "name": "auth request sends JSON content type",
+        "passed": true,
+        "lines": [
+          8
+        ],
+        "pattern": "headers:\\{\"Content-Type\":\"application/json\"\\}"
+      },
+      {
+        "name": "auth request payload is username/password",
+        "passed": true,
+        "lines": [
+          9
+        ],
+        "pattern": "body:JSON\\.stringify\\(\\{username:u,password:p\\}\\)"
+      },
+      {
+        "name": "2xx gate rejects non-ok responses before success",
+        "passed": true,
+        "lines": [
+          11
+        ],
+        "pattern": "if\\(!res\\.ok\\)\\{\\s*showErr\\(data\\.error\\|\\|\"Something went wrong\"\\);\\s*return;\\s*\\}"
+      },
+      {
+        "name": "successful response assigns token and username",
+        "passed": true,
+        "lines": [
+          12
+        ],
+        "pattern": "token=data\\.token;\\s*username=data\\.username;"
+      },
+      {
+        "name": "successful response writes nova_token",
+        "passed": true,
+        "lines": [
+          13
+        ],
+        "pattern": "localStorage\\.setItem\\(\"nova_token\",token\\)"
+      },
+      {
+        "name": "successful response writes nova_user",
+        "passed": true,
+        "lines": [
+          13
+        ],
+        "pattern": "localStorage\\.setItem\\(\"nova_user\",username\\)"
+      },
+      {
+        "name": "successful response awaits authSucceeded",
+        "passed": true,
+        "lines": [
+          14
+        ],
+        "pattern": "await authSucceeded\\(\\);"
+      },
+      {
+        "name": "network error keeps existing error message",
+        "passed": true,
+        "lines": [
+          15
+        ],
+        "pattern": "catch\\(err\\)\\{\\s*showErr\\(\"Network error\\. Is the server running\\?\"\\)"
+      },
+      {
+        "name": "finally restores auth submit state",
+        "passed": true,
+        "lines": [
+          19
+        ],
+        "pattern": "finally\\{[\\s\\S]*?authSubmit\\.disabled=false;\\s*authSubmit\\.textContent=mode===\"login\"\\?\"Sign in\":\"Create account\";\\s*\\}"
+      },
+      {
+        "name": "authSucceeded calls enterApp",
+        "passed": true,
+        "lines": [
+          9
+        ],
+        "pattern": "enterApp\\(\\);"
+      },
+      {
+        "name": "enterApp calls setView app",
+        "passed": true,
+        "lines": [
+          2
+        ],
+        "pattern": "setView\\(\"app\"\\)"
+      },
+      {
+        "name": "enterApp restores app input focus",
+        "passed": true,
+        "lines": [
+          7
+        ],
+        "pattern": "input\\.focus\\(\\)"
+      },
+      {
+        "name": "setView excludes welcome when app selected",
+        "passed": true,
+        "lines": [
+          4
+        ],
+        "pattern": "welcomeScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"welcome\"\\)"
+      },
+      {
+        "name": "setView excludes auth when app selected",
+        "passed": true,
+        "lines": [
+          5
+        ],
+        "pattern": "authScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"auth\"\\)"
+      },
+      {
+        "name": "setView excludes app when another view selected",
+        "passed": true,
+        "lines": [
+          6
+        ],
+        "pattern": "appScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"app\"\\)"
+      },
+      {
+        "name": "app chat input exists",
+        "passed": true,
+        "lines": [
+          1163
+        ],
+        "pattern": "<textarea[^>]*id=\"input\""
+      },
+      {
+        "name": "new chat session entry exists",
+        "passed": true,
+        "lines": [
+          1131
+        ],
+        "pattern": "id=\"newChat\"[^>]*>New chat</button>"
+      },
+      {
+        "name": "recent session entry exists",
+        "passed": true,
+        "lines": [
+          1132
+        ],
+        "pattern": "id=\"sideToggle\"[^>]*>Recent</button>"
+      },
+      {
+        "name": "history session list exists",
+        "passed": true,
+        "lines": [
+          1171
+        ],
+        "pattern": "id=\"hist\""
+      },
+      {
+        "name": "success effects occur only after 2xx guard and in existing order",
+        "passed": true,
+        "positions": {
+          "if(!res.ok){": 519,
+          "token=data.token; username=data.username;": 591,
+          "localStorage.setItem(\"nova_token\",token)": 637,
+          "localStorage.setItem(\"nova_user\",username)": 679,
+          "await authSucceeded();": 727
+        }
+      }
+    ],
+    "passed": true,
+    "handlerLine": 134,
+    "authSucceededLine": 123,
+    "enterAppLine": 155,
+    "setViewLine": 35
+  },
+  "miniDomControlFlow": {
+    "modelOnly": true,
+    "networkRequestSent": false,
+    "credentialsUsed": false,
+    "responseBranch": "modeled 2xx response with token/username placeholders",
+    "success": {
+      "outcome": "success",
+      "initialView": {
+        "visibleTopLevelViewCount": 1,
+        "visibleViews": [
+          "authScreen"
+        ],
+        "expectedViewHasVisibleContent": true,
+        "expectedViewHasInteractiveContent": true,
+        "views": {
+          "welcomeScreen": {
+            "hidden": true,
+            "visible": false
+          },
+          "authScreen": {
+            "hidden": false,
+            "visible": true
+          },
+          "appScreen": {
+            "hidden": true,
+            "visible": false
+          }
+        }
+      },
+      "finalStorage": {
+        "nova_token": "model-token",
+        "nova_user": "alice"
+      },
+      "storageKeysWritten": [
+        "nova_token",
+        "nova_user"
+      ],
+      "finalView": {
+        "visibleTopLevelViewCount": 1,
+        "visibleViews": [
+          "appScreen"
+        ],
+        "expectedViewHasVisibleContent": true,
+        "expectedViewHasInteractiveContent": true,
+        "views": {
+          "welcomeScreen": {
+            "hidden": true,
+            "visible": false
+          },
+          "authScreen": {
+            "hidden": true,
+            "visible": false
+          },
+          "appScreen": {
+            "hidden": false,
+            "visible": true
+          }
+        }
+      },
+      "enterAppControlFlowCompleted": true,
+      "visibleTopLevelViewCount": 1,
+      "appHasVisibleContent": true,
+      "appHasInteractiveContent": true
+    },
+    "non2xxGuard": {
+      "modeled": true,
+      "returnedBeforeSuccessEffects": true,
+      "storageUnchanged": true,
+      "finalView": {
+        "visibleTopLevelViewCount": 1,
+        "visibleViews": [
+          "authScreen"
+        ],
+        "expectedViewHasVisibleContent": true,
+        "expectedViewHasInteractiveContent": true,
+        "views": {
+          "welcomeScreen": {
+            "hidden": true,
+            "visible": false
+          },
+          "authScreen": {
+            "hidden": false,
+            "visible": true
+          },
+          "appScreen": {
+            "hidden": true,
+            "visible": false
+          }
+        }
+      },
+      "authErrorSemanticsPreservedByModel": true
+    }
+  },
+  "nodeSyntax": {
+    "status": "pass",
+    "passed": true,
+    "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+    "version": "v24.19.0",
+    "command": [
+      "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "--check",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task7-login-success-inline-script.js"
+    ],
+    "returnCode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "preservationContracts": {
+    "command": [
+      "D:\\APP\\Programming\\python.exe",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task3_preservation_check.py"
+    ],
+    "returnCode": 0,
+    "status": "pass",
+    "summary": null,
+    "staticBaseline": "static_pass_runtime_available",
+    "fragmentChecksPassed": 58,
+    "fragmentChecksTotal": 58,
+    "protectedStructure": {
+      "topLevelViewIdsExactlyExpected": true,
+      "allTopLevelViewsInitiallyHidden": true,
+      "hiddenRuleRemainsDisplayNoneImportant": true,
+      "singleInlineScript": true,
+      "appChatDomPreserved": true
+    },
+    "runtimeStatus": "blocked_unavailable",
+    "stderr": ""
+  },
+  "runtimeBoundary": {
+    "browser": "unavailable",
+    "realAuthRequest": "unavailable",
+    "browserInteraction": "unavailable",
+    "realLocalStorage": "unavailable",
+    "computedVisibility": "unavailable",
+    "consoleErrors": "unavailable",
+    "windowOnError": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "resourceErrors": "unavailable",
+    "networkAndSse": "unavailable",
+    "meaning": "Node --check parses source only; MiniDOM is a static control-flow model. No field above is claimed as browser runtime evidence."
+  },
+  "diffBoundary": {
+    "command": [
+      "git",
+      "diff",
+      "--name-only"
+    ],
+    "returnCode": 0,
+    "changedFilesObserved": [
+      ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+      "static/index.html"
+    ],
+    "currentSourceSha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "referenceTask6SourceSha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+    "sourceUnchangedFromTask6": false,
+    "productionFilesModifiedByTask7": [],
+    "interpretation": "Any existing working-tree production diff is reported as pre-existing; this task writes only spec evidence/report artifacts and the extracted script artifact."
+  },
+  "scope": {
+    "productionFilesModifiedByThisTask": [],
+    "generatedFiles": [
+      "task7_login_success_check.py",
+      "task7-login-success-inline-script.js",
+      "task7-login-success-evidence.json",
+      "task7-login-success-report.md"
+    ]
+  }
+}

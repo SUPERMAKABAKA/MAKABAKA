@@ -1,0 +1,98 @@
+{
+  "task": "4",
+  "title": "Minimal startup/lifecycle syntax restoration",
+  "source": {
+    "path": "static/index.html",
+    "changedHtmlLine": 1622,
+    "changedExtractedScriptLine": 520,
+    "sha256Before": "421a42bf0f54f03aa5662b80e24a123531ebfe14fe180cc06099ad5fc59d6564",
+    "sha256After": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+    "inlineScriptCharactersBefore": 72412,
+    "inlineScriptCharactersAfter": 72408,
+    "inlineScriptCountAfter": 1
+  },
+  "implementationDecision": {
+    "confirmedStaticEvidence": "The extracted inline script failed Node v24 --check with SyntaxError: Unexpected identifier 'insufficient' at extracted line 520 (HTML line 1622), while all three top-level views initially carried hidden.",
+    "minimalChange": "In the redesign renderRecs card.innerHTML construction, changed the two static HTML fragments after the positives and negatives expressions from double-quoted concatenation to single-quoted concatenation and removed only the now-unneeded escaped double quotes.",
+    "preservedSemantics": [
+      "recommendation title and product fallback",
+      "rank formatting",
+      "escaped reason, positives, and negatives",
+      "N/A fallbacks",
+      "status === insufficient notice",
+      "recommendationGroups payload storage",
+      "inline-only implementation"
+    ],
+    "excludedChanges": [
+      "duplicate functions",
+      "duplicate event bindings",
+      "welcome/auth DOM or styling",
+      "authentication API and storage keys",
+      "/chat/stream, session, and SSE behavior",
+      "backend, Agent, prompts, recommendation payload/ranking",
+      "redesign spec and tests/diagnostic scripts"
+    ],
+    "runtimeRootCauseStatus": "The parser failure is statically confirmed and is a strong black-screen candidate; browser/runtime causality remains unverified."
+  },
+  "validation": {
+    "inlineScriptExtraction": {
+      "method": "task3_preservation_check.py",
+      "artifact": "task3-inline-script.js",
+      "status": "pass"
+    },
+    "syntaxBefore": {
+      "command": "node --check task3-inline-script.js",
+      "status": "fail",
+      "error": "SyntaxError: Unexpected identifier 'insufficient'",
+      "errorLine": 520
+    },
+    "syntaxAfter": {
+      "command": "C:\\Program Files\\nodejs\\node.exe --check .kiro/specs/nova-chat-interface-black-screen/task3-inline-script.js",
+      "node": "v24.19.0",
+      "status": "pass",
+      "returnCode": 0,
+      "stderr": ""
+    },
+    "task2StaticLifecycle": {
+      "status": "pass",
+      "checks": "11/11",
+      "topLevelViewIdsExactlyExpected": true,
+      "allTopLevelViewsInitiallyHidden": true,
+      "hiddenCssUsesImportantDisplayNone": true,
+      "setViewTogglesHiddenForEachView": true,
+      "expectedTerminalVisibleViewCountAfterSetView": 1
+    },
+    "task3PreservationStatic": {
+      "status": "pass",
+      "sourceContracts": "58/58",
+      "protectedStructure": "5/5",
+      "syntax": "pass",
+      "runtime": "blocked_unavailable"
+    }
+  },
+  "runtimeLimitations": {
+    "browserUsed": false,
+    "computedVisibility": null,
+    "consoleErrors": null,
+    "uncaughtExceptions": null,
+    "unhandledRejections": null,
+    "networkRequests": null,
+    "sseExchange": null,
+    "statement": "No real browser rendering, six-path smoke test, or runtime preservation pass is claimed."
+  },
+  "scopeAudit": {
+    "productionFileModifiedByThisTask": "static/index.html",
+    "productionChangeArea": "single renderRecs string-construction expression",
+    "preexistingChangedPathObserved": ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+    "specArtifacts": [
+      ".kiro/specs/nova-chat-interface-black-screen/task2-inline-script.js",
+      ".kiro/specs/nova-chat-interface-black-screen/task2-static-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task2-static-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task3-inline-script.js",
+      ".kiro/specs/nova-chat-interface-black-screen/task3-preservation-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task3-preservation-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task4-implementation-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task4-implementation-report.md"
+    ]
+  }
+}

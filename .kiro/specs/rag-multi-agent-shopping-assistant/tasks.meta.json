@@ -1,5 +1,38 @@
 {
-  "pbtResults": {},
+  "pbtResults": {
+    "2.3 编写 needs_complete 属性测试": {
+      "status": "passed",
+      "lastRunTimestamp": 1789660869044
+    },
+    "9.2 编写冷启动标记属性测试": {
+      "status": "passed",
+      "lastRunTimestamp": 1789663967134
+    },
+    "10.2 编写有画像提问数不增加属性测试": {
+      "status": "passed",
+      "lastRunTimestamp": 1789661225732
+    },
+    "9.3 编写画像字段映射属性测试": {
+      "status": "not_run",
+      "lastRunTimestamp": 1789661255644
+    },
+    "6.3 编写灌库元数据完整性属性测试": {
+      "status": "not_run",
+      "lastRunTimestamp": 1789663971877
+    },
+    "10.3 编写 yes/no 确认更新属性测试": {
+      "status": "passed",
+      "lastRunTimestamp": 1789664166726
+    },
+    "11.2 编写检索结果字段完整属性测试": {
+      "status": "not_run",
+      "lastRunTimestamp": 1789664194628
+    },
+    "12.2 编写测评好评差评覆盖属性测试": {
+      "status": "passed",
+      "lastRunTimestamp": 1789664649482
+    }
+  },
   "executionHistory": {
     "1. 项目结构、依赖与配置": [
       {
@@ -493,6 +526,308 @@
         "executionId": "8339a8b1-7917-4826-aee6-c0329190ce45",
         "chatSessionId": "sess_fd2182b8-82d2-47e0-a534-cf5d5e4d410c",
         "timestamp": 1789220586762
+      }
+    ],
+    "2.3 编写 needs_complete 属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745621
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660772749
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660920291
+      }
+    ],
+    "3.4 编写接口模拟实现单元测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745652
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660776331
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660924372
+      }
+    ],
+    "4.2 编写容器装配与可替换性单元测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745674
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660936638
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661053972
+      }
+    ],
+    "6.3 编写灌库元数据完整性属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745719
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661069810
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664031728
+      }
+    ],
+    "6.4 编写缺字段跳过与日志边界测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745760
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661073830
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664041344
+      }
+    ],
+    "9.2 编写冷启动标记属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745790
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661078478
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664046139
+      }
+    ],
+    "9.3 编写画像字段映射属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745816
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661081904
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664049219
+      }
+    ],
+    "10.2 编写有画像提问数不增加属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745841
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789661095079
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664052357
+      }
+    ],
+    "10.3 编写 yes/no 确认更新属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745868
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664061070
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789667794168
+      }
+    ],
+    "11.2 编写检索结果字段完整属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745894
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664064571
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789667808068
+      }
+    ],
+    "11.3 编写检索结果排序属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745923
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664069406
+      }
+    ],
+    "11.4 编写检索空结果边界测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745951
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664073205
+      }
+    ],
+    "12.2 编写测评好评差评覆盖属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660745975
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789664076554
+      },
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789667821307
+      }
+    ],
+    "12.3 编写无测评边界测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746003
+      }
+    ],
+    "13.2 编写默认推荐数量区间属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746053
+      }
+    ],
+    "13.3 编写指定数量精确输出属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746086
+      }
+    ],
+    "13.4 编写推荐条目字段完整属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746116
+      }
+    ],
+    "13.5 编写总结好评差评属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746142
+      }
+    ],
+    "13.6 编写候选不足边界测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746170
+      }
+    ],
+    "15.3 编写会话状态单调累积属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746197
+      }
+    ],
+    "15.4 编写错误传播属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746227
+      }
+    ],
+    "15.5 编写图结构与路由单元测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746257
+      }
+    ],
+    "16.3 编写会话路由一致性属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746284
+      }
+    ],
+    "16.4 编写缺字段错误命名属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746335
+      }
+    ],
+    "16.5 编写推荐数量透传属性测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746360
+      }
+    ],
+    "16.6 编写 /chat 端到端单元测试": [
+      {
+        "executionId": "e9865363-aa17-4f8f-937b-ae841b7a927c",
+        "chatSessionId": "sess_5b6db160-6699-425b-bb63-9a597e9d60c2",
+        "timestamp": 1789660746386
       }
     ]
   }

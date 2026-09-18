@@ -1,0 +1,352 @@
+{
+  "task": "2",
+  "title": "Property 1: Bug Condition - static startup/HTML/JS/visibility checks",
+  "generatedBy": "task2_static_check.py",
+  "source": {
+    "path": "static/index.html",
+    "sha256": "b51b6832860bd872a6bdf617175313234df65e8d7bb4acd50d33d77ad5ecda52",
+    "inlineScriptCount": 1,
+    "inlineScriptSha256": "77cc9c0ea56696fbef908fd344a79ab8434794996dc7fc9ebbfff3ef2a1bd0ec",
+    "inlineScriptCharacters": 73263,
+    "inlineScriptArtifact": "task2-inline-script.js"
+  },
+  "node": {
+    "status": "pass",
+    "passed": true,
+    "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+    "version": "v24.19.0",
+    "command": [
+      "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "--check",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task2-inline-script.js"
+    ],
+    "returnCode": 0,
+    "stderr": "",
+    "stdout": "",
+    "errorLine": null,
+    "htmlErrorLine": null,
+    "errorSourceLine": null
+  },
+  "htmlStructure": {
+    "topLevelViews": {
+      "welcomeScreen": {
+        "tag": "div",
+        "line": 841,
+        "class": "welcome-page hidden",
+        "initialHidden": true
+      },
+      "authScreen": {
+        "tag": "div",
+        "line": 1104,
+        "class": "auth hidden",
+        "initialHidden": true
+      },
+      "appScreen": {
+        "tag": "div",
+        "line": 1154,
+        "class": "app hidden",
+        "initialHidden": true
+      }
+    },
+    "inlineScriptTags": [
+      {
+        "startLine": 1212,
+        "endLine": 2429
+      }
+    ],
+    "parseMethod": "Python stdlib HTMLParser plus explicit source assertions"
+  },
+  "lifecycle": {
+    "checks": {
+      "topLevelViewIdsExactlyExpected": true,
+      "allTopLevelViewsInitiallyHidden": true,
+      "hiddenCssUsesImportantDisplayNone": true,
+      "setViewTogglesHiddenForEachView": true,
+      "setViewSetsFrontForNonApp": true,
+      "enterAppCallsSetViewApp": true,
+      "enterWelcomeCallsSetViewWelcome": true,
+      "bootHasAuthenticatedBranch": true,
+      "bootHonorsAuthHash": true,
+      "logoutClearsTokenAndUser": true,
+      "logoutCallsEnterWelcome": true
+    },
+    "visibility": {
+      "setViewMapping": {
+        "welcome": "welcomeScreen",
+        "auth": "authScreen",
+        "app": "appScreen"
+      },
+      "allViewsMutuallyExcludedByForcedHidden": true,
+      "initialVisibleViewCount": 0,
+      "expectedTerminalVisibleViewCountAfterSetView": 1
+    },
+    "lineFacts": {
+      "viewElementLines": {
+        "welcomeScreen": 841,
+        "authScreen": 1104,
+        "appScreen": 1154
+      },
+      "hiddenCssLine": 631,
+      "setViewLine": 35,
+      "enterAppLine": 155,
+      "enterWelcomeLine": 60,
+      "authenticatedBootLine": 1211,
+      "logoutHandlerLine": 162
+    }
+  },
+  "risks": {
+    "duplicateFunctionDefinitions": [
+      {
+        "name": "saveSession",
+        "lines": [
+          180,
+          502
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "switchToSession",
+        "lines": [
+          182,
+          509
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "autosize",
+        "lines": [
+          193,
+          500
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "embedSearchUrl",
+        "lines": [
+          219,
+          511
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "extShopUrl",
+        "lines": [
+          222,
+          512
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "openRecommendationsPanel",
+        "lines": [
+          226,
+          513
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "fitEmbed",
+        "lines": [
+          245,
+          517
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "onMove",
+        "lines": [
+          275,
+          577,
+          772
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "closeProduct",
+        "lines": [
+          297,
+          516
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "pushHistory",
+        "lines": [
+          342,
+          508
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "addUser",
+        "lines": [
+          350,
+          526
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "addThinking",
+        "lines": [
+          356,
+          524
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "aiBubble",
+        "lines": [
+          363,
+          525
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "appendToken",
+        "lines": [
+          368,
+          527
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "renderRecs",
+        "lines": [
+          372,
+          520
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "renderNotices",
+        "lines": [
+          404,
+          522
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "renderReact",
+        "lines": [
+          410,
+          521
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "renderOptions",
+        "lines": [
+          423,
+          523
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "doSend",
+        "lines": [
+          439,
+          530
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "name": "typeFallback",
+        "lines": [
+          493,
+          528
+        ],
+        "classification": "unconfirmed-risk"
+      }
+    ],
+    "duplicateEventBindingPatterns": [
+      {
+        "target": "input.addEventListener",
+        "count": 4,
+        "occurrences": [
+          {
+            "line": 194,
+            "text": "input.addEventListener(\"input\",()=>{ autosize(); sendBtn.disabled=!input.value.trim()||busy; });"
+          },
+          {
+            "line": 195,
+            "text": "input.addEventListener(\"keydown\",e=>{ if(e.key===\"Enter\"&&!e.shiftKey){ e.preventDefault(); doSend(); }});"
+          },
+          {
+            "line": 532,
+            "text": "input.addEventListener(\"input\",()=>{autosize();syncSendState();});input.addEventListener(\"keydown\",event=>{if(event.key===\"Enter\"&&!event.shiftKey){event.preventDefault();doSend();}});sendBtn.onclick=doSend;"
+          },
+          {
+            "line": 532,
+            "text": "input.addEventListener(\"input\",()=>{autosize();syncSendState();});input.addEventListener(\"keydown\",event=>{if(event.key===\"Enter\"&&!event.shiftKey){event.preventDefault();doSend();}});sendBtn.onclick=doSend;"
+          }
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "target": "#newChat.onclick",
+        "count": 2,
+        "occurrences": [
+          {
+            "line": 200,
+            "text": "$(\"#newChat\").onclick=()=>{"
+          },
+          {
+            "line": 531,
+            "text": "$(\"#newChat\").onclick=resetChat;$(\"#sideToggle\").onclick=openHistoryDrawer;$(\"#historyClose\").onclick=()=>closeHistoryDrawer();$(\"#historyBackdrop\").onclick=()=>closeHistoryDrawer();$(\"#profileControl\").onclick=()=>$(\"#profileMenu\").hidden?openProfileMenu():closeProfileMenu();$(\"#ppClose\").onclick=()=>closeProduct();$(\"#novaBuddy\").onclick=()=>setBuddyPanel($(\"#nbPanel\").getAttribute(\"aria-hidden\")===\"true\",{restoreFocus:false});$(\"#nbNewChat\").onclick=()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();};"
+          }
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "target": "#sideToggle.onclick",
+        "count": 2,
+        "occurrences": [
+          {
+            "line": 210,
+            "text": "$(\"#sideToggle\").onclick=()=>{ appEl.classList.toggle(\"side-collapsed\"); };"
+          },
+          {
+            "line": 531,
+            "text": "$(\"#newChat\").onclick=resetChat;$(\"#sideToggle\").onclick=openHistoryDrawer;$(\"#historyClose\").onclick=()=>closeHistoryDrawer();$(\"#historyBackdrop\").onclick=()=>closeHistoryDrawer();$(\"#profileControl\").onclick=()=>$(\"#profileMenu\").hidden?openProfileMenu():closeProfileMenu();$(\"#ppClose\").onclick=()=>closeProduct();$(\"#novaBuddy\").onclick=()=>setBuddyPanel($(\"#nbPanel\").getAttribute(\"aria-hidden\")===\"true\",{restoreFocus:false});$(\"#nbNewChat\").onclick=()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();};"
+          }
+        ],
+        "classification": "unconfirmed-risk"
+      },
+      {
+        "target": "#ppClose.onclick",
+        "count": 2,
+        "occurrences": [
+          {
+            "line": 340,
+            "text": "$(\"#ppClose\").onclick=closeProduct;"
+          },
+          {
+            "line": 531,
+            "text": "$(\"#newChat\").onclick=resetChat;$(\"#sideToggle\").onclick=openHistoryDrawer;$(\"#historyClose\").onclick=()=>closeHistoryDrawer();$(\"#historyBackdrop\").onclick=()=>closeHistoryDrawer();$(\"#profileControl\").onclick=()=>$(\"#profileMenu\").hidden?openProfileMenu():closeProfileMenu();$(\"#ppClose\").onclick=()=>closeProduct();$(\"#novaBuddy\").onclick=()=>setBuddyPanel($(\"#nbPanel\").getAttribute(\"aria-hidden\")===\"true\",{restoreFocus:false});$(\"#nbNewChat\").onclick=()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();};"
+          }
+        ],
+        "classification": "unconfirmed-risk"
+      }
+    ],
+    "classification": "unconfirmed-risk-only; no causal root-cause claim"
+  },
+  "rootCauseAssessment": {
+    "staticSyntaxDefect": false,
+    "staticRootCauseConfirmed": false,
+    "staticRootCauseCandidate": false,
+    "associatedStaticRisk": true,
+    "causalRuntimeConfirmation": false,
+    "reason": "The parser failure would prevent boot/setView code from executing while all three top-level views start hidden, so it is a strong static black-screen candidate. Browser/runtime causality remains unconfirmed because no browser was used."
+  },
+  "scope": {
+    "browserInstalledOrUsed": false,
+    "productionFilesModified": [],
+    "protectedFilesModified": [],
+    "generatedFiles": [
+      "task2-inline-script.js",
+      "task2-static-evidence.json",
+      "task2-static-report.md"
+    ]
+  },
+  "nextStep": "allow_preservation_and_implementation_only_if_node_syntax_passes_and_task_1_runtime_evidence_has_met_the_design evidence gate"
+}

@@ -1,0 +1,250 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. **Property 1: Bug Condition** - 在未修复代码上执行六路径浏览器启动/生命周期探索": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694754
+      },
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696704590
+      }
+    ],
+    "2. **Property 1: Bug Condition** - 对 `static/index.html` 做启动顺序、HTML/JS 与可见性静态检查": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694814
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789697525873
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698291580
+      }
+    ],
+    "3. **Property 2: Preservation** - 在未修复代码上观察并编写 preservation baseline": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694845
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698296852
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698546314
+      }
+    ],
+    "4.1 **Property 1: Expected Behavior** - 重跑同一探索检查并确认 bug-condition 路径修复": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694883
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698684852
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698759674
+      }
+    ],
+    "4.2 **Property 2: Preservation** - 重跑同一 preservation checks 并确认无回归": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694913
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698766034
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698946363
+      }
+    ],
+    "4.3 记录实现决策与 diff boundary 审计": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694945
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698952298
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699064349
+      }
+    ],
+    "5. 验证顶层视图互斥可见性回归": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696694972
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699071426
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699192528
+      }
+    ],
+    "6. 验证已有合法 token 启动与 app 刷新": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695004
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699198701
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699427494
+      }
+    ],
+    "7. 验证登录成功进入 app": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695035
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699433758
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699630494
+      }
+    ],
+    "8. 验证刷新与登出回 welcome 生命周期": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695064
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699637302
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699731096
+      }
+    ],
+    "9. 受保护 welcome/auth 页面回归": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695091
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699738506
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699875115
+      }
+    ],
+    "10. app chat/session/SSE 与受保护 payload 回归": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695129
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699882095
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789700228006
+      }
+    ],
+    "11. 最终验证与交付检查": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695181
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789700235514
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789701343161
+      }
+    ],
+    "12. Checkpoint - 确认所有检查通过后再交付": [
+      {
+        "executionId": "8e84d2ab-c93e-4490-8272-b86673a22c46",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789696695230
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789701351445
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789701436962
+      }
+    ],
+    "4. 实施基于证据的 `static/index.html` 最小启动/lifecycle 修复": [
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789698564359
+      },
+      {
+        "executionId": "84adbd88-2d72-4640-a40d-ff16aac5fb8f",
+        "chatSessionId": "sess_155c54f4-64a8-4e24-95c5-3963f441df3a",
+        "timestamp": 1789699064374
+      }
+    ]
+  }
+}

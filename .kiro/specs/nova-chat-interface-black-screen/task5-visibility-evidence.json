@@ -1,0 +1,161 @@
+{
+  "task": "5",
+  "title": "验证顶层视图互斥可见性回归",
+  "result": "static_model_pass_runtime_blocked",
+  "productionFilesModified": [],
+  "source": {
+    "path": "static/index.html",
+    "fullHtmlSha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+    "rawFileSha256": "dc8969b4a7e92b30f8a95cfca1a9dbc6cfc2d44bb7ee71655dd596d3a0ec5130",
+    "hashMethod": "sha256 of raw UTF-8 file bytes; fullHtmlSha256 above is LF-normalized text",
+    "inlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+    "rawInlineScriptSha256": "78f5bab674e2235e01ab360a309a279d61063c3a6ccedb859793c0d67a432862",
+    "inlineScriptArtifact": ".kiro/specs/nova-chat-interface-black-screen/task3-inline-script.js"
+  },
+  "commands": {
+    "visibilityHarness": {
+      "command": "exploration_static_harness.py simulate_path() for six documented paths",
+      "status": "completed",
+      "dependencyFree": true,
+      "browserUsed": false,
+      "javascriptExecutionByHarness": false,
+      "model": "Python MiniDOM lifecycle control-flow simulation"
+    },
+    "nodeSyntaxCheck": {
+      "command": "C:\\Program Files\\nodejs\\node.exe --check .kiro/specs/nova-chat-interface-black-screen/task3-inline-script.js",
+      "status": "pass",
+      "node": "v24.19.0",
+      "returnCode": 0,
+      "stderr": ""
+    }
+  },
+  "assertions": {
+    "requiredPaths": 6,
+    "checkedPaths": 6,
+    "allModeledVisibleTopLevelCountsExactlyOne": true,
+    "allModeledExpectedViewsHaveContent": true,
+    "allModeledExpectedViewsHaveInteractiveEntry": true,
+    "realBrowserAssertions": "blocked_unverified"
+  },
+  "paths": [
+    {
+      "path": "first_open",
+      "steps": ["Clear nova_token and nova_user", "Open /"],
+      "initialStorage": {},
+      "finalStorage": {},
+      "initialHash": "",
+      "modelFinalHash": "",
+      "expectedView": "welcomeScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "", "display": "flex", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 3},
+        "authScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "appScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0}
+      }
+    },
+    {
+      "path": "direct_auth_hash",
+      "steps": ["Clear nova_token and nova_user", "Open /#/auth"],
+      "initialStorage": {},
+      "finalStorage": {},
+      "initialHash": "#/auth",
+      "modelFinalHash": "#/auth",
+      "expectedView": "authScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "authScreen": {"className": "", "display": "flex", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 6},
+        "appScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0}
+      }
+    },
+    {
+      "path": "login_success",
+      "steps": ["Open /#/auth", "Enter alice / secret", "Submit Sign in"],
+      "initialStorage": {},
+      "finalStorage": {"nova_token": "login-token", "nova_user": "alice"},
+      "initialHash": "#/auth",
+      "modelFinalHash": "#/auth",
+      "expectedView": "appScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "authScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "appScreen": {"className": "", "display": "grid", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 8}
+      }
+    },
+    {
+      "path": "existing_token_boot",
+      "steps": ["Set nova_token=valid-token and nova_user=alice", "Cold-open /"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "initialHash": "#/app",
+      "modelFinalHash": "#/app",
+      "expectedView": "appScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "authScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "appScreen": {"className": "", "display": "grid", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 8}
+      }
+    },
+    {
+      "path": "app_refresh",
+      "steps": ["Set valid token and username", "Open /#/app", "Reload"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "initialHash": "#/app",
+      "modelFinalHash": "#/app",
+      "expectedView": "appScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "authScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "appScreen": {"className": "", "display": "grid", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 8}
+      }
+    },
+    {
+      "path": "logout_to_welcome",
+      "steps": ["Set valid token and username", "Open /#/app", "Click Sign out"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {},
+      "initialHash": "#/app",
+      "modelFinalHash": "",
+      "expectedView": "welcomeScreen",
+      "visibleTopLevelViewCount": 1,
+      "expectedViewHasContent": true,
+      "expectedViewHasInteractiveContent": true,
+      "views": {
+        "welcomeScreen": {"className": "", "display": "flex", "visibility": "visible", "opacity": "1", "visible": true, "interactiveEntryCount": 3},
+        "authScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0},
+        "appScreen": {"className": "hidden", "display": "none", "visibility": "visible", "opacity": "1", "visible": false, "interactiveEntryCount": 0}
+      }
+    }
+  ],
+  "runtimeBoundary": {
+    "browser": "unavailable",
+    "computedCss": "unavailable",
+    "paintAndLayout": "unavailable",
+    "consoleErrors": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "resourceErrors": "unavailable",
+    "meaning": "MiniDOM results are model/control-flow evidence only; these fields are unverified, not passing assertions."
+  },
+  "scope": {
+    "productionFilesModified": [],
+    "specArtifactsGenerated": [
+      ".kiro/specs/nova-chat-interface-black-screen/task5-visibility-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task5-visibility-report.md"
+    ]
+  }
+}

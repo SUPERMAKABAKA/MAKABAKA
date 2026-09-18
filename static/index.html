@@ -694,6 +694,136 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
   *{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .welcome-fx.lit .welcome-spot{opacity:.6}
 }
+
+/* ===== NOVA AUTHENTICATED CHAT REDESIGN ===== */
+#appScreen{--chat-bg:#f7f7f4;--chat-surface:#fff;--chat-surface-muted:#f0f1f2;--chat-ink:#17191b;--chat-ink-muted:#62666b;--chat-line:#d9dce0;--chat-focus:#3f444a;--chat-shadow:0 8px 16px rgba(17,17,17,.10);--chat-content:840px;--chat-duration:180ms;position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) 0;height:100dvh;min-height:0;overflow:hidden;background:var(--chat-bg);color:var(--chat-ink);font-family:"Space Grotesk",system-ui,sans-serif;transition:grid-template-columns var(--chat-duration) ease}
+#appScreen.panel-open{grid-template-columns:minmax(0,1fr) var(--pw,clamp(300px,40vw,640px))}
+#appScreen *,#appScreen *::before,#appScreen *::after{box-sizing:border-box}
+#appScreen button,#appScreen textarea{font:inherit}#appScreen button{cursor:pointer}#appScreen button:focus-visible,#appScreen textarea:focus-visible,#appScreen [tabindex]:focus-visible{outline:2px solid var(--chat-focus);outline-offset:3px}
+#appScreen .chat-shell,#appScreen .main{display:flex;min-width:0;min-height:0;flex-direction:column;height:100dvh;background:var(--chat-bg)}
+#appScreen .topbar{display:flex;align-items:center;gap:16px;min-height:72px;padding:12px max(24px,calc((100vw - 1280px)/2));border-bottom:1px solid var(--chat-line);background:var(--chat-surface);box-shadow:0 1px 0 rgba(17,17,17,.02);backdrop-filter:none}
+#appScreen .topbar-brand{display:flex;align-items:baseline;gap:10px;min-width:0;margin-right:auto}#appScreen .topbar-brand strong{font-size:18px;letter-spacing:-.035em}#appScreen .topbar-brand span{font-size:13px;color:var(--chat-ink-muted);white-space:nowrap}
+#appScreen .meta{font-size:12px;color:var(--chat-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#appScreen .topbar-actions{display:flex;align-items:center;gap:8px}
+#appScreen .nav-action,#appScreen .profile-control,#appScreen .history-close,#appScreen .pp-close{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 13px;border:1px solid var(--chat-line);border-radius:10px;background:var(--chat-surface);color:var(--chat-ink);font-size:13px;font-weight:600;transition:background var(--chat-duration),border-color var(--chat-duration),transform var(--chat-duration)}
+#appScreen .nav-action:hover,#appScreen .profile-control:hover,#appScreen .history-close:hover,#appScreen .pp-close:hover{background:var(--chat-surface-muted);border-color:#b9bdc2}#appScreen .nav-action:active,#appScreen .profile-control:active{transform:translateY(1px)}
+#appScreen .profile-wrap{position:relative}#appScreen .profile-control{max-width:180px}#appScreen .profile-av{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--chat-ink);color:#fff;font-size:11px}#appScreen .profile-name{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#appScreen .profile-menu{position:absolute;z-index:36;right:0;top:calc(100% + 8px);min-width:154px;padding:8px;border:1px solid var(--chat-line);border-radius:12px;background:var(--chat-surface);box-shadow:var(--chat-shadow)}#appScreen .profile-menu[hidden]{display:none}#appScreen .logout{width:100%;min-height:38px;border:0;border-radius:8px;background:transparent;color:var(--chat-ink);text-align:left;padding:0 10px;font-size:13px}#appScreen .logout:hover{background:var(--chat-surface-muted)}
+#appScreen .stream{flex:1;min-height:0;overflow:auto;padding:36px 0 20px;scroll-behavior:smooth;overscroll-behavior:contain}#appScreen .stream-inner{width:min(100%,var(--chat-content));margin:0 auto;padding:0 28px;display:flex;flex-direction:column;gap:26px}
+#appScreen .welcome{max-width:620px;margin:auto;padding:7vh 0 5vh;text-align:center}#appScreen .welcome h2{margin:0;color:var(--chat-ink);font-size:clamp(31px,4.3vw,48px);letter-spacing:-.045em;line-height:1.06}#appScreen .welcome p{max-width:510px;margin:16px auto 28px;color:var(--chat-ink-muted);font-size:15px;line-height:1.65}#appScreen .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}#appScreen .chip{min-height:40px;padding:0 15px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-surface);color:var(--chat-ink);font-size:13px;transition:background var(--chat-duration),border-color var(--chat-duration)}#appScreen .chip:hover{background:var(--chat-surface-muted);border-color:#afb4ba}#appScreen .chip:disabled{opacity:.5;cursor:not-allowed}
+#appScreen .msg{display:flex;gap:12px;align-items:flex-start}#appScreen .msg.user{justify-content:flex-end}#appScreen .avatar{display:grid;place-items:center;flex:none;width:32px;height:32px;border:1px solid var(--chat-line);border-radius:50%;background:var(--chat-surface-muted);color:var(--chat-ink);font-size:12px;font-weight:700}#appScreen .avatar.ai{background:var(--chat-ink);border-color:var(--chat-ink);color:#fff}#appScreen .bubble{max-width:min(80%,650px);font-size:14px;line-height:1.7}#appScreen .msg.user .bubble{padding:11px 15px;border-radius:16px 16px 4px 16px;background:var(--chat-ink);color:#fff}#appScreen .msg.ai .bubble{min-width:0;padding:2px 0;color:var(--chat-ink)}#appScreen .who{font-size:12px;font-weight:700;margin-bottom:5px}#appScreen .thinking{display:flex;align-items:center;gap:9px;color:var(--chat-ink-muted);font-size:13px}#appScreen .thinking::before{content:"N";display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--chat-surface-muted);color:var(--chat-ink);font-size:10px;font-weight:700}#appScreen .tok{display:inline}#appScreen .caret{display:inline-block;width:2px;height:1.15em;margin-left:2px;vertical-align:-.16em;background:var(--chat-ink);animation:chat-caret 1s steps(2,end) infinite}@keyframes chat-caret{50%{opacity:0}}
+#appScreen .react{margin-top:14px;padding:14px;border:1px solid var(--chat-line);border-radius:12px;background:var(--chat-surface-muted)}#appScreen .react-h{margin-bottom:10px;font-size:12px;font-weight:700}#appScreen .react-step{display:grid;grid-template-columns:64px minmax(0,1fr);gap:7px 12px;padding:8px 0;border-top:1px solid var(--chat-line)}#appScreen .react-step:first-of-type{border-top:0}#appScreen .react-k{font-size:11px;font-weight:700;color:var(--chat-ink-muted);text-transform:uppercase;letter-spacing:.06em}#appScreen .react-v{font-size:13px;color:var(--chat-ink)}
+#appScreen .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}#appScreen .opt{min-height:40px;padding:0 14px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-surface);color:var(--chat-ink);font-size:13px}#appScreen .opt.picked{border-color:var(--chat-ink);background:var(--chat-ink);color:#fff}#appScreen .opts.done .opt:not(.picked){opacity:.45;pointer-events:none}
+#appScreen .recs{display:grid;gap:12px;margin-top:16px}#appScreen .rec{display:block;width:100%;padding:16px;border:1px solid var(--chat-line);border-radius:12px;background:var(--chat-surface);color:var(--chat-ink);text-align:left;box-shadow:0 1px 1px rgba(17,17,17,.03);transition:border-color var(--chat-duration),box-shadow var(--chat-duration),transform var(--chat-duration)}#appScreen .rec:hover{border-color:#aeb3b8;box-shadow:var(--chat-shadow);transform:translateY(-1px)}#appScreen .rec.active{border-color:var(--chat-ink);box-shadow:0 0 0 1px var(--chat-ink)}#appScreen .rec-head{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;margin-bottom:8px}#appScreen .rec-title{font-size:15px;font-weight:700}#appScreen .rec-rank{color:var(--chat-ink-muted);font-size:12px}#appScreen .rec-reason{margin-bottom:13px;color:var(--chat-ink-muted);font-size:13px;line-height:1.6}#appScreen .rec-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px}#appScreen .sum{padding:10px;border:1px solid var(--chat-line);border-radius:8px;background:#fafafa}#appScreen .sum-h{margin-bottom:5px;font-size:11px;font-weight:700;color:var(--chat-ink-muted)}#appScreen .sum ul{padding:0;list-style:none}#appScreen .sum li{font-size:12px;line-height:1.5;color:var(--chat-ink-muted)}#appScreen .rec-open-hint{margin-top:5px;color:var(--chat-ink-muted);font-size:11px}#appScreen .notice{margin-top:10px;color:var(--chat-ink-muted);font-size:12px}
+#appScreen .composer{flex:none;padding:16px 28px calc(18px + env(safe-area-inset-bottom));border:0;background:linear-gradient(transparent,var(--chat-bg) 34%)}#appScreen .composer-inner{width:min(100%,var(--chat-content));margin:0 auto}#appScreen .input-wrap{display:flex;gap:10px;align-items:flex-end;padding:8px 8px 8px 16px;border:1px solid var(--chat-line);border-radius:18px;background:var(--chat-surface);box-shadow:var(--chat-shadow)}#appScreen .input-wrap:focus-within{border-color:var(--chat-focus);box-shadow:0 0 0 3px rgba(63,68,74,.14),var(--chat-shadow)}#appScreen #input{flex:1;min-width:0;max-height:140px;padding:7px 0;border:0;outline:0;resize:none;background:transparent;color:var(--chat-ink);font-size:14px;line-height:1.55}#appScreen #input::placeholder{color:#73777c}#appScreen #send{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:50%;background:var(--chat-ink);color:#fff}#appScreen #send:disabled{opacity:.38;cursor:not-allowed}#appScreen #send svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+#appScreen #historyBackdrop{position:absolute;inset:0;z-index:30;background:rgba(17,19,21,.28)}#appScreen #historyBackdrop[hidden],#appScreen #historyDrawer[aria-hidden="true"]{display:none}#appScreen #historyDrawer{position:absolute;z-index:31;left:0;top:0;bottom:0;width:min(320px,calc(100vw - 24px));display:flex;flex-direction:column;padding:18px;border-right:1px solid var(--chat-line);background:var(--chat-surface);box-shadow:var(--chat-shadow)}#appScreen .history-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--chat-line)}#appScreen .history-head h2{font-size:15px}#appScreen .history-close{width:44px;padding:0;border-radius:50%}#appScreen .hist{display:flex;flex-direction:column;gap:5px;overflow:auto;padding-top:14px}#appScreen .hist-item{display:block;width:100%;min-height:44px;padding:0 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--chat-ink);overflow:hidden;text-align:left;text-overflow:ellipsis;white-space:nowrap;font-size:13px}#appScreen .hist-item:hover,#appScreen .hist-item.on{background:var(--chat-surface-muted);border-color:var(--chat-line)}
+#appScreen .product-panel{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;border-left:1px solid var(--chat-line);background:var(--chat-surface);opacity:0;transform:translateX(18px);transition:opacity var(--chat-duration),transform var(--chat-duration)}#appScreen.panel-open .product-panel{opacity:1;transform:none}#appScreen .pp-resizer{position:absolute;left:-4px;inset-block:0;width:8px;z-index:5;cursor:col-resize}#appScreen .pp-head{display:flex;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid var(--chat-line)}#appScreen .pp-eyebrow,#appScreen .pp-rank{font-size:11px;color:var(--chat-ink-muted)}#appScreen .pp-title{font-size:16px;font-weight:700}#appScreen .pp-close{width:44px;padding:0;border-radius:50%}#appScreen .pp-prodtabs{display:flex;gap:6px;overflow:auto;padding:10px;border-bottom:1px solid var(--chat-line)}#appScreen .pp-prodtab{flex:none;min-height:34px;padding:0 10px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-surface);color:var(--chat-ink);font-size:12px}#appScreen .pp-prodtab.on{background:var(--chat-ink);border-color:var(--chat-ink);color:#fff}#appScreen .pp-bwbar{display:flex;gap:8px;padding:9px 12px;border-bottom:1px solid var(--chat-line);background:var(--chat-surface-muted);font-size:11px}#appScreen .pp-url{flex:1;overflow:hidden;color:var(--chat-ink-muted);text-overflow:ellipsis;white-space:nowrap}#appScreen .pp-ext{color:var(--chat-ink);font-weight:700;text-decoration:none}#appScreen .pp-webwrap{position:relative;flex:1;min-height:0;overflow:hidden;background:#fff}#appScreen .pp-webframe{position:absolute;left:0;top:0;display:none;border:0;transform-origin:top left}#appScreen .pp-webwrap.live .pp-webframe{display:block}#appScreen .pl-empty{position:absolute;left:50%;top:50%;max-width:80%;color:var(--chat-ink-muted);font-size:13px;line-height:1.6;text-align:center;transform:translate(-50%,-50%)}
+#appScreen #novaBuddy{position:fixed;right:24px;bottom:102px;z-index:20;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--chat-line);border-radius:50%;background:var(--chat-surface);box-shadow:var(--chat-shadow);color:var(--chat-ink);font-weight:700;transition:background var(--chat-duration),color var(--chat-duration)}#appScreen #novaBuddy:hover,#appScreen #novaBuddy.panel-open{background:var(--chat-ink);color:#fff}#appScreen .nb-panel{position:fixed;right:24px;bottom:156px;z-index:32;width:min(288px,calc(100vw - 32px));padding:16px;border:1px solid var(--chat-line);border-radius:12px;background:var(--chat-surface);box-shadow:var(--chat-shadow)}#appScreen .nb-panel[aria-hidden="true"]{display:none}#appScreen .nb-panel-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}#appScreen .nb-avatar{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--chat-ink);color:#fff;font-size:12px;font-weight:700}#appScreen .nb-panel-name{font-size:14px;font-weight:700}#appScreen .nb-panel-sub,#appScreen .nb-greet,#appScreen .nb-quick-label{color:var(--chat-ink-muted);font-size:12px}#appScreen .nb-greet{margin:10px 0 12px;line-height:1.5}#appScreen .nb-quicks{display:grid;gap:7px}#appScreen .nb-quick,#appScreen .nb-newchat{min-height:40px;width:100%;padding:0 11px;border:1px solid var(--chat-line);border-radius:8px;background:var(--chat-surface);color:var(--chat-ink);text-align:left;font-size:12px}#appScreen .nb-quick:hover,#appScreen .nb-newchat:hover{background:var(--chat-surface-muted)}#appScreen .nb-newchat{margin-top:10px;background:var(--chat-ink);color:#fff;border-color:var(--chat-ink);text-align:center}
+#appScreen .nova-buddy .nb-glow,#appScreen .nova-buddy .nb-orbit,#appScreen .nova-buddy .nb-antenna,#appScreen .nova-buddy .nb-body,#appScreen .nova-buddy .nb-tip{display:none}
+@media(max-width:1023px){#appScreen,#appScreen.panel-open{grid-template-columns:minmax(0,1fr)}#appScreen .product-panel{position:absolute;right:0;top:0;bottom:0;width:min(var(--pw,640px),100vw);z-index:31;box-shadow:var(--chat-shadow)}#appScreen .topbar{padding-inline:20px}#appScreen .meta{display:none}}
+@media(max-width:767px){#appScreen .topbar{min-height:64px;padding-inline:12px;gap:8px}#appScreen .topbar-brand{gap:6px}#appScreen .topbar-brand span{display:none}#appScreen .nav-action{min-width:44px;min-height:44px;padding:0 10px;font-size:12px;white-space:nowrap}#appScreen .profile-name{display:none}#appScreen .profile-control{width:44px;padding:0;border-radius:50%}#appScreen .stream{padding-top:24px}#appScreen .stream-inner{padding-inline:16px;gap:20px}#appScreen .welcome{padding-top:5vh}#appScreen .welcome h2{font-size:32px}#appScreen .rec-summary{grid-template-columns:1fr}#appScreen .composer{padding:12px 16px calc(12px + env(safe-area-inset-bottom))}#appScreen #novaBuddy{right:16px;bottom:92px}#appScreen .nb-panel{right:16px;bottom:146px}}
+@media(prefers-reduced-motion:reduce){#appScreen *,#appScreen *::before,#appScreen *::after{scroll-behavior:auto!important;animation:none!important;transition-duration:.01ms!important}}
+
+/* ===== NOVA SHOPPING EDITORIAL REDESIGN =====
+   Scoped entirely to #appScreen. Warm-white surfaces, black/gray ink, soft
+   borders, restrained shadows. Empty-state orb + floating products only exist
+   in #welcome and disappear once the first shopper message is submitted.
+   Recommendation product cards render only fields present in the SSE payload. */
+#appScreen{--chat-content:960px}
+#appScreen .stream{background:var(--chat-bg)}
+#appScreen .stream-inner{gap:28px}
+
+/* -- empty state: orb, floating products, big search -- */
+#appScreen .welcome{width:min(100%,860px);max-width:none;margin:auto;padding:clamp(24px,6vh,64px) 0 40px;text-align:center}
+#appScreen .welcome-stage{position:relative;width:100%;min-height:clamp(150px,22vh,210px);margin-bottom:6px;pointer-events:none}
+#appScreen .welcome-orb{position:absolute;left:50%;top:52%;width:clamp(96px,12vw,128px);height:clamp(96px,12vw,128px);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 34% 30%,#fdfdff,#e7e6f2 46%,#d9dbe8 70%,#cfd2dd);box-shadow:0 20px 40px rgba(17,17,17,.12),inset 0 2px 6px rgba(255,255,255,.9),inset 0 -8px 18px rgba(120,124,150,.28);display:grid;place-items:center}
+#appScreen .welcome-orb::after{content:"";position:absolute;width:150%;height:34px;left:-25%;top:50%;transform:translateY(-50%);border-radius:50%;border:1px solid rgba(120,124,150,.25)}
+#appScreen .welcome-orb b{font-size:clamp(30px,4vw,40px);font-weight:800;color:var(--chat-ink);letter-spacing:-.04em}
+#appScreen .welcome-obj{position:absolute;width:clamp(46px,6vw,68px);height:auto;opacity:.96;filter:drop-shadow(0 12px 14px rgba(17,17,17,.1));animation:nova-float 6s ease-in-out infinite}
+#appScreen .welcome-obj svg{display:block;width:100%;height:auto}
+#appScreen .obj-1{left:6%;top:8%;transform:rotate(-8deg);animation-delay:-.4s}
+#appScreen .obj-2{left:20%;top:56%;transform:rotate(6deg);animation-delay:-2.1s}
+#appScreen .obj-3{right:7%;top:14%;transform:rotate(9deg);animation-delay:-1.2s}
+#appScreen .obj-4{right:19%;top:60%;transform:rotate(-7deg);animation-delay:-3s}
+@keyframes nova-float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+#appScreen .welcome-kicker{display:inline-block;margin-bottom:14px;color:#8b8e93;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+#appScreen .welcome h2{margin:0;font-size:clamp(38px,5.4vw,60px);letter-spacing:-.055em;line-height:1.01;color:var(--chat-ink)}
+#appScreen .welcome h2 .muted{color:#8f9297}
+#appScreen .welcome p{max-width:540px;margin:18px auto 0;color:var(--chat-ink-muted);font-size:15.5px;line-height:1.7}
+#appScreen .welcome-search{width:min(100%,680px);margin:30px auto 0}
+#appScreen .welcome .chips{margin-top:20px;gap:10px}
+#appScreen .chip{min-height:42px;padding:0 18px;background:var(--chat-surface);border-color:var(--chat-line);box-shadow:0 1px 2px rgba(17,17,17,.04);font-size:13px}
+#appScreen .chip:hover{background:var(--chat-surface-muted);border-color:#afb4ba;transform:translateY(-1px)}
+#appScreen .chips-hint{margin:0 0 12px;color:#9a9da1;font-size:12px}
+
+/* -- conversation typography -- */
+#appScreen .msg{gap:14px}
+#appScreen .msg.user .bubble{max-width:min(74%,560px);padding:12px 16px;border-radius:18px 18px 6px 18px;background:var(--chat-surface-muted);border:1px solid var(--chat-line);color:var(--chat-ink)}
+#appScreen .msg.ai .bubble{max-width:min(100%,760px);padding:2px 0}
+#appScreen .msg.ai .who{font-size:12px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+#appScreen .msg.ai .body{font-size:14.5px;line-height:1.72}
+
+/* -- agent progress stages -- */
+#appScreen .thinking{align-items:flex-start;gap:11px}
+#appScreen .thinking::before{margin-top:1px}
+#appScreen .agent-stages{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+#appScreen .agent-stage{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-surface);color:#8b8e93;font-size:11.5px;font-weight:600}
+#appScreen .agent-stage::before{content:"";width:6px;height:6px;border-radius:50%;background:#c4c7cc}
+#appScreen .agent-stage.on{color:var(--chat-ink);border-color:#b7bbc0;background:var(--chat-surface-muted)}
+#appScreen .agent-stage.on::before{background:var(--chat-ink)}
+
+/* -- clarification pill chips -- */
+#appScreen .opts{gap:9px;margin-top:15px}
+#appScreen .opt{min-height:40px;padding:0 16px;border-radius:999px;font-size:13px}
+
+/* -- PRODUCT CARDS: 3 desktop / 2 tablet / 1 mobile -- */
+#appScreen .recs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+#appScreen .rec{display:flex;flex-direction:column;min-width:0;min-height:100%;padding:0;overflow:hidden;border:1px solid var(--chat-line);border-radius:16px;background:var(--chat-surface);color:var(--chat-ink);text-align:left;box-shadow:0 2px 6px rgba(17,17,17,.04);transition:border-color var(--chat-duration),box-shadow var(--chat-duration),transform var(--chat-duration)}
+#appScreen .rec:hover{border-color:#aeb3b8;box-shadow:0 10px 22px rgba(17,17,17,.09);transform:translateY(-2px)}
+#appScreen .rec:focus-visible{outline:2px solid var(--chat-focus);outline-offset:3px}
+#appScreen .rec.active{border-color:var(--chat-ink);box-shadow:0 0 0 1px var(--chat-ink),0 10px 22px rgba(17,17,17,.09)}
+#appScreen .rec-media{position:relative;display:grid;place-items:center;height:150px;background:linear-gradient(180deg,#f4f5f6,#eceef0);border-bottom:1px solid var(--chat-line);overflow:hidden}
+#appScreen .rec-media img{width:100%;height:150px;object-fit:cover}
+#appScreen .rec-media-fallback{color:#9a9da1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+#appScreen .rec-badge{position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:999px;background:var(--chat-ink);color:#fff;font-size:10.5px;font-weight:700}
+#appScreen .rec-body{display:flex;flex:1;flex-direction:column;padding:16px}
+#appScreen .rec-head{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+#appScreen .rec-title{font-size:16px;font-weight:700;line-height:1.3}
+#appScreen .rec-rank{flex:none;color:#9a9da1;font-size:11px;font-weight:700}
+#appScreen .rec-price-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:10px}
+#appScreen .rec-price{font-size:18px;font-weight:800;letter-spacing:-.02em}
+#appScreen .rec-rating{color:#575b60;font-size:12.5px;font-weight:600}
+#appScreen .rec-match{margin-left:auto;padding:3px 9px;border-radius:999px;background:var(--chat-surface-muted);border:1px solid var(--chat-line);color:var(--chat-ink);font-size:11px;font-weight:700}
+#appScreen .rec-reason{margin-bottom:13px;color:var(--chat-ink-muted);font-size:13px;line-height:1.6}
+#appScreen .rec-reason:empty{display:none}
+#appScreen .rec-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+#appScreen .sum{padding:10px;border:1px solid var(--chat-line);border-radius:9px;background:#fafafa}
+#appScreen .sum-h{margin-bottom:5px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--chat-ink-muted)}
+#appScreen .sum ul{margin:0;padding:0;list-style:none;display:grid;gap:3px}
+#appScreen .sum li{font-size:12px;line-height:1.45;color:var(--chat-ink-muted)}
+#appScreen .rec-review{margin-bottom:12px;color:var(--chat-ink-muted);font-size:12px;line-height:1.55}
+#appScreen .rec-review strong{display:block;margin-bottom:3px;color:var(--chat-ink);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+#appScreen .rec-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:13px;border-top:1px solid var(--chat-line);color:var(--chat-ink);font-size:13px;font-weight:700}
+#appScreen .rec-cta::after{content:"\2192";font-size:16px;line-height:1}
+#appScreen .rec-open-hint,#appScreen .rec-link{display:none}
+#appScreen .notice{margin-top:10px;color:var(--chat-ink-muted);font-size:12px}
+#appScreen .notices{grid-column:1/-1}
+
+/* -- composer: large centered rounded search -- */
+#appScreen .composer{padding-top:20px}
+#appScreen .input-wrap{padding:9px 9px 9px 20px;border-radius:22px}
+#appScreen .welcome-search .input-wrap{box-shadow:0 8px 24px rgba(17,17,17,.08)}
+
+@media(max-width:1023px){#appScreen .recs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){
+  #appScreen .welcome{padding-top:24px}
+  #appScreen .welcome-stage{min-height:132px;margin-bottom:2px}
+  #appScreen .welcome-obj{width:44px}
+  #appScreen .obj-1{left:2%}#appScreen .obj-3{right:2%}#appScreen .obj-2,#appScreen .obj-4{display:none}
+  #appScreen .welcome h2{font-size:34px}
+  #appScreen .recs{grid-template-columns:1fr}
+  #appScreen .rec-summary{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){#appScreen .welcome-obj{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1022,116 +1152,61 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 
 <!-- ===== APP SCREEN ===== -->
 <div class="app hidden" id="appScreen">
-  <button class="side-toggle" id="sideToggle" title="Toggle history" aria-label="Toggle history sidebar">
-    <svg viewBox="0 0 24 24"><path d="M9 4v16M4 6h16M4 12h16M4 18h16"/></svg>
-  </button>
-  <aside class="side">
-    <div class="brand">
-      <div class="brand-mark"></div>
-      <div><div class="brand-name">Nova</div><div class="brand-sub">Shopping Assistant</div></div>
-    </div>
-    <button class="new-chat" id="newChat">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      New conversation
-    </button>
-    <div class="side-label">Recent</div>
-    <div class="hist" id="hist"></div>
-    <div class="side-foot">
-      <div class="user-chip"><span class="av" id="userAv">?</span><span class="nm" id="userName">guest</span></div>
-      <button class="logout" id="logout">Sign out</button>
-    </div>
-  </aside>
-  <main class="main">
-    <header class="topbar">
-      <h1>Shopping Assistant</h1>
-      <span class="meta" id="topMeta">Tell me what you want to buy</span>
-    </header>
-    <div class="stream" id="stream">
-      <div class="stream-inner" id="streamInner">
-        <div class="welcome" id="welcome">
-          <div class="welcome-fx" id="welcomeFx"><canvas id="welcomeOrb"></canvas><div class="welcome-spot"></div></div>
-          <h2>What are you looking for, <span class="hl">I will find it</span></h2>
-          <p>Share your budget, use case and preferences. I blend real reviews with social buzz to give you 3 to 5 best picks.</p>
-          <div class="chips">
-            <span class="chip">Noise-cancelling headphones for commuting, budget 2000</span>
-            <span class="chip">Home gym gear for fat loss</span>
-            <span class="chip">A gift for a cat lover</span>
-            <span class="chip">A beginner-friendly coffee machine</span>
+  <div class="chat-shell">
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-brand"><strong>Nova</strong><span>Shopping Assistant</span></div>
+        <span class="meta" id="topMeta" role="status">Ready to help you shop</span>
+        <div class="topbar-actions">
+          <button class="nav-action" id="newChat" type="button" aria-label="New chat">New chat</button>
+          <button class="nav-action" id="sideToggle" type="button" aria-label="Recent conversations" aria-controls="historyDrawer" aria-expanded="false">Recent</button>
+          <div class="profile-wrap">
+            <button class="profile-control" id="profileControl" type="button" aria-expanded="false" aria-controls="profileMenu"><span class="profile-av" id="userAv">?</span><span class="profile-name" id="userName">guest</span></button>
+            <div class="profile-menu" id="profileMenu" hidden><button class="logout" id="logout" type="button">Sign out</button></div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="composer">
-      <div class="composer-inner">
-        <div class="input-wrap">
-          <textarea id="input" rows="1" placeholder="Describe what you need. Enter to send, Shift+Enter for a new line"></textarea>
-          <button class="send" id="send" disabled>
-            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+      </header>
+      <div class="stream" id="stream"><div class="stream-inner" id="streamInner">
+        <div class="welcome" id="welcome">
+          <div class="welcome-stage" aria-hidden="true">
+            <div class="welcome-obj obj-1"><svg viewBox="0 0 68 68"><path d="M15 40c0-11 8-19 19-19s19 8 19 19" fill="none" stroke="#17191b" stroke-width="5" stroke-linecap="round"/><rect x="9" y="37" width="15" height="23" rx="7" fill="#d5d7da"/><rect x="44" y="37" width="15" height="23" rx="7" fill="#d5d7da"/></svg></div>
+            <div class="welcome-obj obj-2"><svg viewBox="0 0 68 68"><rect x="14" y="20" width="40" height="30" rx="6" fill="#d5d7da"/><rect x="27" y="14" width="14" height="8" rx="2" fill="#c3c6ca"/><circle cx="34" cy="35" r="9" fill="#17191b"/><circle cx="34" cy="35" r="4.5" fill="#5b5f64"/></svg></div>
+            <div class="welcome-obj obj-3"><svg viewBox="0 0 68 68"><circle cx="34" cy="30" r="17" fill="#e7e8ea" stroke="#c3c6ca" stroke-width="2"/><circle cx="34" cy="30" r="9" fill="#17191b"/><path d="M34 16v6M34 38v6M20 30h6M42 30h6" stroke="#8b8e93" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="welcome-obj obj-4"><svg viewBox="0 0 68 68"><path d="M18 34c0-5 4-9 10-10l16-3c6-1 9-6 13-11 2-3 6-4 8-1v27H24c-4 0-6-2-6-2Z" fill="#d5d7da"/><path d="M18 47h46v6H24c-4 0-6-3-6-6Z" fill="#17191b"/></svg></div>
+            <div class="welcome-orb"><b>N</b></div>
+          </div>
+          <span class="welcome-kicker">Shopping, considered</span>
+          <h2>What are you looking for?</h2>
+          <p>Tell me what you need. I’ll help narrow the options and find what fits you best.</p>
+          <div class="chips">
+            <button class="chip" type="button">Running shoes</button><button class="chip" type="button">Coffee machine</button><button class="chip" type="button">Headphones</button><button class="chip" type="button">Camera</button>
+          </div>
         </div>
-        <div class="composer-hint">Nova reads a simulated profile and asks follow-ups. Recommendations are for reference.</div>
-      </div>
-    </div>
-  </main>
-  <aside class="product-panel" id="productPanel" aria-hidden="true">
-    <div class="pp-resizer" id="ppResizer" title="Drag to resize"></div>
-    <div class="pp-head">
-      <div>
-        <div class="pp-eyebrow">Live on Amazon</div>
-        <div class="pp-title" id="ppTitle">Recommendations</div>
-        <div class="pp-rank" id="ppRank"></div>
-      </div>
-      <button class="pp-close" id="ppClose" title="Close" aria-label="Close product panel">
-        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <div class="pp-prodtabs" id="ppProdTabs"></div>
-    <div class="pp-bwbar">
-      <span class="pp-url" id="ppUrl">-</span>
-      <a class="pp-ext" id="ppExt" href="#" target="_blank" rel="noopener" title="Open on Amazon">Amazon
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-    <div class="pp-webwrap" id="ppWebwrap">
-      <span class="pl-empty" id="plEmpty">Pick a product above. AliExpress results load right here - click, scroll and open products inside this panel.</span>
-      <iframe class="pp-webframe" id="ppWebframe" title="product search"
-        referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-    </div>
+      </div></div>
+      <div class="composer"><div class="composer-inner"><div class="input-wrap">
+        <textarea id="input" rows="1" placeholder="Tell Nova what you're looking for..."></textarea>
+        <button id="send" type="button" aria-label="Send message" disabled><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div></div></div>
+    </main>
+  </div>
+  <div id="historyBackdrop" hidden></div>
+  <aside id="historyDrawer" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true">
+    <header class="history-head"><h2 id="historyTitle">Recent conversations</h2><button class="history-close" id="historyClose" type="button" aria-label="Close recent conversations">×</button></header>
+    <div class="hist" id="hist" role="list"></div>
   </aside>
-
-  <!-- floating Nova mascot -->
-  <div class="nova-buddy" id="novaBuddy" title="Nova" role="button" aria-label="Nova assistant">
-    <div class="nb-glow"></div>
-    <div class="nb-orbit"></div>
-    <div class="nb-antenna"></div>
-    <div class="nb-body">
-      <div class="nb-arm l"></div>
-      <div class="nb-arm r"></div>
-      <div class="nb-visor">
-        <div class="nb-eye l"></div>
-        <div class="nb-eye r"></div>
-        <div class="nb-cheek"></div>
-      </div>
-    </div>
-    <div class="nb-tip">Hi, I'm Nova. Ready to help you shop!</div>
+  <aside class="product-panel" id="productPanel" aria-hidden="true" aria-label="Shopping browser">
+    <div class="pp-resizer" id="ppResizer" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Resize shopping browser" aria-valuemin="300" aria-valuenow="640" aria-valuemax="1120"></div>
+    <div class="pp-head"><div><div class="pp-eyebrow">Shopping browser</div><div class="pp-title" id="ppTitle">Recommendations</div><div class="pp-rank" id="ppRank"></div></div><button class="pp-close" id="ppClose" type="button" aria-label="Close product panel">×</button></div>
+    <div class="pp-prodtabs" id="ppProdTabs"></div><div class="pp-bwbar"><span class="pp-url" id="ppUrl">-</span><a class="pp-ext" id="ppExt" href="#" target="_blank" rel="noopener">Amazon</a></div>
+    <div class="pp-webwrap" id="ppWebwrap"><span class="pl-empty" id="plEmpty">Choose a recommendation to browse its shopping results.</span><iframe class="pp-webframe" id="ppWebframe" title="Selected product search" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe></div>
+  </aside>
+  <button class="nova-buddy" id="novaBuddy" type="button" aria-label="Nova assistant" aria-controls="nbPanel" aria-expanded="false">N</button>
+  <div class="nb-panel" id="nbPanel" role="dialog" aria-label="Nova quick panel" aria-hidden="true">
+    <div class="nb-panel-head"><div class="nb-avatar">N</div><div><div class="nb-panel-name">Nova</div><div class="nb-panel-sub">Shopping Assistant</div></div></div>
+    <div class="nb-greet">Start with a common product search, or tell me what you need.</div><div class="nb-quick-label">Quick starts</div>
+    <div class="nb-quicks"><button class="nb-quick" type="button">Running shoes</button><button class="nb-quick" type="button">Coffee machine</button><button class="nb-quick" type="button">Headphones</button></div>
+    <button class="nb-newchat" id="nbNewChat" type="button">New chat</button>
   </div>
-
-  <!-- Nova mini panel (opens on mascot click) -->
-  <div class="nb-panel" id="nbPanel" role="dialog" aria-label="Nova quick panel">
-    <div class="nb-panel-head">
-      <div class="nb-avatar">N</div>
-      <div><div class="nb-panel-name">Nova</div><div class="nb-panel-sub">Shopping Assistant</div></div>
-    </div>
-    <div class="nb-greet">Hey! Tell me what you're after and I'll find the best picks with real reviews. Try one of these:</div>
-    <div class="nb-quick-label">Quick starts</div>
-    <div class="nb-quicks">
-      <button class="nb-quick">Noise-cancelling headphones for commuting, budget 2000</button>
-      <button class="nb-quick">A gift for a cat lover</button>
-      <button class="nb-quick">A beginner-friendly coffee machine</button>
-    </div>
-    <button class="nb-newchat" id="nbNewChat">Start a new conversation</button>
-  </div>
-
 </div>
 
 <script>
@@ -1293,14 +1368,12 @@ function enterApp(){
   pushedAuth=false;
   try{ history.replaceState({nova:"app"},"","#/app"); }catch(e){}
   $("#userName").textContent=username; $("#userAv").textContent=(username[0]||"?").toUpperCase();
-  if(welcome&&welcome.style.display!=="none") startWelcomeVisuals();
   input.focus();
 }
 $("#logout").onclick=()=>{
   token=null;username=null; localStorage.removeItem("nova_token"); localStorage.removeItem("nova_user");
   streamInner.innerHTML=""; streamInner.appendChild(welcome); welcome.style.display="";
   for(const k in sessions) delete sessions[k]; histEl.innerHTML=""; sessionId=newId();
-  stopWelcomeVisuals();
   pushedAuth=false;
   try{ history.replaceState({nova:"welcome"},"",location.pathname+location.search); }catch(e){}
   enterWelcome();
@@ -1341,7 +1414,6 @@ $("#newChat").onclick=()=>{
   if(typeof closeProduct==="function") closeProduct();
   welcome.style.display=""; $("#topMeta").textContent="Tell me what you want to buy";
   [...histEl.children].forEach(h=>h.classList.remove("on"));
-  startWelcomeVisuals();
 };
 
 /* ===== left history sidebar collapse/expand ===== */
@@ -1533,8 +1605,6 @@ function renderRecs(container,recs,status){
     wrap.appendChild(card); cards.push(card);
   });
   container.appendChild(wrap);
-  // auto-open the panel and browse the top pick on the real Amazon window
-  if(recs.length){ if(cards[0]) cards[0].classList.add("active"); activeRecCard=cards[0]||null; openRecommendationsPanel(recs); }
   if(status==="insufficient"){
     const n=document.createElement("div"); n.className="notices";
     n.innerHTML='<div class="notice">Few items matched. Showing all available results.</div>';
@@ -1633,6 +1703,52 @@ function parseSSE(raw){
 }
 async function typeFallback(el,text){ el.textContent=""; for(const ch of text){ el.textContent+=ch; await sleep(14);} scrollDown(); }
 function scrollDown(){ stream.scrollTop=stream.scrollHeight; }
+
+/* ---- chat redesign overrides ---- */
+let historyOpener=null, productPanelOpener=null, profileOpener=null;
+const recommendationGroups=new Map();
+function syncSendState(){ sendBtn.disabled=busy||!input.value.trim(); }
+function autosize(){ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px"; }
+function setActiveHistory(id){ [...histEl.children].forEach(item=>{ const on=item.dataset.session===id; item.classList.toggle("on",on); if(on)item.setAttribute("aria-current","true"); else item.removeAttribute("aria-current"); }); }
+function saveSession(){ if(sessions[sessionId]) sessions[sessionId].html=streamInner.innerHTML; }
+function closeProfileMenu({restoreFocus=true}={}){ const menu=$("#profileMenu"), control=$("#profileControl"); menu.hidden=true; control.setAttribute("aria-expanded","false"); if(restoreFocus&&profileOpener) profileOpener.focus(); }
+function openProfileMenu(){ closeHistoryDrawer({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); const menu=$("#profileMenu"), control=$("#profileControl"); profileOpener=control; menu.hidden=false; control.setAttribute("aria-expanded","true"); }
+function getDrawerFocusables(){ return [...$("#historyDrawer").querySelectorAll('button:not([disabled])')]; }
+function openHistoryDrawer(){ closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); closeProduct({restoreFocus:false}); historyOpener=$("#sideToggle"); $("#historyBackdrop").hidden=false; const drawer=$("#historyDrawer"); drawer.setAttribute("aria-hidden","false"); appEl.classList.add("history-open"); $("#sideToggle").setAttribute("aria-expanded","true"); const shell=$("#appScreen .chat-shell"); if("inert" in shell) shell.inert=true; const active=histEl.querySelector(".hist-item.on"); (active||$("#historyClose")).focus(); }
+function closeHistoryDrawer({restoreFocus=true}={}){ const drawer=$("#historyDrawer"); if(drawer.getAttribute("aria-hidden")==="true") return; $("#historyBackdrop").hidden=true; drawer.setAttribute("aria-hidden","true"); appEl.classList.remove("history-open"); $("#sideToggle").setAttribute("aria-expanded","false"); const shell=$("#appScreen .chat-shell"); if("inert" in shell) shell.inert=false; if(restoreFocus&&historyOpener) historyOpener.focus(); }
+function pushHistory(text){ if(sessions[sessionId]) return; const title=text.length>42?text.slice(0,42)+"...":text; sessions[sessionId]={title,html:streamInner.innerHTML}; const item=document.createElement("button"); item.type="button"; item.className="hist-item on"; item.textContent=title; item.title=text; item.dataset.session=sessionId; histEl.prepend(item); setActiveHistory(sessionId); }
+function switchToSession(id){ if(!sessions[id]) return; saveSession(); sessionId=id; streamInner.innerHTML=sessions[id].html; setActiveHistory(id); closeProduct({restoreFocus:false}); closeHistoryDrawer(); $("#topMeta").textContent="Ready to help you shop"; syncSendState(); scrollDown(); }
+function resetChat(){ saveSession(); sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome); welcome.style.display=""; setActiveHistory(""); closeProduct({restoreFocus:false}); closeHistoryDrawer({restoreFocus:false}); closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); $("#topMeta").textContent="Ready to help you shop"; input.value=""; autosize(); syncSendState(); input.focus(); }
+function embedSearchUrl(q){ return "https://www.aliexpress.com/wholesale?SearchText="+encodeURIComponent(q); }
+function extShopUrl(q){ return "https://www.amazon.com/s?k="+encodeURIComponent(q); }
+function openRecommendationsPanel(recs){ brProducts=(recs||[]).map(r=>({title:r.title||r.product_id||"Product",q:r.title||r.product_id||"product"})); if(!brProducts.length) return; closeHistoryDrawer({restoreFocus:false}); closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); const tabs=$("#ppProdTabs"); tabs.innerHTML=""; brProducts.forEach((p,index)=>{ const tab=document.createElement("button"); tab.type="button"; tab.className="pp-prodtab"; tab.textContent=p.title; tab.addEventListener("click",()=>selectProduct(index)); tabs.appendChild(tab); }); $("#ppTitle").textContent="Shopping browser"; appEl.classList.add("panel-open"); $("#productPanel").setAttribute("aria-hidden","false"); setTimeout(fitEmbed,180); }
+function selectProduct(index){ const product=brProducts[index]; if(!product) return; [...$("#ppProdTabs").children].forEach((tab,i)=>tab.classList.toggle("on",i===index)); const frame=$("#ppWebframe"), url=embedSearchUrl(product.q); frame.src=url; $("#ppWebwrap").classList.add("live"); $("#plEmpty").style.display="none"; $("#ppUrl").textContent=url.replace(/^https?:\/\//,"").slice(0,52); $("#ppExt").href=extShopUrl(product.q); $("#ppRank").textContent="Viewing #"+(index+1); requestAnimationFrame(fitEmbed); }
+function clearActiveRecommendationCards(){ appEl.querySelectorAll(".rec.active").forEach(card=>{ card.classList.remove("active"); card.setAttribute("aria-pressed","false"); }); }
+function closeProduct({restoreFocus=true}={}){ appEl.classList.remove("panel-open"); $("#productPanel").setAttribute("aria-hidden","true"); clearActiveRecommendationCards(); activeRecCard=null; const frame=$("#ppWebframe"); if(frame)frame.src="about:blank"; $("#ppWebwrap").classList.remove("live"); $("#plEmpty").style.display=""; if(restoreFocus&&productPanelOpener&&productPanelOpener.isConnected) productPanelOpener.focus(); }
+function fitEmbed(){ const wrap=$("#ppWebwrap"),frame=$("#ppWebframe"); if(!wrap||!frame)return; const width=wrap.clientWidth||wrap.getBoundingClientRect().width,height=wrap.clientHeight||wrap.getBoundingClientRect().height; if(width<10||height<10)return; const scale=width/EMBED_FW; frame.style.width=EMBED_FW+"px"; frame.style.height=Math.ceil(height/scale)+"px"; frame.style.transform="scale("+scale.toFixed(4)+")"; }
+function novaReadField(obj,keys){ for(const k of keys){ const v=obj&&obj[k]; if(v!==undefined&&v!==null&&String(v).trim()!=="") return String(v); } return ""; }
+function novaSafeImg(v){ return typeof v==="string"&&/^https?:\/\//i.test(v.trim())?v.trim():""; }
+function renderRecs(container,recs,status){ const wrap=document.createElement("div"); wrap.className="recs"; const groupId="rec-"+Math.random().toString(36).slice(2); recommendationGroups.set(groupId,recs); recs.forEach((rec,index)=>{ const pos=(rec.summary&&rec.summary.positives||[]).slice(0,3),neg=(rec.summary&&rec.summary.negatives||[]).slice(0,3),title=rec.title||rec.product_id||"Product"; const image=novaSafeImg(novaReadField(rec,["image","image_url","product_image","thumbnail","thumbnail_url"])); const price=novaReadField(rec,["price","price_text"]),rating=novaReadField(rec,["rating","rating_score"]),match=novaReadField(rec,["match_score","matchScore","match_percentage","match"]),review=novaReadField(rec,["review_summary","reviewSummary","review"]); const badge=index===0?"Best Match":index===1?"Smart Save":index===2?"Upgrade":""; const card=document.createElement("button"); card.type="button"; card.className="rec"; card.dataset.recGroup=groupId; card.dataset.recIndex=String(index); card.setAttribute("aria-label","View recommendation "+(index+1)+": "+title); card.setAttribute("aria-pressed","false"); const priceRow=(price||rating||match)?('<div class="rec-price-row">'+(price?'<span class="rec-price">'+esc(price)+'</span>':'')+(rating?'<span class="rec-rating">★ '+esc(rating)+'</span>':'')+(match?'<span class="rec-match">'+esc(match)+' match</span>':'')+'</div>'):''; const reviewRow=review?('<div class="rec-review"><strong>Review summary</strong>'+esc(review)+'</div>'):''; card.innerHTML='<div class="rec-media">'+(image?'<img src="'+esc(image)+'" alt="" loading="lazy">':'<span class="rec-media-fallback">Image not provided</span>')+(badge?'<span class="rec-badge">'+badge+'</span>':'')+'</div><div class="rec-body"><div class="rec-head"><div class="rec-title">'+esc(title)+'</div><div class="rec-rank">#'+String(index+1).padStart(2,"0")+'</div></div>'+priceRow+'<div class="rec-reason">'+esc(rec.reason||"")+'</div><div class="rec-summary"><div class="sum"><div class="sum-h">Pros</div><ul>'+(pos.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div><div class="sum"><div class="sum-h">Cons</div><ul>'+(neg.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div></div>'+reviewRow+'<span class="rec-cta">View Product</span></div>'; wrap.appendChild(card); }); container.appendChild(wrap); if(status==="insufficient")renderNotices(container,["Few items matched. Showing all available results."]); scrollDown(); }
+function renderReact(container,steps){ if(!steps||!steps.length)return; const box=document.createElement("div"); box.className="react"; box.innerHTML='<div class="react-h">Nova details</div>'+steps.map(step=>'<div class="react-step"><div class="react-k">Thought</div><div class="react-v">'+esc(step.thought||"")+'</div><div class="react-k">Plan</div><div class="react-v">'+esc(step.plan||"")+'</div><div class="react-k">Action</div><div class="react-v">'+esc(step.action||"")+'</div></div>').join(""); container.appendChild(box); }
+function renderNotices(container,notices){ if(!notices||!notices.length)return; const wrap=document.createElement("div"); wrap.className="notices"; notices.forEach(note=>{const item=document.createElement("div");item.className="notice";item.textContent=note;wrap.appendChild(item);});container.appendChild(wrap); }
+function renderOptions(container,options){ if(!options||!options.length)return; const wrap=document.createElement("div"); wrap.className="opts"; options.forEach(option=>{const button=document.createElement("button");button.type="button";button.className="opt";button.textContent=option;button.setAttribute("aria-pressed","false");wrap.appendChild(button);});container.appendChild(wrap); }
+function addThinking(){ const message=document.createElement("div");message.className="msg ai";message.innerHTML='<div class="avatar ai">N</div><div class="bubble"><div class="thinking" role="status" aria-live="polite"><span>Nova is reviewing your request…</span><span class="agent-stages"><span class="agent-stage on">搜索商品</span><span class="agent-stage">比较价格</span><span class="agent-stage">分析评论</span><span class="agent-stage">生成推荐</span></span></div></div>';streamInner.appendChild(message);scrollDown();return message; }
+function aiBubble(){ const message=document.createElement("div");message.className="msg ai";message.innerHTML='<div class="avatar ai">N</div><div class="bubble"><div class="who">Nova</div><div class="body"></div></div>';streamInner.appendChild(message);return message; }
+function addUser(text){ if(welcome.parentNode)welcome.style.display="none"; const message=document.createElement("div");message.className="msg user";message.innerHTML='<div class="bubble"></div>';message.querySelector(".bubble").textContent=text;streamInner.appendChild(message);scrollDown(); }
+function appendToken(body,text,caret){ const tokenEl=document.createElement("span"); tokenEl.className="tok";tokenEl.textContent=text;body.insertBefore(tokenEl,caret);scrollDown(); }
+async function typeFallback(el,text){ el.textContent=text;scrollDown(); }
+function setBuddyPanel(open,{restoreFocus=true}={}){ const panel=$("#nbPanel"),button=$("#novaBuddy"); panel.setAttribute("aria-hidden",open?"false":"true");button.setAttribute("aria-expanded",open?"true":"false");button.classList.toggle("panel-open",open);if(open){closeHistoryDrawer({restoreFocus:false});closeProfileMenu({restoreFocus:false});closeProduct({restoreFocus:false});panel.querySelector("button").focus();}else if(restoreFocus)button.focus(); }
+async function doSend(){ const text=input.value.trim(); if(!text||busy)return; busy=true;syncSendState(); if(!sessions[sessionId])pushHistory(text); addUser(text); input.value="";autosize();const thinking=addThinking();try{const res=await fetch("/chat/stream",{method:"POST",headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},body:JSON.stringify({session_id:sessionId,message:text})});if(!res.ok||!res.body){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Sorry, the request failed. Please try again.");return;}thinking.remove();const reply=aiBubble(),body=reply.querySelector(".body"),caret=document.createElement("span");caret.className="caret";body.appendChild(caret);const reader=res.body.getReader(),decoder=new TextDecoder();let buffer="",responseData=null;while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});let divider;while((divider=buffer.indexOf("\n\n"))>=0){const event=parseSSE(buffer.slice(0,divider));buffer=buffer.slice(divider+2);if(!event)continue;if(event.event==="token")appendToken(body,event.data.text||"",caret);else if(event.event==="recommendations")responseData=event.data;else if(event.event==="error")appendToken(body,event.data.error||"Request failed",caret);}}caret.remove();if(responseData){renderReact(body,responseData.react_steps);if(responseData.recommendations&&responseData.recommendations.length){renderRecs(body,responseData.recommendations,responseData.status);$("#topMeta").textContent="Recommendations ready";}else renderOptions(body,responseData.options);renderNotices(body,responseData.notices);}}catch(error){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Network error. Please check the server and retry.");}finally{busy=false;syncSendState();input.focus();scrollDown();saveSession();}}
+$("#newChat").onclick=resetChat;$("#sideToggle").onclick=openHistoryDrawer;$("#historyClose").onclick=()=>closeHistoryDrawer();$("#historyBackdrop").onclick=()=>closeHistoryDrawer();$("#profileControl").onclick=()=>$("#profileMenu").hidden?openProfileMenu():closeProfileMenu();$("#ppClose").onclick=()=>closeProduct();$("#novaBuddy").onclick=()=>setBuddyPanel($("#nbPanel").getAttribute("aria-hidden")==="true",{restoreFocus:false});$("#nbNewChat").onclick=()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();};
+input.addEventListener("input",()=>{autosize();syncSendState();});input.addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();doSend();}});sendBtn.onclick=doSend;
+streamInner.addEventListener("click",event=>{const chip=event.target.closest(".chip"),option=event.target.closest(".opt"),card=event.target.closest(".rec"),history=event.target.closest(".hist-item");if(chip&&!busy){input.value=chip.textContent;autosize();doSend();}if(option&&!busy&&!option.parentElement.classList.contains("done")){const group=option.parentElement;[...group.children].forEach(button=>{button.classList.toggle("picked",button===option);button.setAttribute("aria-pressed",button===option?"true":"false");});group.classList.add("done");input.value=option.textContent;doSend();}if(card){const recs=recommendationGroups.get(card.dataset.recGroup);const index=Number(card.dataset.recIndex);if(recs&&Number.isInteger(index)){clearActiveRecommendationCards();card.classList.add("active");card.setAttribute("aria-pressed","true");activeRecCard=card;productPanelOpener=card;openRecommendationsPanel(recs);selectProduct(index);setTimeout(()=>$("#ppClose").focus(),0);}}if(history)switchToSession(history.dataset.session);});
+document.addEventListener("click",event=>{if(!$("#profileMenu").hidden&&!event.target.closest(".profile-wrap"))closeProfileMenu({restoreFocus:false});if($("#nbPanel").getAttribute("aria-hidden")==="false"&&!event.target.closest("#nbPanel")&&!event.target.closest("#novaBuddy")){const explicitTarget=event.target.closest('button,a,input,textarea,select,[tabindex]:not([tabindex="-1"])');setBuddyPanel(false,{restoreFocus:!explicitTarget});}});
+document.addEventListener("keydown",event=>{if(event.key!=="Escape"&&event.key!=="Tab")return;if(event.key==="Escape"){if($("#historyDrawer").getAttribute("aria-hidden")==="false")closeHistoryDrawer();else if(!$("#profileMenu").hidden)closeProfileMenu();else if($("#nbPanel").getAttribute("aria-hidden")==="false")setBuddyPanel(false);else if(appEl.classList.contains("panel-open"))closeProduct();return;}if($("#historyDrawer").getAttribute("aria-hidden")==="false"){const focusables=getDrawerFocusables(),first=focusables[0],last=focusables[focusables.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
+const panelResizer=$("#ppResizer");function syncPanelResizerA11y(){const maximum=Math.max(300,window.innerWidth-320),current=parseInt(getComputedStyle(appEl).getPropertyValue("--pw"),10)||Math.min(640,maximum);panelResizer.setAttribute("aria-valuemax",String(maximum));panelResizer.setAttribute("aria-valuenow",String(Math.max(300,Math.min(maximum,current))));}syncPanelResizerA11y();window.addEventListener("resize",syncPanelResizerA11y);panelResizer.addEventListener("pointerdown",event=>{event.preventDefault();panelResizer.setPointerCapture(event.pointerId);const move=moveEvent=>{const width=Math.max(300,Math.min(window.innerWidth-320,window.innerWidth-moveEvent.clientX));appEl.style.setProperty("--pw",width+"px");panelResizer.setAttribute("aria-valuenow",String(width));fitEmbed();};const stop=()=>{panelResizer.removeEventListener("pointermove",move);panelResizer.removeEventListener("pointerup",stop);};panelResizer.addEventListener("pointermove",move);panelResizer.addEventListener("pointerup",stop);});
+panelResizer.addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight"].includes(event.key))return;event.preventDefault();const current=parseInt(getComputedStyle(appEl).getPropertyValue("--pw"),10)||Math.min(640,window.innerWidth-320);const next=Math.max(300,Math.min(window.innerWidth-320,current+(event.key==="ArrowLeft"?24:-24)));appEl.style.setProperty("--pw",next+"px");panelResizer.setAttribute("aria-valuenow",String(next));fitEmbed();});
+histEl.addEventListener("click",event=>{const item=event.target.closest(".hist-item");if(item)switchToSession(item.dataset.session);});
+document.querySelectorAll(".nb-quick,#nbNewChat").forEach(button=>{const replacement=button.cloneNode(true);button.replaceWith(replacement);if(replacement.id==="nbNewChat")replacement.addEventListener("click",()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();});else replacement.addEventListener("click",()=>{if(busy)return;setBuddyPanel(false,{restoreFocus:false});input.value=replacement.textContent;autosize();doSend();});});
+if(window.visualViewport)window.visualViewport.addEventListener("resize",()=>{if(document.activeElement===input)requestAnimationFrame(scrollDown);});
 
 /* ============================================================
    VISUALS: native 3D canvas artwork + mouse-follow spotlight
@@ -2288,7 +2404,7 @@ function makeHero(root){
 }
 
 /* ---- lifecycle wiring ---- */
-let hero=null,welcomeOrb=null,welcomeSpot=null;
+let hero=null;
 /* welcome-page hero (front of house). Rebuilt on entry so the entrance plays
    again, and fully destroyed on exit so no rAF loop survives the view. */
 function startHero(){
@@ -2299,16 +2415,6 @@ function startHero(){
 }
 function stopHero(){ if(hero){ hero.destroy(); hero=null; } }
 function heroExit(){ if(hero) hero.exit(); }
-/* in-app chat welcome visuals (authenticated product) - unchanged */
-function startWelcomeVisuals(){
-  const fx=$("#welcomeFx"); if(!fx) return;
-  if(!welcomeOrb){ const c=$("#welcomeOrb"); if(c) welcomeOrb=makeOrb(c,{mode:"sparse",count:220,links:true}); }
-  if(!welcomeSpot){ welcomeSpot=makeSpotlight(fx,fx.querySelector(".welcome-spot")); }
-}
-function stopWelcomeVisuals(){
-  if(welcomeOrb){ welcomeOrb.destroy(); welcomeOrb=null; }
-  if(welcomeSpot){ welcomeSpot.destroy(); welcomeSpot=null; }
-}
 
 /* boot: an existing session goes straight into the app (unchanged behaviour);
    otherwise the welcome page is the front door, and #/auth is honoured as a

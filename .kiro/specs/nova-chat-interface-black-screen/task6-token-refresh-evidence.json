@@ -1,0 +1,115 @@
+{
+  "task": "6",
+  "title": "验证已有合法 token 启动与 app 刷新",
+  "result": "static_model_pass_runtime_unavailable",
+  "productionFilesModified": [],
+  "source": {
+    "path": "static/index.html",
+    "sha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+    "rawFileSha256": "dc8969b4a7e92b30f8a95cfca1a9dbc6cfc2d44bb7ee71655dd596d3a0ec5130",
+    "hashMethod": "sha256 of raw UTF-8 file bytes; checker-native sha256 above is LF-normalized text",
+    "inlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+    "rawInlineScriptSha256": "78f5bab674e2235e01ab360a309a279d61063c3a6ccedb859793c0d67a432862",
+    "inlineScriptCharacters": 72408,
+    "inlineScriptCount": 1
+  },
+  "commands": {
+    "task6SourceContractCheck": {
+      "command": "python ._task6_check.py",
+      "status": "pass",
+      "dependencyFree": true,
+      "temporaryHelperDeletedAfterRun": true
+    },
+    "visibilityModel": {
+      "command": "python exploration_static_harness.py simulate_path() for existing_token_boot and app_refresh",
+      "status": "completed",
+      "browserUsed": false,
+      "javascriptExecutionByHarness": false,
+      "model": "Python MiniDOM lifecycle control-flow simulation"
+    },
+    "nodeSyntaxCheck": {
+      "command": "C:\\Program Files\\nodejs\\node.exe --check task6-inline-script.tmp.js",
+      "status": "pass",
+      "node": "v24.19.0",
+      "returnCode": 0,
+      "stderr": ""
+    }
+  },
+  "sourceContracts": {
+    "tokenReadKey": true,
+    "usernameReadKey": true,
+    "authenticatedBootCallsEnterApp": true,
+    "enterAppSetsAppView": true,
+    "setViewForcesExactMutualExclusion": true,
+    "enterAppDoesNotChangeAuthStorage": true,
+    "appScreenContentDom": true,
+    "chatInputDom": true,
+    "newChatSessionEntry": true,
+    "recentSessionEntry": true,
+    "sessionStoreContract": true
+  },
+  "paths": [
+    {
+      "path": "existing_token_boot",
+      "steps": [
+        "Set nova_token=valid-token and nova_user=alice",
+        "Cold-open /"
+      ],
+      "initialStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "modeledFinalStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "storageKeyValueUnchangedInModel": true,
+      "expectedView": "appScreen",
+      "modeledVisibleTopLevelViewCount": 1,
+      "modeledExpectedViewHasContent": true,
+      "modeledExpectedViewHasInteractiveContent": true,
+      "runtimeExecuted": false
+    },
+    {
+      "path": "app_refresh",
+      "steps": [
+        "Set valid token and username",
+        "Open /#/app",
+        "Reload"
+      ],
+      "initialStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "modeledFinalStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "storageKeyValueUnchangedInModel": true,
+      "expectedView": "appScreen",
+      "modeledVisibleTopLevelViewCount": 1,
+      "modeledExpectedViewHasContent": true,
+      "modeledExpectedViewHasInteractiveContent": true,
+      "runtimeExecuted": false
+    }
+  ],
+  "runtimeBoundary": {
+    "browser": "unavailable",
+    "realStorage": "unavailable",
+    "computedVisibility": "unavailable",
+    "consoleErrors": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "resourceErrors": "unavailable",
+    "network": "unavailable",
+    "sse": "unavailable",
+    "meaning": "MiniDOM and source-contract results are static/model evidence only; unavailable fields are not passing assertions."
+  },
+  "scope": {
+    "productionFilesModified": [],
+    "generatedFiles": [
+      ".kiro/specs/nova-chat-interface-black-screen/task6-token-refresh-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task6-token-refresh-report.md"
+    ]
+  }
+}

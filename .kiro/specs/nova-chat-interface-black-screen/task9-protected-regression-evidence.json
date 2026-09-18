@@ -1,0 +1,172 @@
+{
+  "task": "9",
+  "title": "Property 2: Protected welcome/auth page regression",
+  "generatedBy": "task9_protected_regression_check.py",
+  "result": {
+    "sourceContractStatus": "pass",
+    "sourceContractPassed": 27,
+    "sourceContractTotal": 27,
+    "nodeSyntaxStatus": "pass",
+    "overallRuntimeStatus": "blocked_unavailable"
+  },
+  "source": {
+    "path": "static/index.html",
+    "sha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "inlineScriptSha256": "591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4",
+    "inlineScriptCharacters": 74626,
+    "inlineScriptCount": 1,
+    "baselineTask3SourceSha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "baselineTask3InlineScriptSha256": "591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4"
+  },
+  "node": {
+    "status": "pass",
+    "passed": true,
+    "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+    "version": "v24.19.0",
+    "command": [
+      "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "--check",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task9-protected-regression-inline-script.js"
+    ],
+    "returnCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "checks": {
+    "welcome/auth required ids present": {
+      "passed": true,
+      "detail": "authBack, authErr, authForm, authScreen, authSubmit, password, pwToggle, tabLogin, tabRegister, username, welcomeScreen, wpSignIn, wpStart"
+    },
+    "welcome starts hidden": {
+      "passed": true,
+      "detail": "welcomeScreen has initial hidden class"
+    },
+    "welcome first-screen content preserved": {
+      "passed": true,
+      "detail": "headline and Start control"
+    },
+    "welcome Sign in control preserved": {
+      "passed": true,
+      "detail": "wpSignIn text and button semantics"
+    },
+    "welcome Start and Sign in route to auth": {
+      "passed": true,
+      "detail": "both controls use the existing openAuth handler"
+    },
+    "openAuth preserves auth hash route": {
+      "passed": true,
+      "detail": "pushState to #/auth"
+    },
+    "openAuth preserves auth view transition": {
+      "passed": true,
+      "detail": "openAuth calls setView(\"auth\")"
+    },
+    "direct auth hash is honored": {
+      "passed": true,
+      "detail": "boot hash branch"
+    },
+    "auth form and error region preserved": {
+      "passed": true,
+      "detail": "authForm and role=alert region"
+    },
+    "auth mode tabs preserved": {
+      "passed": true,
+      "detail": "Sign in/Create account controls"
+    },
+    "auth mode switching semantics preserved": {
+      "passed": true,
+      "detail": "existing setMode handlers"
+    },
+    "setMode preserves labels and password guidance": {
+      "passed": true,
+      "detail": "submit labels, placeholder, and mode-dependent password guidance"
+    },
+    "password visibility control preserved": {
+      "passed": true,
+      "detail": "type and accessible label toggle"
+    },
+    "password toggle remains wired": {
+      "passed": true,
+      "detail": "pwToggle click handler"
+    },
+    "auth validation errors preserved": {
+      "passed": true,
+      "detail": "username/password validation messages"
+    },
+    "auth API endpoint and method preserved": {
+      "passed": true,
+      "detail": "POST /auth/login or /auth/register"
+    },
+    "auth JSON payload and content type preserved": {
+      "passed": true,
+      "detail": "JSON headers and username/password payload"
+    },
+    "auth success storage semantics preserved": {
+      "passed": true,
+      "detail": "token/username assignment and keys"
+    },
+    "auth failure error fallback preserved": {
+      "passed": true,
+      "detail": "server error message fallback"
+    },
+    "auth network error handling preserved": {
+      "passed": true,
+      "detail": "network error message"
+    },
+    "auth finally loading reset preserved": {
+      "passed": true,
+      "detail": "finally restores button state and label"
+    },
+    "Back to home control preserved": {
+      "passed": true,
+      "detail": "authBack text and button"
+    },
+    "Back to home route semantics preserved": {
+      "passed": true,
+      "detail": "authBack handler and history/enterWelcome behavior"
+    },
+    "welcome/auth CSS scope preserved": {
+      "passed": true,
+      "detail": "front-of-house CSS selectors remain present"
+    },
+    "hidden rule preserved": {
+      "passed": true,
+      "detail": "hidden keeps display:none!important"
+    },
+    "task3 full source baseline unchanged": {
+      "passed": true,
+      "detail": "current=c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4, task3=c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4"
+    },
+    "task3 inline script baseline unchanged": {
+      "passed": true,
+      "detail": "current=591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4, task3=591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4"
+    }
+  },
+  "protectedBoundary": {
+    "welcomeAuthDomCssSourceContract": "pass",
+    "productionFilesModifiedByTask9": [],
+    "productionSourceChangedFromTask3Baseline": false,
+    "note": "Task 9 generated only spec-local evidence/check artifacts; static/index.html was not written."
+  },
+  "runtimeAvailability": {
+    "browserInstalledOrUsed": false,
+    "visualPixels": "unavailable",
+    "browserInteraction": "unavailable",
+    "computedCss": "unavailable",
+    "consoleErrors": "unavailable",
+    "windowOnError": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "networkAuthRequests": "unavailable",
+    "reason": "The requested check is limited to HTML/source contracts and Node --check; no browser was installed or used."
+  },
+  "scope": {
+    "generatedFiles": [
+      "task9-protected-regression-inline-script.js",
+      "task9-protected-regression-evidence.json",
+      "task9-protected-regression-report.md"
+    ],
+    "modifiedProductionFiles": [],
+    "modifiedProtectedFiles": []
+  }
+}

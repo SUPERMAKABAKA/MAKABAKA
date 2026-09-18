@@ -1,0 +1,309 @@
+{
+  "task": "8",
+  "title": "验证刷新与登出回 welcome 生命周期",
+  "result": "static_contract_and_minidom_pass_runtime_unavailable",
+  "productionFilesModified": [],
+  "source": {
+    "path": "static/index.html",
+    "sha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+    "rawFileSha256": "dc8969b4a7e92b30f8a95cfca1a9dbc6cfc2d44bb7ee71655dd596d3a0ec5130",
+    "hashMethod": "sha256 of raw UTF-8 file bytes; checker-native sha256 above is LF-normalized text",
+    "inlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+    "rawInlineScriptSha256": "78f5bab674e2235e01ab360a309a279d61063c3a6ccedb859793c0d67a432862",
+    "inlineScriptCharacters": 72408,
+    "inlineScriptCount": 1
+  },
+  "commands": {
+    "nodeSyntaxCheck": {
+      "status": "pass",
+      "passed": true,
+      "node": "C:\\Program Files\\nodejs\\node.exe",
+      "version": "v24.19.0",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--check",
+        "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task8-inline-script.tmp.js"
+      ],
+      "returnCode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "preservationCheck": {
+      "status": "pass",
+      "returnCode": 0,
+      "command": [
+        "D:\\APP\\Programming\\python.EXE",
+        "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task3_preservation_check.py"
+      ],
+      "stdout": "{\n  \"baselineStatus\": \"static_pass_runtime_blocked\",\n  \"staticChecks\": \"58/58\",\n  \"syntax\": \"pass\",\n  \"runtime\": \"blocked_unavailable\",\n  \"diffBoundary\": \"pass\",\n  \"report\": \"D:\\\\NUS\\\\Hackson\\\\MAKABAKA\\\\.kiro\\\\specs\\\\nova-chat-interface-black-screen\\\\task3-preservation-report.md\"\n}",
+      "stderr": "",
+      "runtime": "unavailable by existing preservation check boundary"
+    },
+    "browser": "unavailable"
+  },
+  "sourceContracts": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "token read key",
+        "passed": true,
+        "lines": [
+          8
+        ],
+        "pattern": "localStorage\\.getItem\\(\"nova_token\"\\)"
+      },
+      {
+        "name": "username read key",
+        "passed": true,
+        "lines": [
+          9
+        ],
+        "pattern": "localStorage\\.getItem\\(\"nova_user\"\\)"
+      },
+      {
+        "name": "authenticated boot calls enterApp",
+        "passed": true,
+        "lines": [
+          1221
+        ],
+        "pattern": "if\\(token&&username\\)\\{\\s*enterApp\\(\\);\\s*\\}"
+      },
+      {
+        "name": "enterApp selects app view",
+        "passed": true,
+        "lines": [
+          155
+        ],
+        "pattern": "function enterApp\\(\\)[\\s\\S]{0,120}setView\\(\"app\"\\)"
+      },
+      {
+        "name": "setView excludes welcome for app",
+        "passed": true,
+        "lines": [
+          38
+        ],
+        "pattern": "welcomeScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"welcome\"\\)"
+      },
+      {
+        "name": "setView excludes auth for app",
+        "passed": true,
+        "lines": [
+          39
+        ],
+        "pattern": "authScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"auth\"\\)"
+      },
+      {
+        "name": "setView excludes app for welcome",
+        "passed": true,
+        "lines": [
+          40
+        ],
+        "pattern": "appScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"app\"\\)"
+      },
+      {
+        "name": "logout removes token and username",
+        "passed": true,
+        "lines": [
+          164
+        ],
+        "pattern": "localStorage\\.removeItem\\(\"nova_token\"\\);\\s*localStorage\\.removeItem\\(\"nova_user\"\\)"
+      },
+      {
+        "name": "logout clears stream and restores welcome node",
+        "passed": true,
+        "lines": [
+          165,
+          513
+        ],
+        "pattern": "streamInner\\.innerHTML=\"\";\\s*streamInner\\.appendChild\\(welcome\\);\\s*welcome\\.style\\.display=\"\""
+      },
+      {
+        "name": "logout clears session store and history",
+        "passed": true,
+        "lines": [
+          166
+        ],
+        "pattern": "for\\(const k in sessions\\) delete sessions\\[k\\];\\s*histEl\\.innerHTML=\"\";\\s*sessionId=newId\\(\\)"
+      },
+      {
+        "name": "logout updates URL to welcome",
+        "passed": true,
+        "lines": [
+          67,
+          169
+        ],
+        "pattern": "history\\.replaceState\\(\\{nova:\"welcome\"\\},\"\",location\\.pathname\\+location\\.search\\)"
+      },
+      {
+        "name": "logout calls enterWelcome",
+        "passed": true,
+        "lines": [
+          163
+        ],
+        "pattern": "\\$\\(\"#logout\"\\)\\.onclick=[\\s\\S]{0,1000}enterWelcome\\(\\);"
+      },
+      {
+        "name": "enterWelcome selects welcome view",
+        "passed": true,
+        "lines": [
+          60
+        ],
+        "pattern": "function enterWelcome\\(\\)[\\s\\S]{0,300}setView\\(\"welcome\"\\)"
+      },
+      {
+        "name": "app chat input exists",
+        "passed": true,
+        "lines": [
+          1077
+        ],
+        "pattern": "<textarea[^>]*id=\"input\""
+      },
+      {
+        "name": "recent session entry exists",
+        "passed": true,
+        "lines": [
+          1060
+        ],
+        "pattern": "id=\"sideToggle\""
+      },
+      {
+        "name": "history list exists",
+        "passed": true,
+        "lines": [
+          1085
+        ],
+        "pattern": "id=\"hist\""
+      },
+      {
+        "name": "enterApp does not mutate auth storage",
+        "passed": true,
+        "lines": [],
+        "pattern": "no localStorage.setItem/removeItem inside enterApp body"
+      }
+    ]
+  },
+  "paths": {
+    "app_refresh": {
+      "steps": [
+        "Set nova_token=valid-token and nova_user=alice",
+        "Open /#/app",
+        "Reload",
+        "Boot calls enterApp()"
+      ],
+      "initialStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "modeledFinalStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "storageKeyValueUnchangedInModel": true,
+      "expectedView": "appScreen",
+      "modeledFinalHash": "#/app",
+      "model": {
+        "modelOnly": true,
+        "visibleTopLevelViewCount": 1,
+        "visibleViews": [
+          "appScreen"
+        ],
+        "expectedView": "appScreen",
+        "expectedViewVisible": true,
+        "expectedViewHasVisibleContent": true,
+        "expectedViewHasInteractiveContent": true,
+        "views": {
+          "welcomeScreen": {
+            "hiddenClassModel": true,
+            "displayModel": "none",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          },
+          "authScreen": {
+            "hiddenClassModel": true,
+            "displayModel": "none",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          },
+          "appScreen": {
+            "hiddenClassModel": false,
+            "displayModel": "grid",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          }
+        }
+      },
+      "runtimeExecuted": false
+    },
+    "logout_to_welcome": {
+      "steps": [
+        "Set valid token and username",
+        "Open /#/app",
+        "Click Sign out",
+        "Run logout cleanup and enterWelcome()"
+      ],
+      "initialStorage": {
+        "nova_token": "valid-token",
+        "nova_user": "alice"
+      },
+      "modeledFinalStorage": {},
+      "storageClearedInModel": true,
+      "sessionsClearedInModel": true,
+      "historyClearedInModel": true,
+      "modeledFinalHash": "",
+      "model": {
+        "modelOnly": true,
+        "visibleTopLevelViewCount": 1,
+        "visibleViews": [
+          "welcomeScreen"
+        ],
+        "expectedView": "welcomeScreen",
+        "expectedViewVisible": true,
+        "expectedViewHasVisibleContent": true,
+        "expectedViewHasInteractiveContent": true,
+        "views": {
+          "welcomeScreen": {
+            "hiddenClassModel": false,
+            "displayModel": "flex",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          },
+          "authScreen": {
+            "hiddenClassModel": true,
+            "displayModel": "none",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          },
+          "appScreen": {
+            "hiddenClassModel": true,
+            "displayModel": "none",
+            "visibility": "unavailable",
+            "opacity": "unavailable"
+          }
+        }
+      },
+      "enterWelcomeCalledInModel": true,
+      "runtimeExecuted": false
+    }
+  },
+  "runtimeBoundary": {
+    "browser": "unavailable",
+    "realRefresh": "unavailable",
+    "realLogout": "unavailable",
+    "realStorage": "unavailable",
+    "computedVisibility": "unavailable",
+    "consoleErrors": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "resourceErrors": "unavailable",
+    "network": "unavailable",
+    "sse": "unavailable",
+    "meaning": "Node --check parses source only; source contracts and MiniDOM are static/model evidence, not browser runtime assertions."
+  },
+  "scope": {
+    "productionFilesModified": [],
+    "generatedFiles": [
+      "task8-lifecycle-evidence.json",
+      "task8-lifecycle-report.md"
+    ]
+  }
+}

@@ -20,7 +20,7 @@
   - [x] 2.2 实现输出与画像数据模型
     - 在 `app/orchestrator/session.py`（或 `app/api/models.py`）实现 `ReviewSummary`、`ProductRecommendation`、`UserProfile`
     - _Requirements: 3.4, 7.4, 7.5_
-  - [ ]* 2.3 编写 needs_complete 属性测试
+  - [x] 2.3 编写 needs_complete 属性测试
     - **Property 6: Direct 节奏推进条件**
     - **Validates: Requirements 4.4**
 
@@ -34,7 +34,7 @@
   - [x] 3.3 定义 LLM 接口与模拟实现
     - 在 `app/interfaces/llm.py` 实现 `LLMInterface`、`MockLLM`（基于模板的确定性输出）
     - _Requirements: 2.1, 2.2_
-  - [ ]* 3.4 编写接口模拟实现单元测试
+  - [x] 3.4 编写接口模拟实现单元测试
     - 验证三个模拟实现返回预置数据；验证 WebSearch 覆盖三平台来源
     - _Requirements: 1.5, 2.2, 6.2, 6.5_
 
@@ -42,7 +42,7 @@
   - [x] 4.1 实现 Container 装配逻辑
     - 在 `app/container.py` 实现 `Container`，按 `Settings` 选择 `crawler()`/`web_search()`/`llm()` 的模拟实现，调用方仅依赖抽象类型
     - _Requirements: 2.3, 2.4_
-  - [ ]* 4.2 编写容器装配与可替换性单元测试
+  - [x] 4.2 编写容器装配与可替换性单元测试
     - 验证按配置装配模拟实现；验证替换为符合同一契约的实现不改调用方
     - _Requirements: 2.3, 2.4_
 
@@ -60,10 +60,10 @@
   - [x] 6.2 实现 IngestionPipeline
     - 在 `app/rag/ingestion.py` 实现 `IngestionPipeline.run()`：读取商品→字段校验（缺 detail/reviews 跳过并记录含 product_id 日志）→切分→向量化→写入 Chroma（metadata 含 product_id/source_url/original_text）
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
-  - [ ]* 6.3 编写灌库元数据完整性属性测试
+  - [x] 6.3 编写灌库元数据完整性属性测试
     - **Property 1: 灌库记录元数据完整**
     - **Validates: Requirements 1.2, 1.3**
-  - [ ]* 6.4 编写缺字段跳过与日志边界测试
+  - [x] 6.4 编写缺字段跳过与日志边界测试
     - 验证缺 detail/reviews 时跳过该字段并记录含 product_id 的日志
     - _Requirements: 1.4_
   - [x] 6.5 实现灌库脚本
@@ -85,10 +85,10 @@
   - [x] 9.1 实现 Profile_Agent
     - 在 `app/agents/base.py` 定义 `Agent` 协议；在 `app/agents/profile_agent.py` 实现 `run`：加载画像→写入偏好/预算/用途；无画像标记 cold_start；异常置 `session.error`
     - _Requirements: 3.1, 3.2, 3.4, 8.2_
-  - [ ]* 9.2 编写冷启动标记属性测试
+  - [x] 9.2 编写冷启动标记属性测试
     - **Property 2: 冷启动标记正确性**
     - **Validates: Requirements 3.2**
-  - [ ]* 9.3 编写画像字段映射属性测试
+  - [x] 9.3 编写画像字段映射属性测试
     - **Property 3: 画像字段映射**
     - **Validates: Requirements 3.4**
 
@@ -96,10 +96,10 @@
   - [x] 10.1 实现 Clarify_Agent
     - 在 `app/agents/clarify_agent.py` 实现统一流程：冷启动对缺失预算/用途/偏好逐项提问；有画像以确认现有特征为主减少提问；yes/no 回答更新 `confirmed_features` 与对应字段；未收集完置 `pending_question`
     - _Requirements: 4.1, 4.2, 4.3, 4.5, 4.6_
-  - [ ]* 10.2 编写有画像提问数不增加属性测试
+  - [x] 10.2 编写有画像提问数不增加属性测试
     - **Property 4: 有画像时提问数不增加**
     - **Validates: Requirements 4.2**
-  - [ ]* 10.3 编写 yes/no 确认更新属性测试
+  - [x] 10.3 编写 yes/no 确认更新属性测试
     - **Property 5: yes/no 确认更新特征**
     - **Validates: Requirements 4.3**
 
@@ -107,13 +107,13 @@
   - [x] 11.1 实现 Retrieval_Agent
     - 在 `app/agents/retrieval_agent.py` 实现 `run`：由 `collected_needs` 构造查询→向量化→Chroma 检索→映射为 `RetrievedRecord`（product_id/source_url/matched_text）→按相关度降序排序；空结果置 `retrieval_status="no_match"`
     - _Requirements: 5.1, 5.2, 5.3, 5.4_
-  - [ ]* 11.2 编写检索结果字段完整属性测试
+  - [x] 11.2 编写检索结果字段完整属性测试
     - **Property 7: 检索结果字段完整**
     - **Validates: Requirements 5.2**
-  - [ ]* 11.3 编写检索结果排序属性测试
+  - [-] 11.3 编写检索结果排序属性测试
     - **Property 8: 检索结果按相关度排序**
     - **Validates: Requirements 5.4**
-  - [ ]* 11.4 编写检索空结果边界测试
+  - [-] 11.4 编写检索空结果边界测试
     - 验证无匹配时返回空列表并置 `retrieval_status="no_match"`
     - _Requirements: 5.3_
 
@@ -121,10 +121,10 @@
   - [x] 12.1 实现 Web_Search_Agent
     - 在 `app/agents/web_search_agent.py` 实现 `run`：对候选商品经 `Web_Search_Interface` 获取 product_info 与社媒测评（好评+差评），聚合为 `web_results`；无测评置 `web_status="no_review"`
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
-  - [ ]* 12.2 编写测评好评差评覆盖属性测试
+  - [x] 12.2 编写测评好评差评覆盖属性测试
     - **Property 9: 测评好评差评覆盖**
     - **Validates: Requirements 6.3**
-  - [ ]* 12.3 编写无测评边界测试
+  - [~] 12.3 编写无测评边界测试
     - 验证无测评时置 `web_status="no_review"` 并继续流程
     - _Requirements: 6.4_
 
@@ -132,19 +132,19 @@
   - [x] 13.1 实现 Recommendation_Agent
     - 在 `app/agents/recommendation_agent.py` 实现 `run`：融合 `retrieval_results` 与 `web_results` 生成 `ProductRecommendation`（reason/product_url/含好评差评的 summary）；默认 3–5 条；指定数量按数量输出；候选不足置 `recommendation_status="insufficient"`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
-  - [ ]* 13.2 编写默认推荐数量区间属性测试
+  - [~] 13.2 编写默认推荐数量区间属性测试
     - **Property 10: 默认推荐数量区间**
     - **Validates: Requirements 7.2**
-  - [ ]* 13.3 编写指定数量精确输出属性测试
+  - [~] 13.3 编写指定数量精确输出属性测试
     - **Property 11: 指定数量精确输出**
     - **Validates: Requirements 7.3**
-  - [ ]* 13.4 编写推荐条目字段完整属性测试
+  - [~] 13.4 编写推荐条目字段完整属性测试
     - **Property 12: 推荐条目字段完整**
     - **Validates: Requirements 7.4**
-  - [ ]* 13.5 编写总结好评差评属性测试
+  - [~] 13.5 编写总结好评差评属性测试
     - **Property 13: 总结体现好评与差评**
     - **Validates: Requirements 7.5**
-  - [ ]* 13.6 编写候选不足边界测试
+  - [~] 13.6 编写候选不足边界测试
     - 验证候选少于目标数量时返回全部并置 `recommendation_status="insufficient"`
     - _Requirements: 7.6_
 
@@ -158,13 +158,13 @@
   - [x] 15.2 实现 build_orchestrator 图装配
     - 在 `app/orchestrator/graph.py` 用 `StateGraph(ConversationSession)` 注册 5 节点、设入口、添加条件边并 `compile()`
     - _Requirements: 8.1, 8.2, 8.3_
-  - [ ]* 15.3 编写会话状态单调累积属性测试
+  - [~] 15.3 编写会话状态单调累积属性测试
     - **Property 14: 会话状态单调累积**
     - **Validates: Requirements 8.2**
-  - [ ]* 15.4 编写错误传播属性测试
+  - [~] 15.4 编写错误传播属性测试
     - **Property 15: 错误传播携带失败 Agent 标识**
     - **Validates: Requirements 8.4**
-  - [ ]* 15.5 编写图结构与路由单元测试
+  - [~] 15.5 编写图结构与路由单元测试
     - 验证图含 5 节点与预期边；验证节点完成后的路由
     - _Requirements: 8.1, 8.3_
 
@@ -176,16 +176,16 @@
     - 在 `app/api/routes.py` 实现 `/chat`：缺字段→400+missing_fields；按 session_id 定位会话；透传 recommendation_count；驱动 orchestrator；错误→500+failed_agent；完成返回推荐列表
     - 在 `main.py` 装配 Container、会话仓、orchestrator 并挂载路由
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 8.4_
-  - [ ]* 16.3 编写会话路由一致性属性测试
+  - [~] 16.3 编写会话路由一致性属性测试
     - **Property 16: 会话路由一致性**
     - **Validates: Requirements 9.2**
-  - [ ]* 16.4 编写缺字段错误命名属性测试
+  - [~] 16.4 编写缺字段错误命名属性测试
     - **Property 17: 缺字段错误命名**
     - **Validates: Requirements 9.4**
-  - [ ]* 16.5 编写推荐数量透传属性测试
+  - [~] 16.5 编写推荐数量透传属性测试
     - **Property 18: 推荐数量透传**
     - **Validates: Requirements 9.5**
-  - [ ]* 16.6 编写 /chat 端到端单元测试
+  - [~] 16.6 编写 /chat 端到端单元测试
     - 验证基本可用与推荐完成时返回推荐列表
     - _Requirements: 9.1, 9.3_
 

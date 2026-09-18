@@ -1,0 +1,664 @@
+{
+  "task": "3",
+  "title": "Property 2: Preservation - static baseline and runtime availability",
+  "generatedBy": "task3_preservation_check.py",
+  "baselineStatus": "static_pass_runtime_available",
+  "source": {
+    "path": "static/index.html",
+    "sha256": "b51b6832860bd872a6bdf617175313234df65e8d7bb4acd50d33d77ad5ecda52",
+    "inlineScriptSha256": "77cc9c0ea56696fbef908fd344a79ab8434794996dc7fc9ebbfff3ef2a1bd0ec",
+    "inlineScriptCharacters": 73263,
+    "inlineScriptCount": 1,
+    "inlineScriptArtifact": "task3-inline-script.js"
+  },
+  "staticBaseline": {
+    "fragmentChecksPassed": 58,
+    "fragmentChecksTotal": 58,
+    "checks": [
+      {
+        "name": "auth request uses dynamic /auth/{login|register} endpoint",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          141
+        ],
+        "pattern": "fetch\\(\"/auth/\"\\+mode\\s*,\\s*\\{method:\"POST\""
+      },
+      {
+        "name": "auth request supports register mode",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          98
+        ],
+        "pattern": "setMode\\(\"register\"\\)"
+      },
+      {
+        "name": "auth request sends JSON content type",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          141
+        ],
+        "pattern": "fetch\\(\"/auth/\"\\+mode\\s*,\\s*\\{method:\"POST\"[\\s\\S]{0,180}headers:\\{\"Content-Type\":\"application/json\"\\}"
+      },
+      {
+        "name": "auth request payload is username/password",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          142
+        ],
+        "pattern": "body:JSON\\.stringify\\(\\{username:u,password:p\\}\\)"
+      },
+      {
+        "name": "auth token storage key",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          146
+        ],
+        "pattern": "localStorage\\.setItem\\(\"nova_token\",token\\)"
+      },
+      {
+        "name": "auth username storage key",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          146
+        ],
+        "pattern": "localStorage\\.setItem\\(\"nova_user\",username\\)"
+      },
+      {
+        "name": "token read key",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          8
+        ],
+        "pattern": "localStorage\\.getItem\\(\"nova_token\"\\)"
+      },
+      {
+        "name": "username read key",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          9
+        ],
+        "pattern": "localStorage\\.getItem\\(\"nova_user\"\\)"
+      },
+      {
+        "name": "auth response error fallback",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          144
+        ],
+        "pattern": "!res\\.ok\\)\\{\\s*showErr\\(data\\.error\\|\\|\"Something went wrong\"\\)"
+      },
+      {
+        "name": "auth network error handling",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          148
+        ],
+        "pattern": "catch\\(err\\)\\{\\s*showErr\\(\"Network error\\. Is the server running\\?\"\\)"
+      },
+      {
+        "name": "auth loading state restored in finally",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          152
+        ],
+        "pattern": "finally\\{\\s*authSubmit\\.disabled=false;\\s*authSubmit\\.textContent=mode===\"login\"\\?\"Sign in\":\"Create account\";\\s*\\}"
+      },
+      {
+        "name": "username client validation",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          137
+        ],
+        "pattern": "if\\(u\\.length<2\\)\\{\\s*showErr\\(\"Username needs at least 2 characters\"\\)"
+      },
+      {
+        "name": "password client validation",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          138
+        ],
+        "pattern": "if\\(p\\.length<4\\)\\{\\s*showErr\\(\"Password needs at least 4 characters\"\\)"
+      },
+      {
+        "name": "logout removes token and username keys",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          163
+        ],
+        "pattern": "localStorage\\.removeItem\\(\"nova_token\"\\);\\s*localStorage\\.removeItem\\(\"nova_user\"\\)"
+      },
+      {
+        "name": "welcome DOM preserves Sign in control",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          851
+        ],
+        "pattern": "id=\"wpSignIn\"[^>]*>Sign in</button>"
+      },
+      {
+        "name": "welcome DOM preserves Start control",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          1090
+        ],
+        "pattern": "id=\"wpStart\"[^>]*>Start</button>"
+      },
+      {
+        "name": "auth DOM preserves sign-in/register tabs",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          1116
+        ],
+        "pattern": "id=\"tabLogin\"[\\s\\S]{0,250}id=\"tabRegister\""
+      },
+      {
+        "name": "auth DOM preserves form and error region",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          1121
+        ],
+        "pattern": "id=\"authForm\"[\\s\\S]{0,3000}id=\"authErr\"[^>]*role=\"alert\""
+      },
+      {
+        "name": "auth DOM preserves password toggle",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          1130
+        ],
+        "pattern": "id=\"pwToggle\"[^>]*type=\"button\""
+      },
+      {
+        "name": "auth DOM preserves back control",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          1146
+        ],
+        "pattern": "id=\"authBack\"[^>]*type=\"button\""
+      },
+      {
+        "name": "setView controls welcome view",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          38
+        ],
+        "pattern": "welcomeScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"welcome\"\\)"
+      },
+      {
+        "name": "setView controls auth view",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          39
+        ],
+        "pattern": "authScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"auth\"\\)"
+      },
+      {
+        "name": "setView controls app view",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          40
+        ],
+        "pattern": "appScreen\\.classList\\.toggle\\(\"hidden\",\\s*name!==\"app\"\\)"
+      },
+      {
+        "name": "auth route pushes #/auth",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          49
+        ],
+        "pattern": "history\\.pushState\\(\\{nova:\"auth\"\\},\"\",\"#/auth\"\\)"
+      },
+      {
+        "name": "back route uses history back",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          66
+        ],
+        "pattern": "if\\(pushedAuth\\)\\{ history\\.back\\(\\); return; \\}"
+      },
+      {
+        "name": "popstate honors auth hash",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          73
+        ],
+        "pattern": "if\\(location\\.hash===\"#/auth\"\\)\\{ pushedAuth=true; setView\\(\"auth\"\\); \\}"
+      },
+      {
+        "name": "login success enters app",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          123
+        ],
+        "pattern": "async function authSucceeded\\(\\)[\\s\\S]{0,500}enterApp\\(\\);"
+      },
+      {
+        "name": "enterApp writes app hash",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          155
+        ],
+        "pattern": "function enterApp\\(\\)[\\s\\S]{0,260}history\\.replaceState\\(\\{nova:\"app\"\\},\"\",\"#/app\"\\)"
+      },
+      {
+        "name": "logout returns through enterWelcome",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          162
+        ],
+        "pattern": "\\$\\(\"#logout\"\\)\\.onclick=[\\s\\S]{0,900}enterWelcome\\(\\);"
+      },
+      {
+        "name": "chat request uses POST /chat/stream",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          446,
+          530
+        ],
+        "pattern": "fetch\\(\"/chat/stream\",\\{method:\"POST\""
+      },
+      {
+        "name": "chat request sends JSON content type",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          530
+        ],
+        "pattern": "fetch\\(\"/chat/stream\",\\{method:\"POST\",headers:\\{\"Content-Type\":\"application/json\""
+      },
+      {
+        "name": "chat request conditionally sends bearer token",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          530
+        ],
+        "pattern": "Authorization:\"Bearer \"\\+token"
+      },
+      {
+        "name": "chat payload preserves session_id/message",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          448,
+          530
+        ],
+        "pattern": "body:JSON\\.stringify\\(\\{session_id:sessionId,message:text\\}\\)"
+      },
+      {
+        "name": "SSE parser reads event lines",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          489
+        ],
+        "pattern": "if\\(l\\.startsWith\\(\"event:\"\\)\\) event=l\\.slice\\(6\\)\\.trim\\(\\)"
+      },
+      {
+        "name": "SSE parser reads data lines",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          490
+        ],
+        "pattern": "else if\\(l\\.startsWith\\(\"data:\"\\)\\) data\\+=l\\.slice\\(5\\)\\.trim\\(\\)"
+      },
+      {
+        "name": "SSE token branch",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          530
+        ],
+        "pattern": "event\\.event===\"token\""
+      },
+      {
+        "name": "SSE recommendations branch",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          530
+        ],
+        "pattern": "event\\.event===\"recommendations\""
+      },
+      {
+        "name": "SSE error branch",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          530
+        ],
+        "pattern": "event\\.event===\"error\""
+      },
+      {
+        "name": "chat failed response fallback",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          449,
+          530
+        ],
+        "pattern": "!res\\.ok\\|\\|!res\\.body"
+      },
+      {
+        "name": "chat network error fallback",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          483,
+          530
+        ],
+        "pattern": "Network error\\. Please check the server and retry\\."
+      },
+      {
+        "name": "protected function saveSession remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          180,
+          502
+        ],
+        "pattern": "function\\s+saveSession\\s*\\("
+      },
+      {
+        "name": "protected function switchToSession remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          182,
+          509
+        ],
+        "pattern": "function\\s+switchToSession\\s*\\("
+      },
+      {
+        "name": "protected function pushHistory remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          342,
+          508
+        ],
+        "pattern": "function\\s+pushHistory\\s*\\("
+      },
+      {
+        "name": "protected function resetChat remains present",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          510
+        ],
+        "pattern": "function\\s+resetChat\\s*\\("
+      },
+      {
+        "name": "protected function renderRecs remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          372,
+          520
+        ],
+        "pattern": "function\\s+renderRecs\\s*\\("
+      },
+      {
+        "name": "protected function renderReact remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          410,
+          521
+        ],
+        "pattern": "function\\s+renderReact\\s*\\("
+      },
+      {
+        "name": "protected function renderNotices remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          404,
+          522
+        ],
+        "pattern": "function\\s+renderNotices\\s*\\("
+      },
+      {
+        "name": "protected function renderOptions remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          423,
+          523
+        ],
+        "pattern": "function\\s+renderOptions\\s*\\("
+      },
+      {
+        "name": "protected function openRecommendationsPanel remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          226,
+          513
+        ],
+        "pattern": "function\\s+openRecommendationsPanel\\s*\\("
+      },
+      {
+        "name": "protected function selectProduct remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          256,
+          514
+        ],
+        "pattern": "function\\s+selectProduct\\s*\\("
+      },
+      {
+        "name": "protected function closeProduct remains present",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          297,
+          516
+        ],
+        "pattern": "function\\s+closeProduct\\s*\\("
+      },
+      {
+        "name": "protected function parseSSE remains present",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          487
+        ],
+        "pattern": "function\\s+parseSSE\\s*\\("
+      },
+      {
+        "name": "session store remains keyed by sessionId",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          178
+        ],
+        "pattern": "const sessions=\\{\\};"
+      },
+      {
+        "name": "session snapshot remains innerHTML",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          180,
+          502
+        ],
+        "pattern": "sessions\\[sessionId\\]\\.html=streamInner\\.innerHTML"
+      },
+      {
+        "name": "recommendation groups retain payload",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          520
+        ],
+        "pattern": "recommendationGroups\\.set\\(groupId,recs\\)"
+      },
+      {
+        "name": "recommendation panel retains product selection",
+        "passed": true,
+        "matchCount": 1,
+        "lines": [
+          533
+        ],
+        "pattern": "openRecommendationsPanel\\(recs\\);selectProduct\\(index\\)"
+      },
+      {
+        "name": "recommendation browser keeps AliExpress embed URL",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          220,
+          511
+        ],
+        "pattern": "\"https://www\\.aliexpress\\.com/wholesale\\?SearchText=\""
+      },
+      {
+        "name": "recommendation external link keeps Amazon search URL",
+        "passed": true,
+        "matchCount": 2,
+        "lines": [
+          224,
+          512
+        ],
+        "pattern": "\"https://www\\.amazon\\.com/s\\?k=\""
+      }
+    ],
+    "structural": {
+      "topLevelViewIdsExactlyExpected": true,
+      "allTopLevelViewsInitiallyHidden": true,
+      "hiddenRuleRemainsDisplayNoneImportant": true,
+      "singleInlineScript": true,
+      "appChatDomPreserved": true
+    }
+  },
+  "syntax": {
+    "status": "pass",
+    "passed": true,
+    "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+    "version": "v24.19.0",
+    "command": [
+      "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "--check",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task3-inline-script.js"
+    ],
+    "returnCode": 0,
+    "stderr": "",
+    "stdout": "",
+    "errorLine": null
+  },
+  "runtime": {
+    "status": "blocked_unavailable",
+    "executionAttempted": false,
+    "reason": "The inline script fails Node --check before a browser/runtime can execute boot, auth, chat, session, or SSE paths.",
+    "consoleErrors": null,
+    "uncaughtExceptions": null,
+    "unhandledRejections": null,
+    "networkRequests": null,
+    "computedVisibility": null,
+    "sseExchange": null
+  },
+  "diffBoundary": {
+    "status": "pass",
+    "command": [
+      "git",
+      "diff",
+      "--name-only"
+    ],
+    "returnCode": 0,
+    "changedFiles": [
+      ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+      "static/index.html"
+    ],
+    "preexistingProductionOrProtectedChanges": [
+      ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+      "static/index.html"
+    ],
+    "productionUnmodifiedByThisTask": true,
+    "sourceSha256": "b51b6832860bd872a6bdf617175313234df65e8d7bb4acd50d33d77ad5ecda52",
+    "referenceTask2SourceSha256": "b51b6832860bd872a6bdf617175313234df65e8d7bb4acd50d33d77ad5ecda52",
+    "sourceUnchangedFromTask2": true,
+    "interpretation": "The working tree contains changes outside this task; they are reported, not attributed to task 3. The source SHA matches task 2, so task 3 did not modify static/index.html.",
+    "note": "Untracked spec artifacts are not shown by git diff --name-only and are intentionally local to this spec directory."
+  },
+  "scope": {
+    "productionFilesModifiedByThisTask": [],
+    "protectedFilesModifiedByThisTask": [],
+    "generatedFiles": [
+      "task3_preservation_check.py",
+      "task3-inline-script.js",
+      "task3-preservation-evidence.json",
+      "task3-preservation-report.md"
+    ]
+  },
+  "preservationContract": {
+    "authentication": [
+      "POST /auth/login",
+      "POST /auth/register",
+      "nova_token",
+      "nova_user",
+      "validation/error/finally semantics"
+    ],
+    "routingAndDom": [
+      "welcomeScreen",
+      "authScreen",
+      "appScreen",
+      "#/auth",
+      "#/app",
+      "welcome/auth controls"
+    ],
+    "chat": [
+      "POST /chat/stream",
+      "Content-Type application/json",
+      "conditional Bearer token",
+      "session_id/message"
+    ],
+    "sse": [
+      "token",
+      "recommendations",
+      "error",
+      "fallback response handling"
+    ],
+    "sessionAndRecommendations": [
+      "saveSession",
+      "switchToSession",
+      "pushHistory",
+      "resetChat",
+      "recommendationGroups",
+      "renderRecs",
+      "product panel"
+    ]
+  },
+  "runtimeDecision": "Do not claim runtime preservation pass. Task 4 must first address the syntax defect through the authorized minimal implementation, then rerun this same check plus real runtime checks when a browser/runtime is available."
+}

@@ -1,0 +1,566 @@
+{
+  "generatedBy": "exploration_static_harness.py",
+  "source": {
+    "path": "static\\index.html",
+    "inlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+    "inlineScriptCharacters": 72408,
+    "inlineScriptCount": 1
+  },
+  "syntax": {
+    "passed": null,
+    "executed": false,
+    "method": "not run: no ECMAScript parser/runtime installed",
+    "lexicalHeuristicPassed": false,
+    "lexicalHeuristicErrors": [
+      "unexpected '}' at line 272",
+      "unclosed '{' from line 259",
+      "unclosed '(' from line 269",
+      "unclosed '{' from line 517",
+      "unclosed '(' from line 517"
+    ],
+    "errors": []
+  },
+  "staticFacts": {
+    "topLevelViewIds": [
+      "welcomeScreen",
+      "authScreen",
+      "appScreen"
+    ],
+    "hiddenRuleLine": 631,
+    "setViewLine": 35,
+    "enterAppLine": 155,
+    "enterWelcomeLine": 60,
+    "bootLine": 1221,
+    "duplicateFunctionDefinitions": {
+      "saveSession": [
+        182,
+        505
+      ],
+      "switchToSession": [
+        184,
+        512
+      ],
+      "autosize": [
+        195,
+        503
+      ],
+      "embedSearchUrl": [
+        222,
+        514
+      ],
+      "extShopUrl": [
+        225,
+        515
+      ],
+      "openRecommendationsPanel": [
+        229,
+        516
+      ],
+      "fitEmbed": [
+        248,
+        519
+      ],
+      "selectProduct": [
+        259,
+        517
+      ],
+      "onMove": [
+        278,
+        577,
+        772
+      ],
+      "closeProduct": [
+        300,
+        518
+      ],
+      "pushHistory": [
+        345,
+        511
+      ],
+      "addUser": [
+        353,
+        526
+      ],
+      "addThinking": [
+        359,
+        524
+      ],
+      "aiBubble": [
+        366,
+        525
+      ],
+      "appendToken": [
+        371,
+        527
+      ],
+      "renderRecs": [
+        375,
+        520
+      ],
+      "renderNotices": [
+        407,
+        522
+      ],
+      "renderReact": [
+        413,
+        521
+      ],
+      "renderOptions": [
+        426,
+        523
+      ],
+      "doSend": [
+        442,
+        530
+      ],
+      "typeFallback": [
+        496,
+        528
+      ]
+    }
+  },
+  "harness": {
+    "dependencyFree": true,
+    "browserInstalledOrUsed": false,
+    "javascriptExecutionAvailable": false,
+    "model": "Python MiniDOM + lifecycle control-flow simulation",
+    "limitations": [
+      "The six paths were simulated from the observed source branches, not executed by an ECMAScript engine.",
+      "A model-level unique visible view cannot establish actual browser visibility or black-screen behavior.",
+      "Runtime exception, browser console, resource, computed-style, layout, and SSE fields are unknown (null), not passing."
+    ]
+  },
+  "paths": [
+    {
+      "path": "first_open",
+      "trigger": {
+        "initialStorage": {},
+        "simulatedFinalStorage": {},
+        "initialHash": "",
+        "simulatedFinalHash": ""
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Clear nova_token and nova_user",
+          "Open /"
+        ],
+        "expectedFinalView": "welcomeScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "",
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Good choices start here. Your shopping companion, Nova. Start",
+            "interactiveEntryCount": 3
+          },
+          {
+            "id": "authScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "appScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    },
+    {
+      "path": "direct_auth_hash",
+      "trigger": {
+        "initialStorage": {},
+        "simulatedFinalStorage": {},
+        "initialHash": "#/auth",
+        "simulatedFinalHash": "#/auth"
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Clear nova_token and nova_user",
+          "Open /#/auth"
+        ],
+        "expectedFinalView": "authScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "authScreen",
+            "className": "",
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Nova Sign in Create account Welcome back Username Password Sign in Back to home",
+            "interactiveEntryCount": 6
+          },
+          {
+            "id": "appScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    },
+    {
+      "path": "login_success",
+      "trigger": {
+        "initialStorage": {},
+        "simulatedFinalStorage": {
+          "nova_token": "login-token",
+          "nova_user": "alice"
+        },
+        "initialHash": "#/auth",
+        "simulatedFinalHash": "#/auth"
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Open /#/auth",
+          "Enter alice / secret",
+          "Submit Sign in"
+        ],
+        "expectedFinalView": "appScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "authScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "appScreen",
+            "className": "",
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Nova Shopping Assistant Ready to help you shop New chat Recent guest What are you looking for? Tell me what you need. Running shoes Coffee machine Headphones Camera Tell Nova what you're looking for",
+            "interactiveEntryCount": 8
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    },
+    {
+      "path": "existing_token_boot",
+      "trigger": {
+        "initialStorage": {
+          "nova_token": "valid-token",
+          "nova_user": "alice"
+        },
+        "simulatedFinalStorage": {
+          "nova_token": "valid-token",
+          "nova_user": "alice"
+        },
+        "initialHash": "#/app",
+        "simulatedFinalHash": "#/app"
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Set nova_token=valid-token and nova_user=alice",
+          "Cold-open /"
+        ],
+        "expectedFinalView": "appScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "authScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "appScreen",
+            "className": "",
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Nova Shopping Assistant Ready to help you shop New chat Recent guest What are you looking for? Tell me what you need. Running shoes Coffee machine Headphones Camera Tell Nova what you're looking for",
+            "interactiveEntryCount": 8
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    },
+    {
+      "path": "app_refresh",
+      "trigger": {
+        "initialStorage": {
+          "nova_token": "valid-token",
+          "nova_user": "alice"
+        },
+        "simulatedFinalStorage": {
+          "nova_token": "valid-token",
+          "nova_user": "alice"
+        },
+        "initialHash": "#/app",
+        "simulatedFinalHash": "#/app"
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Set valid token and username",
+          "Open /#/app",
+          "Reload"
+        ],
+        "expectedFinalView": "appScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "authScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "appScreen",
+            "className": "",
+            "display": "grid",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Nova Shopping Assistant Ready to help you shop New chat Recent guest What are you looking for? Tell me what you need. Running shoes Coffee machine Headphones Camera Tell Nova what you're looking for",
+            "interactiveEntryCount": 8
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    },
+    {
+      "path": "logout_to_welcome",
+      "trigger": {
+        "initialStorage": {
+          "nova_token": "valid-token",
+          "nova_user": "alice"
+        },
+        "simulatedFinalStorage": {},
+        "initialHash": "#/app",
+        "simulatedFinalHash": ""
+      },
+      "minimalReproduction": {
+        "steps": [
+          "Set valid token and username",
+          "Open /#/app",
+          "Click Sign out"
+        ],
+        "expectedFinalView": "welcomeScreen",
+        "harnessLimitations": [
+          "No JavaScript engine was available, so this is a control-flow simulation, not execution of the inline script.",
+          "No browser layout, paint, computed CSS cascade, resource loading, browser console, hit testing, or real network/SSE is available."
+        ]
+      },
+      "observation": {
+        "views": [
+          {
+            "id": "welcomeScreen",
+            "className": "",
+            "display": "flex",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": true,
+            "visibleText": "Good choices start here. Your shopping companion, Nova. Start",
+            "interactiveEntryCount": 3
+          },
+          {
+            "id": "authScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          },
+          {
+            "id": "appScreen",
+            "className": "hidden",
+            "display": "none",
+            "visibility": "visible",
+            "opacity": "1",
+            "visible": false,
+            "visibleText": "",
+            "interactiveEntryCount": 0
+          }
+        ],
+        "visibleTopLevelViewCount": 1,
+        "expectedViewVisible": true,
+        "expectedViewHasContent": true,
+        "expectedViewHasInteractiveContent": true
+      },
+      "runtime": {
+        "executionAttempted": false,
+        "executionBlockedReason": "No node, nodejs, deno, bun, quickjs, js2py, execjs, or esprima runtime is installed; cscript is legacy JScript and cannot parse this ES2022 source.",
+        "executionError": null,
+        "consoleErrors": null,
+        "uncaughtExceptions": null,
+        "unhandledRejections": null,
+        "resourceErrors": null,
+        "status": "blocked_runtime_not_executed"
+      }
+    }
+  ],
+  "counterexamples": [],
+  "classification": "blocked_no_runtime_evidence"
+}
