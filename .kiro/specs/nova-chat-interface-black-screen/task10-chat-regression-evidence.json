@@ -1,0 +1,269 @@
+{
+  "task": "10",
+  "title": "Property 2: app chat/session/SSE and protected payload regression",
+  "generatedBy": "task10_chat_regression_check.py",
+  "reusedChecks": {
+    "task3Evidence": "task3-preservation-evidence.json",
+    "task3StaticSourceContracts": {
+      "passed": 58,
+      "total": 58,
+      "status": "pass"
+    },
+    "task3ProtectedStructure": {
+      "passed": 5,
+      "total": 5,
+      "status": "pass",
+      "checks": {
+        "topLevelViewIdsExactlyExpected": true,
+        "allTopLevelViewsInitiallyHidden": true,
+        "hiddenRuleRemainsDisplayNoneImportant": true,
+        "singleInlineScript": true,
+        "appChatDomPreserved": true
+      }
+    },
+    "task3NodeSyntax": {
+      "status": "pass",
+      "passed": true,
+      "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "version": "v24.19.0"
+    }
+  },
+  "modelChecks": {
+    "passed": 35,
+    "total": 35,
+    "status": "pass",
+    "checks": {
+      "chat endpoint is POST /chat/stream": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "fetch\\(\"/chat/stream\",\\{method:\"POST\""
+      },
+      "chat request declares JSON content type": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "fetch\\(\"/chat/stream\",\\{method:\"POST\",headers:\\{\"Content-Type\":\"application/json\""
+      },
+      "chat request conditionally sends bearer token": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "\\(token\\?\\{Authorization:\"Bearer \"\\+token\\}:\\{\\}\\)"
+      },
+      "chat request sends session_id and message": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "body:JSON\\.stringify\\(\\{session_id:sessionId,message:text\\}\\)"
+      },
+      "non-ok or missing body uses request fallback": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "if\\(!res\\.ok\\|\\|!res\\.body\\)"
+      },
+      "request fallback preserves failure copy": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "Sorry, the request failed\\. Please try again\\."
+      },
+      "network catch preserves network fallback": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "Network error\\. Please check the server and retry\\."
+      },
+      "send lifecycle resets busy and send state": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "finally\\{busy=false;syncSendState\\(\\);input\\.focus\\(\\);scrollDown\\(\\);saveSession\\(\\);\\}"
+      },
+      "SSE parser reads event lines": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "if\\(l\\.startsWith\\(\"event:\"\\)\\) event=l\\.slice\\(6\\)\\.trim\\(\\)"
+      },
+      "SSE parser reads data lines": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "else if\\(l\\.startsWith\\(\"data:\"\\)\\) data\\+=l\\.slice\\(5\\)\\.trim\\(\\)"
+      },
+      "SSE parser JSON-decodes data": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "try\\{ return \\{event,data:JSON\\.parse\\(data\\|\\|\"\\{\\}\"\\)\\}; \\}catch\\{ return \\{event,data:\\{\\}\\}; \\}"
+      },
+      "SSE token event appends token text": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "event\\.event===\"token\"\\)appendToken\\(body,event\\.data\\.text\\|\\|\"\",caret\\)"
+      },
+      "SSE recommendations event retains response data": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "event\\.event===\"recommendations\"\\)responseData=event\\.data"
+      },
+      "SSE error event appends error text": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "event\\.event===\"error\"\\)appendToken\\(body,event\\.data\\.error\\|\\|\"Request failed\",caret\\)"
+      },
+      "SSE stream is split on blank event frames": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "while\\(\\(divider=buffer\\.indexOf\\(\"\\\\n\\\\n\"\\)\\)>=0\\)"
+      },
+      "session store is keyed by sessionId": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "const sessions=\\{\\};"
+      },
+      "saveSession stores stream innerHTML": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "function saveSession\\(\\)\\{ if\\(sessions\\[sessionId\\]\\) sessions\\[sessionId\\]\\.html=streamInner\\.innerHTML; \\}"
+      },
+      "pushHistory creates session snapshot": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "function pushHistory\\(text\\)\\{[\\s\\S]{0,500}sessions\\[sessionId\\]=\\{title,html:streamInner\\.innerHTML\\}"
+      },
+      "switchToSession restores session snapshot": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "function switchToSession\\(id\\)\\{[\\s\\S]{0,500}sessionId=id; streamInner\\.innerHTML=sessions\\[id\\]\\.html;"
+      },
+      "resetChat creates new session and restores welcome": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "function resetChat\\(\\)\\{[\\s\\S]{0,650}sessionId=newId\\(\\); streamInner\\.innerHTML=\"\"; streamInner\\.appendChild\\(welcome\\);"
+      },
+      "history click switches selected session": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "histEl\\.addEventListener\\(\"click\",event=>\\{const item=event\\.target\\.closest\\(\"\\.hist-item\"\\);if\\(item\\)switchToSession\\(item\\.dataset\\.session\\);\\}"
+      },
+      "send creates history entry for a new session": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "if\\(!sessions\\[sessionId\\]\\)pushHistory\\(text\\)"
+      },
+      "recommendation payload is retained by group": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "recommendationGroups\\.set\\(groupId,recs\\)"
+      },
+      "recommendation title and product fallback render": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "rec\\.title\\|\\|rec\\.product_id\\|\\|\"Product\""
+      },
+      "recommendation reason is escaped and rendered": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "class=\"rec-reason\">\\'\\+esc\\(rec\\.reason\\|\\|\"\"\\)"
+      },
+      "recommendation positives and negatives are bounded": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "positives\\|\\|\\[\\]\\)\\.slice\\(0,3\\),neg=\\(rec\\.summary&&rec\\.summary\\.negatives\\|\\|\\[\\]\\)\\.slice\\(0,3\\)"
+      },
+      "recommendation rank is derived from display index": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "String\\(index\\+1\\)\\.padStart\\(2,\"0\"\\)"
+      },
+      "insufficient recommendation status keeps notice": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "if\\(status===\"insufficient\"\\)renderNotices\\(container,\\[\"Few items matched\\. Showing all available results\\.\"\\]\\)"
+      },
+      "recommendation click resolves payload and index": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "const recs=recommendationGroups\\.get\\(card\\.dataset\\.recGroup\\);const index=Number\\(card\\.dataset\\.recIndex\\);"
+      },
+      "recommendation click opens panel and selects product": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "openRecommendationsPanel\\(recs\\);selectProduct\\(index\\)"
+      },
+      "product panel maps recommendation titles and queries": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "brProducts=\\(recs\\|\\|\\[\\]\\)\\.map\\(r=>\\(\\{title:r\\.title\\|\\|r\\.product_id\\|\\|\"Product\",q:r\\.title\\|\\|r\\.product_id\\|\\|\"product\"\\}\\)\\)"
+      },
+      "AliExpress embed URL is preserved": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "return \"https://www\\.aliexpress\\.com/wholesale\\?SearchText=\"\\+encodeURIComponent\\(q\\)"
+      },
+      "Amazon external search URL is preserved": {
+        "passed": true,
+        "matchCount": 2,
+        "pattern": "return \"https://www\\.amazon\\.com/s\\?k=\"\\+encodeURIComponent\\(q\\)"
+      },
+      "selectProduct sets iframe and external link": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "frame\\.src=url; \\$\\(\"#ppWebwrap\"\\)\\.classList\\.add\\(\"live\"\\);[\\s\\S]{0,240}\\$\\(\"#ppExt\"\\)\\.href=extShopUrl\\(product\\.q\\)"
+      },
+      "closeProduct clears panel and iframe": {
+        "passed": true,
+        "matchCount": 1,
+        "pattern": "function closeProduct\\(\\{restoreFocus=true\\}=\\{\\}\\)\\{[\\s\\S]{0,500}frame\\.src=\"about:blank\";"
+      }
+    }
+  },
+  "node": {
+    "status": "pass",
+    "passed": true,
+    "node": "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+    "version": "v24.19.0",
+    "command": [
+      "C:\\\\Program Files\\\\nodejs\\\\node.exe",
+      "--check",
+      "D:\\NUS\\Hackson\\MAKABAKA\\.kiro\\specs\\nova-chat-interface-black-screen\\task10-chat-regression-inline-script.js"
+    ],
+    "returnCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source": {
+    "path": "static/index.html",
+    "sha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "inlineScriptSha256": "591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4",
+    "inlineScriptCharacters": 74626,
+    "inlineScriptCount": 1,
+    "task3BaselineSha256": "c7fe9d9b59ccc1b168fe6bef12383bd89b70f08b09f5215e6fbd8e57bc9ca2d4",
+    "task3BaselineInlineScriptSha256": "591d2919704f3b1154441f8790bc881bd8052bd8c5119f119a9c85f5fe33e6f4",
+    "sourceMatchesTask3Baseline": true,
+    "inlineScriptMatchesTask3Baseline": true
+  },
+  "runtimeAvailability": {
+    "status": "blocked_unavailable",
+    "browserInstalledOrUsed": false,
+    "chatRequest": "unavailable",
+    "sseExchange": "unavailable",
+    "sessionUi": "unavailable",
+    "recommendationUi": "unavailable",
+    "networkRequests": "unavailable",
+    "consoleErrors": "unavailable",
+    "uncaughtExceptions": "unavailable",
+    "unhandledRejections": "unavailable",
+    "reason": "No browser was installed or used; this task records source/model evidence only and does not claim runtime behavior."
+  },
+  "diffBoundary": {
+    "productionFilesModifiedByTask10": [],
+    "specLocalFilesGeneratedByTask10": [
+      "task10-chat-regression-inline-script.js",
+      "task10-chat-regression-evidence.json",
+      "task10-chat-regression-report.md"
+    ],
+    "observedGitDiffNames": [
+      ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+      "static/index.html"
+    ],
+    "productionSourceChangedFromTask3Baseline": false,
+    "note": "The checker writes only files under this bugfix spec directory; static/index.html is read-only input."
+  },
+  "overall": {
+    "status": "pass",
+    "runtime": "unavailable"
+  }
+}

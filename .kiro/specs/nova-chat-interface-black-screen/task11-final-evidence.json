@@ -1,0 +1,241 @@
+{
+  "task": "11",
+  "title": "Final validation and delivery check",
+  "result": "static_delivery_pass_runtime_blocked",
+  "deliveryStatus": "static_delivery_pass_runtime_blocked",
+  "task11BlockDecision": {
+    "evidenceConflict": "resolved",
+    "staticValidationBlockReleased": true,
+    "runtimeGate": "blocked_unavailable",
+    "fullRuntimeDeliverySignoff": false,
+    "meaning": "The prior evidence-identity conflict is resolved by recording both raw-byte and checker-native normalized-text identities. No browser/runtime claim is made."
+  },
+  "config": {
+    "path": ".kiro/specs/nova-chat-interface-black-screen/.config.kiro",
+    "specType": "bugfix"
+  },
+  "sourceAudit": {
+    "authoritativeInput": "current working-tree static/index.html",
+    "currentRawWorkingTreeObservation": {
+      "path": "static/index.html",
+      "rawFileSha256": "dc8969b4a7e92b30f8a95cfca1a9dbc6cfc2d44bb7ee71655dd596d3a0ec5130",
+      "rawInlineScriptSha256": "78f5bab674e2235e01ab360a309a279d61063c3a6ccedb859793c0d67a432862",
+      "rawInlineScriptCharacters": 73635,
+      "inlineScriptCount": 1,
+      "hashMethod": "SHA-256 over raw UTF-8 file/script bytes, preserving CRLF"
+    },
+    "currentCheckerNativeObservation": {
+      "normalizedHtmlSha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+      "normalizedInlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+      "normalizedInlineScriptCharacters": 72408,
+      "hashMethod": "SHA-256 over Python read_text() LF-normalized UTF-8 text used by task2-task10 checkers"
+    },
+    "nodeSyntax": {
+      "status": "pass",
+      "node": "v24.19.0",
+      "method": "task2_static_check.py extracts the current inline script and runs node --check",
+      "returnCode": 0,
+      "stderr": ""
+    },
+    "historicalTask4EvidenceSnapshot": {
+      "recordedHtmlSha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+      "recordedInlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+      "recordedInlineScriptCharacters": 72408,
+      "recordedHashSemantics": "checker-native LF-normalized text identity"
+    },
+    "identityComparison": {
+      "currentRawShaMatchesHistoricalTask4RecordedSha": false,
+      "currentRawInlineShaMatchesHistoricalTask4RecordedSha": false,
+      "currentNormalizedShaMatchesHistoricalTask4RecordedSha": true,
+      "interpretation": "The old 6789b06/5999838 identities are the same normalized text identities produced by the current checkers; the current raw working-tree identities are dc8969b/78f5bab because the file preserves CRLF. Both identities are now explicit in evidence, so the prior ambiguity is removed."
+    },
+    "sourceDiffAttribution": {
+      "workingTreeStaticIndexNumstat": "112 additions, 106 deletions",
+      "historicalTask4AttributedChange": "single renderRecs string-construction expression",
+      "attributionDecision": "pre-existing/unattributed working-tree change",
+      "decision": "Do not attribute the complete current 112+/106- static/index.html diff to this bugfix from available evidence. The user must confirm the source/diff origin separately."
+    }
+  },
+  "rerunCommands": [
+    {
+      "task": "2",
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task2_static_check.py",
+      "status": "pass",
+      "result": "Node syntax pass; lifecycle checks 11/11"
+    },
+    {
+      "task": "3",
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task3_preservation_check.py",
+      "status": "pass",
+      "result": "static source contracts 58/58; protected structure 5/5; runtime blocked/unavailable"
+    },
+    {
+      "task": "5",
+      "command": "exploration_static_harness.py simulate_path() for six paths",
+      "status": "pass_model_only",
+      "result": "six modeled terminal visible counts are 1; runtime blocked/unavailable"
+    },
+    {
+      "task": "7",
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task7_login_success_check.py",
+      "status": "pass_model_only",
+      "result": "source contracts 22/22; MiniDOM visible count 1; Node syntax pass; runtime unavailable"
+    },
+    {
+      "task": "9",
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task9_protected_regression_check.py",
+      "status": "pass_model_only",
+      "result": "protected source contracts 27/27; Node syntax pass; runtime blocked/unavailable"
+    },
+    {
+      "task": "10",
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task10_chat_regression_check.py",
+      "status": "pass_model_only",
+      "result": "focused model checks 35/35; task3 contracts 58/58; structure 5/5; Node syntax pass; runtime blocked/unavailable"
+    }
+  ],
+  "staticValidation": {
+    "task2": {
+      "status": "pass",
+      "nodeSyntax": "pass",
+      "lifecycleChecks": "11/11",
+      "currentRawFileShaRecorded": true
+    },
+    "task3": {
+      "status": "pass_static_runtime_blocked",
+      "sourceContracts": "58/58",
+      "protectedStructure": "5/5",
+      "nodeSyntax": "pass",
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task5": {
+      "status": "pass_model_only",
+      "pathsChecked": 6,
+      "allModeledVisibleTopLevelCountsExactlyOne": true,
+      "allModeledExpectedViewsHaveContent": true,
+      "allModeledExpectedViewsHaveInteractiveEntry": true,
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task6": {
+      "status": "pass_model_only",
+      "sourceContracts": "11/11",
+      "paths": ["existing_token_boot", "app_refresh"],
+      "modeledVisibleTopLevelCounts": [1, 1],
+      "storageKeyValueSemanticsPreservedInModel": true,
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task7": {
+      "status": "pass_model_only",
+      "sourceContracts": "22/22",
+      "modeledVisibleTopLevelCount": 1,
+      "nodeSyntax": "pass",
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task8": {
+      "status": "pass_model_only",
+      "sourceContracts": "17/17",
+      "paths": ["app_refresh", "logout_to_welcome"],
+      "modeledVisibleTopLevelCounts": [1, 1],
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task9": {
+      "status": "pass_model_only",
+      "sourceContracts": "27/27",
+      "nodeSyntax": "pass",
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "task10": {
+      "status": "pass_model_only",
+      "focusedModelChecks": "35/35",
+      "task3SourceContracts": "58/58",
+      "task3ProtectedStructure": "5/5",
+      "nodeSyntax": "pass",
+      "runtime": "blocked_unavailable",
+      "currentRawFileShaRecorded": true
+    },
+    "allStaticAndModelChecksPass": true
+  },
+  "task5To10HashAudit": {
+    "authoritativeRawFileSha256": "dc8969b4a7e92b30f8a95cfca1a9dbc6cfc2d44bb7ee71655dd596d3a0ec5130",
+    "authoritativeRawInlineScriptSha256": "78f5bab674e2235e01ab360a309a279d61063c3a6ccedb859793c0d67a432862",
+    "evidenceFilesUpdatedWithRawIdentity": [
+      "task5-visibility-evidence.json",
+      "task6-token-refresh-evidence.json",
+      "task7-login-success-evidence.json",
+      "task8-lifecycle-evidence.json",
+      "task9-protected-regression-evidence.json",
+      "task10-chat-regression-evidence.json"
+    ],
+    "checkerNativeNormalizedIdentity": {
+      "htmlSha256": "6789b06d739fa7cd80ef28dfdfb0eec694e6334fb161792de63d12b3bc781e09",
+      "inlineScriptSha256": "5999838d59fcfe8e575437aeee5af7abb11dfc5aee13e44243da70fb33e22160",
+      "matchesCurrentNormalizedSource": true
+    },
+    "consistent": true
+  },
+  "diffBoundary": {
+    "gitDiffNameOnlyObserved": [
+      ".kiro/specs/nova-chat-interface-redesign/tasks.md",
+      "static/index.html"
+    ],
+    "staticIndexDiffNumstatObserved": "112 additions, 106 deletions",
+    "task11ProductionFilesModified": [],
+    "task11ProductionCodeChanged": false,
+    "workingTreeDiffClassification": "pre-existing/unattributed; user confirmation required",
+    "specFilesWrittenOrUpdated": [
+      ".kiro/specs/nova-chat-interface-black-screen/task2-static-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task2-static-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task3-preservation-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task3-preservation-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task5-visibility-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task5-visibility-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task6-token-refresh-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task6-token-refresh-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task7-login-success-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task7-login-success-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task8-lifecycle-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task8-lifecycle-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task9-protected-regression-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task9-protected-regression-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task10-chat-regression-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task10-chat-regression-report.md",
+      ".kiro/specs/nova-chat-interface-black-screen/task11-final-evidence.json",
+      ".kiro/specs/nova-chat-interface-black-screen/task11-final-report.md"
+    ]
+  },
+  "runtimeBoundary": {
+    "status": "blocked_unavailable",
+    "browser": "blocked/unavailable",
+    "computedCss": "blocked/unavailable",
+    "paintAndLayout": "blocked/unavailable",
+    "hitTesting": "blocked/unavailable",
+    "consoleErrors": "blocked/unavailable",
+    "windowOnError": "blocked/unavailable",
+    "uncaughtExceptions": "blocked/unavailable",
+    "unhandledRejections": "blocked/unavailable",
+    "resourceErrors": "blocked/unavailable",
+    "networkRequests": "blocked/unavailable",
+    "authenticationRequests": "blocked/unavailable",
+    "sseExchange": "blocked/unavailable",
+    "sessionUi": "blocked/unavailable",
+    "recommendationUi": "blocked/unavailable",
+    "meaning": "No browser was installed or used and no real network/SSE was executed. Static source/model checks and Node syntax do not establish computed visibility, console behavior, user interaction, authentication, chat, or recommendation runtime behavior."
+  },
+  "requirementsTrace": {
+    "4.1PathCoverage": "six paths represented by task5 model; real browser smoke blocked",
+    "4.2DefectEvidence": "historical exploration evidence remains runtime-blocked; no new defect claim made",
+    "4.3HtmlJsValidity": "task2 current-source Node syntax pass; HTML structure checks pass",
+    "4.4StartupSmoke": "static/model only; browser blocked",
+    "4.5Visibility": "six modeled terminal counts are exactly one; computed CSS blocked",
+    "4.6Exceptions": "console/uncaught checks blocked",
+    "4.7To4.10LifecycleAndRegression": "task6-task9 source/model checks pass; runtime blocked",
+    "4.11DiffBoundary": "task11 made no production changes; current working-tree diff remains pre-existing/unattributed and needs user confirmation",
+    "4.12AppBehavior": "task10 focused model and protected contracts pass; live chat/SSE blocked"
+  }
+}

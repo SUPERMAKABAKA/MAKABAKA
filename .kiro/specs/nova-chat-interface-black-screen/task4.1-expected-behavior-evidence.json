@@ -1,0 +1,138 @@
+{
+  "task": "4.1",
+  "title": "Property 1: Expected Behavior - rerun exploration and confirm static restoration",
+  "result": "static_expected_behavior_pass_runtime_blocked",
+  "productionFilesModified": [],
+  "commands": {
+    "explorationHarness": {
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/exploration_static_harness.py",
+      "status": "completed",
+      "classification": "blocked_no_runtime_evidence",
+      "dependencyFree": true,
+      "browserUsed": false,
+      "javascriptExecutionByHarness": false
+    },
+    "task2StaticCheck": {
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task2_static_check.py",
+      "status": "pass",
+      "checks": "11/11"
+    },
+    "task3PreservationStaticCheck": {
+      "command": "python .kiro/specs/nova-chat-interface-black-screen/task3_preservation_check.py",
+      "status": "static_pass_runtime_blocked",
+      "sourceContracts": "58/58",
+      "protectedStructure": "5/5"
+    },
+    "nodeSyntaxCheck": {
+      "command": "C:\\Program Files\\nodejs\\node.exe --check .kiro/specs/nova-chat-interface-black-screen/task3-inline-script.js",
+      "status": "pass",
+      "node": "v24.19.0",
+      "returnCode": 0,
+      "stderr": ""
+    }
+  },
+  "preFixCounterexample": {
+    "status": "disappeared",
+    "error": "SyntaxError: Unexpected identifier 'insufficient'",
+    "extractedScriptLine": 520,
+    "htmlLine": 1622,
+    "impact": "The inline script could not parse before boot/setView ran while all three top-level views initially had hidden."
+  },
+  "paths": [
+    {
+      "path": "first_open",
+      "steps": ["Clear nova_token and nova_user", "Open /"],
+      "initialStorage": {},
+      "finalStorage": {},
+      "initialHash": "",
+      "finalHash": "",
+      "expectedView": "welcomeScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "welcomeScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    },
+    {
+      "path": "direct_auth_hash",
+      "steps": ["Clear nova_token and nova_user", "Open /#/auth"],
+      "initialStorage": {},
+      "finalStorage": {},
+      "initialHash": "#/auth",
+      "finalHash": "#/auth",
+      "expectedView": "authScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "authScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    },
+    {
+      "path": "login_success",
+      "steps": ["Open /#/auth", "Enter alice / secret", "Submit Sign in"],
+      "initialStorage": {},
+      "finalStorage": {"nova_token": "login-token", "nova_user": "alice"},
+      "initialHash": "#/auth",
+      "finalHash": "#/auth",
+      "expectedView": "appScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "appScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    },
+    {
+      "path": "existing_token_boot",
+      "steps": ["Set nova_token=valid-token and nova_user=alice", "Cold-open /"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "initialHash": "#/app",
+      "finalHash": "#/app",
+      "expectedView": "appScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "appScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    },
+    {
+      "path": "app_refresh",
+      "steps": ["Set valid token and username", "Open /#/app", "Reload"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "initialHash": "#/app",
+      "finalHash": "#/app",
+      "expectedView": "appScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "appScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    },
+    {
+      "path": "logout_to_welcome",
+      "steps": ["Set valid token and username", "Open /#/app", "Click Sign out"],
+      "initialStorage": {"nova_token": "valid-token", "nova_user": "alice"},
+      "finalStorage": {},
+      "initialHash": "#/app",
+      "finalHash": "",
+      "expectedView": "welcomeScreen",
+      "simulatedVisibleTopLevelViewCount": 1,
+      "simulatedVisibleView": "welcomeScreen",
+      "simulatedContentAndInteraction": true,
+      "runtime": "unavailable"
+    }
+  ],
+  "runtimeUnavailable": {
+    "browser": true,
+    "computedCss": true,
+    "paintAndLayout": true,
+    "consoleErrors": true,
+    "uncaughtExceptions": true,
+    "unhandledRejections": true,
+    "resourceErrors": true,
+    "networkAndSse": true,
+    "meaning": "These values are unavailable/null, not passing assertions. MiniDOM results are control-flow expectations only."
+  },
+  "interpretation": {
+    "staticExpectedBehavior": "pass",
+    "browserSmoke": "not_claimed",
+    "counterexamples": "The pre-fix parser counterexample is absent after Node --check passes; no new runtime counterexample was observable because no browser was available.",
+    "nextTasks": "allow_4.2_and_4.3"
+  }
+}
