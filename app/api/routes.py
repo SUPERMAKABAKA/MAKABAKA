@@ -25,8 +25,10 @@ from app.api.models import (
     ChatResponse,
     ConsultationRequest,
     ConsultationResponse,
+    ConsultationSummaryResponse,
     ErrorResponse,
 )
+from app.agents.consultation_summary import ConsultationSummary
 from app.agents.customer_service import CustomerService
 from app.config import get_settings
 from app.container import Container
@@ -72,6 +74,7 @@ class _Components:
             container, store, embedder, profile_source, catalog=self.catalog
         )
         self.orchestrator = orchestrator
+        self.llm = container.llm()
         self.session_repo = InMemorySessionRepository()
 
 
@@ -134,6 +137,9 @@ def _run_turn(body: dict, authorization: Optional[str]) -> Any:
     req = ChatRequest.model_validate(body)
     components = _get_components()
     session = components.session_repo.get_or_create(req.session_id)
+    # 生成答案方式：direct=Nova自主决策多 / guided=human-in-the-loop多。
+    if req.pace in ("direct", "guided"):
+        session.pace = req.pace
     # 登录用户名作为模拟画像的 user_id（若已登录）。
     user = resolve_user(authorization)
     if user and not session.user_id:
@@ -214,6 +220,45 @@ async def consult(request: ConsultationRequest) -> Any:
     )
 
 
+@router.post(
+    "/consult/summary",
+    response_model=ConsultationSummaryResponse,
+    responses={400: {"model": ErrorResponse}, 409: {"model": ErrorResponse}},
+)
+async def consult_summary(request: ConsultationRequest) -> Any:
+    """基于当前会话推荐商品生成客服咨询，并把咨询内容总结后回复。"""
+    components = _get_components()
+    session = components.session_repo.get_or_create(request.session_id)
+    recommendations = list(session.recommendations)
+    if not recommendations:
+        return JSONResponse(
+            status_code=409,
+            content=ErrorResponse(
+                error="当前会话还没有可咨询的推荐商品，请先获取推荐。"
+            ).model_dump(),
+        )
+
+    if request.product_ids:
+        selected_ids = set(request.product_ids)
+        selected = [item for item in recommendations if item.product_id in selected_ids]
+        if not selected:
+            return JSONResponse(
+                status_code=400,
+                content=ErrorResponse(error="未找到请求咨询的推荐商品。").model_dump(),
+            )
+        recommendations = selected
+
+    transcript = CustomerService.answer(request.message, recommendations)
+    summary = ConsultationSummary(components.llm).summarize(transcript, recommendations)
+    return ConsultationSummaryResponse(
+        session_id=request.session_id,
+        reply=summary,
+        summary=summary,
+        transcript=transcript,
+        recommendations=recommendations,
+    )
+
+
 @router.post("/chat/stream")
 async def chat_stream(request: Request, authorization: Optional[str] = Header(default=None)):
     """SSE 流式对话接口。
@@ -257,6 +302,7 @@ async def chat_stream(request: Request, authorization: Optional[str] = Header(de
             "options": list(result.clarify_options),
             "react_steps": [step.model_dump() for step in result.react_steps],
             "intent": result.intent,
+            "consult_offer": bool(recs),
         }
         yield f"event: recommendations\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
         yield "event: done\ndata: {}\n\n"

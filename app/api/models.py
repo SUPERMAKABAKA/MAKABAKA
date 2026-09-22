@@ -4,7 +4,7 @@
 `ErrorResponse`。关联需求：9.1、9.4、9.5。
 """
 
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -17,6 +17,7 @@ class ChatRequest(BaseModel):
     session_id: str
     message: str
     recommendation_count: Optional[int] = Field(default=None, ge=1)  # Req 9.5
+    pace: Optional[str] = Field(default=None, description="direct = Nova自主决策多; guided = human-in-the-loop多")
 
 
 class ChatResponse(BaseModel):
@@ -47,6 +48,13 @@ class ConsultationResponse(BaseModel):
     session_id: str
     reply: str
     recommendations: list[ProductRecommendation] = Field(default_factory=list)
+
+
+class ConsultationSummaryResponse(ConsultationResponse):
+    """在客服回复基础上叠加总结：``reply`` 仍为面向用户的总结。"""
+
+    summary: str  # Consultation_Summary（= reply）
+    transcript: str  # 原始客服文案（Consultation_Transcript）
 
 
 class ErrorResponse(BaseModel):
