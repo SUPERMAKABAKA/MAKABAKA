@@ -829,6 +829,15 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 #appScreen .notice{margin-top:10px;color:var(--chat-ink-muted);font-size:12px}
 #appScreen .notices{grid-column:1/-1}
 
+/* -- pace / answer-mode chips -- */
+#appScreen .pace-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:min(100%,var(--chat-content));margin:0 auto 10px}
+#appScreen .pace-label{font-size:11px;color:var(--chat-ink-muted);font-family:var(--mono);letter-spacing:.02em}
+#appScreen .pace-chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-surface);color:var(--chat-ink-muted);font-size:12px;cursor:pointer;transition:border-color var(--chat-duration),background var(--chat-duration),color var(--chat-duration)}
+#appScreen .pace-chip:hover{border-color:var(--chat-ink)}
+#appScreen .pace-chip[aria-pressed="true"]{border-color:var(--chat-ink);background:var(--chat-ink);color:#fff}
+#appScreen .pace-bar.locked{opacity:.6}
+#appScreen .pace-bar.locked .pace-chip{cursor:default;pointer-events:none}
+#appScreen .pace-hint{font-size:11px;color:var(--chat-ink-muted)}
 /* -- composer: large centered rounded search -- */
 #appScreen .composer{padding-top:20px}
 #appScreen .input-wrap{padding:9px 9px 9px 20px;border-radius:22px}
@@ -1205,6 +1214,12 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
         </div>
       </div></div>
       <div class="composer"><div class="composer-inner">
+        <div class="pace-bar" id="paceBar" role="group" aria-label="Answer mode">
+          <span class="pace-label">Answer mode</span>
+          <button class="pace-chip" id="paceDirect" type="button" aria-pressed="false" title="Nova makes more decisions on its own and recommends faster">Nova decides</button>
+          <button class="pace-chip" id="paceGuided" type="button" aria-pressed="true" title="Nova asks step by step and confirms with you (human in the loop)">Guide me</button>
+          <span class="pace-hint" id="paceHint"></span>
+        </div>
         <div class="attach-strip" id="attachStrip" hidden></div>
         <div class="input-wrap">
         <input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xls,.xlsx" hidden>
@@ -1440,6 +1455,7 @@ $("#newChat").onclick=()=>{
   if(typeof closeProduct==="function") closeProduct();
   welcome.style.display=""; $("#topMeta").textContent="Tell me what you want to buy";
   [...histEl.children].forEach(h=>h.classList.remove("on"));
+  refreshPaceBarForSession();
 };
 
 /* ===== left history sidebar collapse/expand ===== */
@@ -1667,10 +1683,12 @@ async function doSend(){
   if(!histEl.querySelector(".hist-item.on")) pushHistory(text);
   addUser(text); input.value=""; autosize();
   const think=addThinking();
+  const _payload={session_id:sessionId,message:text};
+  if(!paceSentFor.has(sessionId)){ _payload.pace=chatPace; paceSentFor.add(sessionId); lockPaceBar(true); }
   try{
     const res=await fetch("/chat/stream",{method:"POST",
       headers:{"Content-Type":"application/json",...(token?{"Authorization":"Bearer "+token}:{})},
-      body:JSON.stringify({session_id:sessionId,message:text})});
+      body:JSON.stringify(_payload)});
     if(!res.ok||!res.body){ think.remove(); const m=aiBubble();
       await typeFallback(m.querySelector(".body"),"Sorry, the request failed. Please try again."); return; }
 
@@ -1722,6 +1740,26 @@ function scrollDown(){ stream.scrollTop=stream.scrollHeight; }
 let historyOpener=null, productPanelOpener=null, profileOpener=null;
 const recommendationGroups=new Map();
 function syncSendState(){ sendBtn.disabled=busy||(!input.value.trim() && pendingAttachments.length===0); }
+
+/* ===== answer mode (pace): direct = Nova decides more / guided = human in the loop ===== */
+let chatPace="guided";
+const paceSentFor=new Set();
+const PACE_HINTS={direct:"Nova recommends faster with fewer questions.",guided:"Nova asks step by step and confirms with you."};
+function renderPaceBar(){
+  const d=$("#paceDirect"), g=$("#paceGuided"), h=$("#paceHint");
+  if(!d||!g) return;
+  d.setAttribute("aria-pressed", chatPace==="direct"?"true":"false");
+  g.setAttribute("aria-pressed", chatPace==="guided"?"true":"false");
+  if(h) h.textContent=PACE_HINTS[chatPace]||"";
+}
+function setPace(p){ if(p!=="direct"&&p!=="guided") return; if(paceSentFor.has(sessionId)) return; chatPace=p; renderPaceBar(); }
+function lockPaceBar(on){ const bar=$("#paceBar"); if(bar) bar.classList.toggle("locked", !!on); }
+function refreshPaceBarForSession(){ lockPaceBar(paceSentFor.has(sessionId)); renderPaceBar(); }
+(function(){ const d=$("#paceDirect"), g=$("#paceGuided");
+  if(d) d.addEventListener("click",()=>setPace("direct"));
+  if(g) g.addEventListener("click",()=>setPace("guided"));
+  renderPaceBar();
+})();
 
 /* ===== composer attachments (images + files) ===== */
 const pendingAttachments=[];   // {id,name,size,type,isImage,dataUrl}
@@ -1777,8 +1815,8 @@ function getDrawerFocusables(){ return [...$("#historyDrawer").querySelectorAll(
 function openHistoryDrawer(){ closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); closeProduct({restoreFocus:false}); historyOpener=$("#sideToggle"); $("#historyBackdrop").hidden=false; const drawer=$("#historyDrawer"); drawer.setAttribute("aria-hidden","false"); appEl.classList.add("history-open"); $("#sideToggle").setAttribute("aria-expanded","true"); const shell=$("#appScreen .chat-shell"); if("inert" in shell) shell.inert=true; const active=histEl.querySelector(".hist-item.on"); (active||$("#historyClose")).focus(); }
 function closeHistoryDrawer({restoreFocus=true}={}){ const drawer=$("#historyDrawer"); if(drawer.getAttribute("aria-hidden")==="true") return; $("#historyBackdrop").hidden=true; drawer.setAttribute("aria-hidden","true"); appEl.classList.remove("history-open"); $("#sideToggle").setAttribute("aria-expanded","false"); const shell=$("#appScreen .chat-shell"); if("inert" in shell) shell.inert=false; if(restoreFocus&&historyOpener) historyOpener.focus(); }
 function pushHistory(text){ if(sessions[sessionId]) return; const title=text.length>42?text.slice(0,42)+"...":text; sessions[sessionId]={title,html:streamInner.innerHTML}; const item=document.createElement("button"); item.type="button"; item.className="hist-item on"; item.textContent=title; item.title=text; item.dataset.session=sessionId; histEl.prepend(item); setActiveHistory(sessionId); }
-function switchToSession(id){ if(!sessions[id]) return; saveSession(); sessionId=id; streamInner.innerHTML=sessions[id].html; setActiveHistory(id); closeProduct({restoreFocus:false}); closeHistoryDrawer(); $("#topMeta").textContent="Ready to help you shop"; syncSendState(); scrollDown(); }
-function resetChat(){ saveSession(); sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome); welcome.style.display=""; setActiveHistory(""); closeProduct({restoreFocus:false}); closeHistoryDrawer({restoreFocus:false}); closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); $("#topMeta").textContent="Ready to help you shop"; input.value=""; autosize(); syncSendState(); input.focus(); }
+function switchToSession(id){ if(!sessions[id]) return; saveSession(); sessionId=id; streamInner.innerHTML=sessions[id].html; setActiveHistory(id); closeProduct({restoreFocus:false}); closeHistoryDrawer(); $("#topMeta").textContent="Ready to help you shop"; syncSendState(); refreshPaceBarForSession(); scrollDown(); }
+function resetChat(){ saveSession(); sessionId=newId(); streamInner.innerHTML=""; streamInner.appendChild(welcome); welcome.style.display=""; setActiveHistory(""); closeProduct({restoreFocus:false}); closeHistoryDrawer({restoreFocus:false}); closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); $("#topMeta").textContent="Ready to help you shop"; input.value=""; autosize(); syncSendState(); input.focus();  refreshPaceBarForSession(); }
 function embedSearchUrl(q){ return "https://www.aliexpress.com/wholesale?SearchText="+encodeURIComponent(q); }
 function extShopUrl(q){ return "https://www.amazon.com/s?k="+encodeURIComponent(q); }
 function openRecommendationsPanel(recs){ brProducts=(recs||[]).map(r=>({title:r.title||r.product_id||"Product",q:r.title||r.product_id||"product"})); if(!brProducts.length) return; closeHistoryDrawer({restoreFocus:false}); closeProfileMenu({restoreFocus:false}); setBuddyPanel(false,{restoreFocus:false}); const tabs=$("#ppProdTabs"); tabs.innerHTML=""; brProducts.forEach((p,index)=>{ const tab=document.createElement("button"); tab.type="button"; tab.className="pp-prodtab"; tab.textContent=p.title; tab.addEventListener("click",()=>selectProduct(index)); tabs.appendChild(tab); }); $("#ppTitle").textContent="Shopping browser"; appEl.classList.add("panel-open"); $("#productPanel").setAttribute("aria-hidden","false"); setTimeout(fitEmbed,180); }

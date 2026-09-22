@@ -134,6 +134,9 @@ def _run_turn(body: dict, authorization: Optional[str]) -> Any:
     req = ChatRequest.model_validate(body)
     components = _get_components()
     session = components.session_repo.get_or_create(req.session_id)
+    # 生成答案方式：direct=Nova自主决策多 / guided=human-in-the-loop多。
+    if req.pace in ("direct", "guided"):
+        session.pace = req.pace
     # 登录用户名作为模拟画像的 user_id（若已登录）。
     user = resolve_user(authorization)
     if user and not session.user_id:
