@@ -41,6 +41,7 @@ class RetrievedRecord(BaseModel):
     source_url: str
     matched_text: str          # 匹配到的评论/详情文本 (Req 5.2)
     relevance_score: float
+    detail: Optional[str] = None  # 商品完整详情，供推荐与模拟客服使用
 
 
 class SocialReview(BaseModel):

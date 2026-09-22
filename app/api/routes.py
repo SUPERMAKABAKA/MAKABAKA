@@ -13,17 +13,26 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from typing import Any, Optional
 
 from fastapi import APIRouter, Header, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.api.auth import resolve_user
-from app.api.models import ChatRequest, ChatResponse, ErrorResponse
+from app.api.models import (
+    ChatRequest,
+    ChatResponse,
+    ConsultationRequest,
+    ConsultationResponse,
+    ErrorResponse,
+)
+from app.agents.customer_service import CustomerService
 from app.config import get_settings
 from app.container import Container
 from app.orchestrator.graph import build_default_orchestrator
 from app.orchestrator.session import ChatTurn, ConversationSession
+from app.repositories.product_catalog import ProductCatalog
 from app.repositories.profile_source import MockProfileSource
 from app.repositories.session_repo import InMemorySessionRepository
 
@@ -39,8 +48,28 @@ class _Components:
         store = container_store(container, settings)
         embedder = container.embedder()
         profile_source = MockProfileSource(settings.profiles_dataset)
+        self.catalog = ProductCatalog(settings.products_dataset)
+
+        # 服务首次启动时自动恢复最初的本地推荐模式：空库就灌入预置商品，
+        # 不再要求用户额外手动运行 scripts.ingest。
+        if store.count() == 0:
+            try:
+                from app.rag.ingestion import IngestionPipeline
+
+                written = IngestionPipeline(
+                    crawler=container.crawler(),
+                    store=store,
+                    embedder=embedder,
+                    logger=logging.getLogger("app.ingest"),
+                ).run()
+                logging.getLogger("app.ingest").info(
+                    "启动时自动灌库完成，写入记录数=%d", written
+                )
+            except Exception:  # noqa: BLE001 - 保留 API 启动，错误在日志中可见
+                logging.getLogger("app.ingest").exception("启动时自动灌库失败")
+
         orchestrator, _bundle = build_default_orchestrator(
-            container, store, embedder, profile_source
+            container, store, embedder, profile_source, catalog=self.catalog
         )
         self.orchestrator = orchestrator
         self.session_repo = InMemorySessionRepository()
@@ -105,6 +134,9 @@ def _run_turn(body: dict, authorization: Optional[str]) -> Any:
     req = ChatRequest.model_validate(body)
     components = _get_components()
     session = components.session_repo.get_or_create(req.session_id)
+    # 生成答案方式：direct=Nova自主决策多 / guided=human-in-the-loop多。
+    if req.pace in ("direct", "guided"):
+        session.pace = req.pace
     # 登录用户名作为模拟画像的 user_id（若已登录）。
     user = resolve_user(authorization)
     if user and not session.user_id:
@@ -142,6 +174,47 @@ async def chat(request: Request, authorization: Optional[str] = Header(default=N
     if err is not None:
         return err
     return _to_chat_response(result)
+
+
+@router.post(
+    "/consult",
+    response_model=ConsultationResponse,
+    responses={400: {"model": ErrorResponse}, 409: {"model": ErrorResponse}},
+)
+@router.post(
+    "/chat/consult",
+    response_model=ConsultationResponse,
+    include_in_schema=False,
+)
+async def consult(request: ConsultationRequest) -> Any:
+    """基于当前会话推荐商品生成模拟人工客服答复。"""
+    components = _get_components()
+    session = components.session_repo.get_or_create(request.session_id)
+    recommendations = list(session.recommendations)
+    if not recommendations:
+        return JSONResponse(
+            status_code=409,
+            content=ErrorResponse(
+                error="当前会话还没有可咨询的推荐商品，请先获取推荐。"
+            ).model_dump(),
+        )
+
+    if request.product_ids:
+        selected_ids = set(request.product_ids)
+        selected = [item for item in recommendations if item.product_id in selected_ids]
+        if not selected:
+            return JSONResponse(
+                status_code=400,
+                content=ErrorResponse(error="未找到请求咨询的推荐商品。").model_dump(),
+            )
+        recommendations = selected
+
+    reply = CustomerService.answer(request.message, recommendations)
+    return ConsultationResponse(
+        session_id=request.session_id,
+        reply=reply,
+        recommendations=recommendations,
+    )
 
 
 @router.post("/chat/stream")

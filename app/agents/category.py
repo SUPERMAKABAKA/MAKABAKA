@@ -10,7 +10,14 @@ from __future__ import annotations
 
 from typing import Optional
 
-__all__ = ["detect_category", "rule_options", "BUDGET_OPTIONS", "is_shopping_intent", "smalltalk_reply"]
+__all__ = [
+    "detect_category",
+    "rule_options",
+    "BUDGET_OPTIONS",
+    "is_shopping_intent",
+    "smalltalk_reply",
+    "category_query_terms",
+]
 
 # \u54c1\u7c7b\u5173\u952e\u8bcd\u8868\uff08\u82f1\u6587\u4e3a\u4e3b\uff0c\u517c\u5bb9\u5e38\u89c1\u4e2d\u6587\uff09\u3002\u952e\u4e3a\u89c4\u8303\u5316\u54c1\u7c7b\u540d\u3002
 _CATEGORY_KEYWORDS: dict[str, tuple[str, ...]] = {
@@ -49,6 +56,33 @@ _PREF_OPTIONS: dict[str, tuple[str, ...]] = {
 }
 
 _GENERIC_PREFS: tuple[str, ...] = ("Top quality", "Best value", "Popular brand", "Highly rated")
+
+# 品类到数据集中文检索关键词的映射。确定性 embedding 基于字符 n-gram，
+# 用与商品详情一致的中文词能显著提升检索命中相关品类（避免检索跑偏）。
+# 只用品类本体名词，不含跨品类功能词（如“降噪/人体工学/静音”），避免误命中。
+_CATEGORY_QUERY_TERMS: dict[str, tuple[str, ...]] = {
+    "headphones": ("耳机",),
+    "laptop": ("笔记本", "笔记本电脑"),
+    "phone": ("手机",),
+    "mouse": ("鼠标",),
+    "keyboard": ("键盘",),
+    "monitor": ("显示器",),
+    "camera": ("相机", "云台相机"),
+    "watch": ("手表", "手环"),
+    "speaker": ("音箱",),
+    "tablet": ("平板",),
+    "shoes": ("跑鞋", "运动鞋"),
+    "chair": ("椅子", "座椅"),
+    "purifier": ("净化器",),
+    "massage": ("按摩", "筋膜枪"),
+}
+
+
+def category_query_terms(category: Optional[str]) -> list[str]:
+    """返回品类对应的中文检索关键词列表；未知品类返回空列表。"""
+    if not category:
+        return []
+    return list(_CATEGORY_QUERY_TERMS.get(category, ()))
 
 # \u9884\u7b97\u6863\u4f4d\uff08\u4e0e\u54c1\u7c7b\u65e0\u5173\uff0c\u901a\u7528\uff09\u3002
 BUDGET_OPTIONS: tuple[str, ...] = (

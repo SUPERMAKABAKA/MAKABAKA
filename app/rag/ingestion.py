@@ -97,6 +97,8 @@ class IngestionPipeline:
                         "product_id": product.product_id,
                         "source_url": product.source_url,
                         "original_text": chunk,  # Req 1.3
+                        # 让检索结果能够把完整商品信息传递给推荐与客服。
+                        "detail": product.detail or "",
                     },
                 )
                 written += 1

@@ -8,7 +8,11 @@ Chroma 向量库目录以及各预置数据集路径。依赖注入容器（``ap
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Literal
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 from pydantic import BaseModel, Field
 
@@ -53,12 +57,13 @@ class Settings(BaseModel):
     embedder_impl: Literal["deterministic", "bedrock"] = "deterministic"
 
     # 向量库目录
-    chroma_dir: str = ".chroma"
+    # 默认路径固定到项目根目录，避免从其他工作目录启动时读到空索引。
+    chroma_dir: str = str(PROJECT_ROOT / ".chroma")
 
     # 预置数据集路径
-    products_dataset: str = Field(default="data/products.json")
-    web_dataset: str = Field(default="data/web_reviews.json")
-    profiles_dataset: str = Field(default="data/profiles.json")
+    products_dataset: str = Field(default=str(PROJECT_ROOT / "data" / "products.json"))
+    web_dataset: str = Field(default=str(PROJECT_ROOT / "data" / "web_reviews.json"))
+    profiles_dataset: str = Field(default=str(PROJECT_ROOT / "data" / "profiles.json"))
 
     # Amazon Bedrock 配置（真实实现使用；区域默认新加坡）
     bedrock_region: str = "ap-southeast-1"

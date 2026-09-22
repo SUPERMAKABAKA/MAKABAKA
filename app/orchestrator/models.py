@@ -27,6 +27,11 @@ class ProductRecommendation(BaseModel):
     reason: str  # 推荐理由 (Req 7.4)
     product_url: str  # 商品链接 (Req 7.4)
     summary: ReviewSummary  # 基于评论+测评的好评/差评总结 (Req 7.4, 7.5)
+    detail: str = ""  # 商品详情，供前端和模拟客服引用
+    price: Optional[str | float] = None
+    rating: Optional[float] = None
+    review_count: int = 0
+    relevance_score: Optional[float] = None
 
 
 class UserProfile(BaseModel):

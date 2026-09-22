@@ -4,7 +4,7 @@
 `ErrorResponse`。关联需求：9.1、9.4、9.5。
 """
 
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -17,6 +17,7 @@ class ChatRequest(BaseModel):
     session_id: str
     message: str
     recommendation_count: Optional[int] = Field(default=None, ge=1)  # Req 9.5
+    pace: Optional[str] = Field(default=None, description="direct = Nova自主决策多; guided = human-in-the-loop多")
 
 
 class ChatResponse(BaseModel):
@@ -31,6 +32,22 @@ class ChatResponse(BaseModel):
     options: list[str] = Field(default_factory=list)  # 澄清问题的可选项（前端按钮）
     react_steps: list[dict] = Field(default_factory=list)  # ReAct 展示步骤
     intent: str = "chat"  # chat / recommend
+
+
+class ConsultationRequest(BaseModel):
+    """基于当前会话推荐商品发起模拟客服咨询。"""
+
+    session_id: str
+    message: str = "请像人工客服一样介绍这些推荐商品，并说明各自优缺点。"
+    product_ids: list[str] = Field(default_factory=list)
+
+
+class ConsultationResponse(BaseModel):
+    """模拟客服的可解释回复及其引用的推荐商品。"""
+
+    session_id: str
+    reply: str
+    recommendations: list[ProductRecommendation] = Field(default_factory=list)
 
 
 class ErrorResponse(BaseModel):
