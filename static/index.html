@@ -828,7 +828,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 #appScreen .rec-open-hint,#appScreen .rec-link{display:none}
 #appScreen .notice{margin-top:10px;color:var(--chat-ink-muted);font-size:12px}
 #appScreen .notices{grid-column:1/-1}
-
+#appScreen .consult-offer{grid-column:1/-1;margin-top:16px;padding:14px 16px;border:1px solid var(--chat-line);border-radius:14px;background:var(--chat-surface-muted);display:flex;flex-direction:column;gap:10px}#appScreen .consult-offer-text{font-size:13px;color:var(--chat-ink);line-height:1.5}#appScreen .consult-offer-acts{display:flex;flex-wrap:wrap;gap:8px}#appScreen .consult-offer-btn{min-height:40px;padding:0 16px;border:1px solid var(--chat-line);border-radius:999px;background:var(--chat-ink);color:#fff;font-size:13px;font-weight:600;transition:background var(--chat-duration),border-color var(--chat-duration),transform var(--chat-duration)}#appScreen .consult-offer-btn.ghost{background:var(--chat-surface);color:var(--chat-ink)}#appScreen .consult-offer-btn:hover{border-color:#aeb3b8}#appScreen .consult-offer-btn.ghost:hover{background:var(--chat-surface-muted)}#appScreen .consult-offer-btn:active{transform:translateY(1px)}#appScreen .consult-offer-btn:disabled{opacity:.5;cursor:not-allowed}#appScreen .consult-offer-done{font-size:12px;color:var(--chat-ink-muted)}#appScreen .consult-offer-err{font-size:12px;color:#c0392b}
 /* -- pace / answer-mode chips -- */
 #appScreen .pace-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:min(100%,var(--chat-content));margin:0 auto 10px}
 #appScreen .pace-label{font-size:11px;color:var(--chat-ink-muted);font-family:var(--mono);letter-spacing:.02em}
@@ -1717,6 +1717,7 @@ async function doSend(){
         renderRecs(body, recsData.recommendations, recsData.status);
         $("#topMeta").textContent="Recommended "+recsData.recommendations.length+" products";
         buddySetState("happy");
+        if(recsData.consult_offer){ renderConsultOffer(body, recsData.recommendations); }
       } else {
         renderOptions(body, recsData.options);
       }
@@ -1726,6 +1727,47 @@ async function doSend(){
     await typeFallback(m.querySelector(".body"),"Network error. Please check the server and retry."); }
   finally{ busy=false; sendBtn.disabled=!input.value.trim(); input.focus(); scrollDown(); saveSession();
     if(!novaBuddy.classList.contains("happy")) buddySetState("idle"); }
+}
+function renderConsultOffer(container, recs){
+  if(!recs || !recs.length) return;
+  const ids = recs.map(r=>r.product_id).filter(Boolean);
+  const box = document.createElement("div");
+  box.className = "consult-offer";
+  const prompt = document.createElement("div");
+  prompt.className = "consult-offer-text";
+  prompt.textContent = "需要我帮你和这些商品的客服进一步咨询，并总结要点吗？";
+  const actions = document.createElement("div");
+  actions.className = "consult-offer-acts";
+  const yes = document.createElement("button");
+  yes.type = "button"; yes.className = "consult-offer-btn"; yes.dataset.act = "yes";
+  yes.textContent = "需要咨询";
+  const no = document.createElement("button");
+  no.type = "button"; no.className = "consult-offer-btn ghost"; no.dataset.act = "no";
+  no.textContent = "不需要";
+  actions.appendChild(yes); actions.appendChild(no);
+  box.appendChild(prompt); box.appendChild(actions);
+  container.appendChild(box); scrollDown();
+  no.addEventListener("click", ()=>{ box.remove(); });
+  yes.addEventListener("click", async ()=>{
+    yes.disabled = true; no.disabled = true;
+    yes.textContent = "正在咨询客服并总结…";
+    let errEl = box.querySelector(".consult-offer-err"); if(errEl) errEl.remove();
+    try{
+      const res = await fetch("/consult/summary", {method:"POST", headers:{"Content-Type":"application/json", ...(token?{"Authorization":"Bearer "+token}:{})}, body: JSON.stringify({session_id: sessionId, product_ids: ids})});
+      const data = await res.json();
+      if(!res.ok) throw new Error((data&&data.error)||"未生成总结，请重试。");
+      const m = aiBubble(); const mb = m.querySelector(".body");
+      mb.style.whiteSpace = "pre-wrap"; mb.textContent = data.reply || "未返回总结内容。"; scrollDown();
+      const panel = $("#ppConsult"), pbody = $("#ppConsultBody");
+      if(pbody && data.transcript){ pbody.textContent = data.transcript; if(panel) panel.hidden = false; }
+      box.innerHTML = ""; const done = document.createElement("div"); done.className = "consult-offer-done";
+      done.textContent = "已根据推荐商品完成咨询并总结（见上方回复）。"; box.appendChild(done); scrollDown();
+    }catch(err){
+      yes.disabled = false; no.disabled = false; yes.textContent = "需要咨询";
+      const ie = document.createElement("div"); ie.className = "consult-offer-err";
+      ie.textContent = (err&&err.message) || "未生成总结，请重试。"; box.appendChild(ie); scrollDown();
+    }
+  });
 }
 function parseSSE(raw){
   let event="message",data="";
@@ -1836,7 +1878,7 @@ function addUser(text,attachments){ if(welcome.parentNode)welcome.style.display=
 function appendToken(body,text,caret){ const tokenEl=document.createElement("span"); tokenEl.className="tok";tokenEl.textContent=text;body.insertBefore(tokenEl,caret);scrollDown(); }
 async function typeFallback(el,text){ el.textContent=text;scrollDown(); }
 function setBuddyPanel(open,{restoreFocus=true}={}){ const panel=$("#nbPanel"),button=$("#novaBuddy"); panel.setAttribute("aria-hidden",open?"false":"true");button.setAttribute("aria-expanded",open?"true":"false");button.classList.toggle("panel-open",open);if(open){closeHistoryDrawer({restoreFocus:false});closeProfileMenu({restoreFocus:false});closeProduct({restoreFocus:false});panel.querySelector("button").focus();}else if(restoreFocus)button.focus(); }
-async function doSend(){ const text=input.value.trim(); const atts=pendingAttachments.slice(); if((!text&&!atts.length)||busy)return; busy=true;syncSendState(); const summary=attachmentsSummary(); const outMsg=[text,summary].filter(Boolean).join(text&&summary?"\n":""); if(!sessions[sessionId])pushHistory(text||summary||"Attachment"); addUser(text,atts); input.value="";pendingAttachments.length=0;renderAttachStrip();autosize();const thinking=addThinking();try{const res=await fetch("/chat/stream",{method:"POST",headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},body:JSON.stringify({session_id:sessionId,message:outMsg})});if(!res.ok||!res.body){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Sorry, the request failed. Please try again.");return;}thinking.remove();const reply=aiBubble(),body=reply.querySelector(".body"),caret=document.createElement("span");caret.className="caret";body.appendChild(caret);const reader=res.body.getReader(),decoder=new TextDecoder();let buffer="",responseData=null;while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});let divider;while((divider=buffer.indexOf("\n\n"))>=0){const event=parseSSE(buffer.slice(0,divider));buffer=buffer.slice(divider+2);if(!event)continue;if(event.event==="token")appendToken(body,event.data.text||"",caret);else if(event.event==="recommendations")responseData=event.data;else if(event.event==="error")appendToken(body,event.data.error||"Request failed",caret);}}caret.remove();if(responseData){renderReact(body,responseData.react_steps);if(responseData.recommendations&&responseData.recommendations.length){renderRecs(body,responseData.recommendations,responseData.status);$("#topMeta").textContent="Recommendations ready";}else renderOptions(body,responseData.options);renderNotices(body,responseData.notices);}}catch(error){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Network error. Please check the server and retry.");}finally{busy=false;syncSendState();input.focus();scrollDown();saveSession();}}
+async function doSend(){ const text=input.value.trim(); const atts=pendingAttachments.slice(); if((!text&&!atts.length)||busy)return; busy=true;syncSendState(); const summary=attachmentsSummary(); const outMsg=[text,summary].filter(Boolean).join(text&&summary?"\n":""); if(!sessions[sessionId])pushHistory(text||summary||"Attachment"); addUser(text,atts); input.value="";pendingAttachments.length=0;renderAttachStrip();autosize();const thinking=addThinking();try{const res=await fetch("/chat/stream",{method:"POST",headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},body:JSON.stringify({session_id:sessionId,message:outMsg})});if(!res.ok||!res.body){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Sorry, the request failed. Please try again.");return;}thinking.remove();const reply=aiBubble(),body=reply.querySelector(".body"),caret=document.createElement("span");caret.className="caret";body.appendChild(caret);const reader=res.body.getReader(),decoder=new TextDecoder();let buffer="",responseData=null;while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});let divider;while((divider=buffer.indexOf("\n\n"))>=0){const event=parseSSE(buffer.slice(0,divider));buffer=buffer.slice(divider+2);if(!event)continue;if(event.event==="token")appendToken(body,event.data.text||"",caret);else if(event.event==="recommendations")responseData=event.data;else if(event.event==="error")appendToken(body,event.data.error||"Request failed",caret);}}caret.remove();if(responseData){renderReact(body,responseData.react_steps);if(responseData.recommendations&&responseData.recommendations.length){renderRecs(body,responseData.recommendations,responseData.status);$("#topMeta").textContent="Recommendations ready";if(responseData.consult_offer){renderConsultOffer(body,responseData.recommendations);}}else renderOptions(body,responseData.options);renderNotices(body,responseData.notices);}}catch(error){thinking.remove();const reply=aiBubble();await typeFallback(reply.querySelector(".body"),"Network error. Please check the server and retry.");}finally{busy=false;syncSendState();input.focus();scrollDown();saveSession();}}
 $("#newChat").onclick=resetChat;$("#sideToggle").onclick=openHistoryDrawer;$("#historyClose").onclick=()=>closeHistoryDrawer();$("#historyBackdrop").onclick=()=>closeHistoryDrawer();$("#profileControl").onclick=()=>$("#profileMenu").hidden?openProfileMenu():closeProfileMenu();$("#ppClose").onclick=()=>closeProduct();$("#novaBuddy").onclick=()=>setBuddyPanel($("#nbPanel").getAttribute("aria-hidden")==="true",{restoreFocus:false});$("#nbNewChat").onclick=()=>{setBuddyPanel(false,{restoreFocus:false});resetChat();};
 input.addEventListener("input",()=>{autosize();syncSendState();});input.addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();doSend();}});sendBtn.onclick=doSend;
 streamInner.addEventListener("click",event=>{const chip=event.target.closest(".chip"),option=event.target.closest(".opt"),card=event.target.closest(".rec"),history=event.target.closest(".hist-item");if(chip&&!busy){input.value=chip.textContent;autosize();doSend();}if(option&&!busy&&!option.parentElement.classList.contains("done")){const group=option.parentElement;[...group.children].forEach(button=>{button.classList.toggle("picked",button===option);button.setAttribute("aria-pressed",button===option?"true":"false");});group.classList.add("done");input.value=option.textContent;doSend();}if(card){const recs=recommendationGroups.get(card.dataset.recGroup);const index=Number(card.dataset.recIndex);if(recs&&Number.isInteger(index)){clearActiveRecommendationCards();card.classList.add("active");card.setAttribute("aria-pressed","true");activeRecCard=card;productPanelOpener=card;openRecommendationsPanel(recs);selectProduct(index);setTimeout(()=>$("#ppClose").focus(),0);}}if(history)switchToSession(history.dataset.session);});

@@ -50,6 +50,13 @@ class ConsultationResponse(BaseModel):
     recommendations: list[ProductRecommendation] = Field(default_factory=list)
 
 
+class ConsultationSummaryResponse(ConsultationResponse):
+    """在客服回复基础上叠加总结：``reply`` 仍为面向用户的总结。"""
+
+    summary: str  # Consultation_Summary（= reply）
+    transcript: str  # 原始客服文案（Consultation_Transcript）
+
+
 class ErrorResponse(BaseModel):
     """错误响应模型 (Req 9.4)。"""
 
