@@ -42,10 +42,11 @@ class ProductCatalog:
         assert self._products is not None
         if not terms:
             return []
+        lowered = [t.lower() for t in terms]
         matched: list[CatalogProduct] = []
         for product in self._products.values():
-            haystack = product.detail or ""
-            if any(term in haystack for term in terms):
+            haystack = (product.detail or "").lower()
+            if any(term in haystack for term in lowered):
                 matched.append(product)
         return matched
 

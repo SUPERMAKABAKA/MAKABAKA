@@ -139,8 +139,11 @@ class RecommendationAgent:
             product = self._catalog.get(record.product_id) if self._catalog else None
             return (product.detail if product else "") or record.detail or ""
 
+        lowered_terms = [t.lower() for t in terms]
+
         def _hit(text: str) -> bool:
-            return any(term in text for term in terms)
+            low = text.lower()
+            return any(term in low for term in lowered_terms)
 
         in_category = [r for r in candidates if _hit(_detail_of(r))]
 
@@ -245,8 +248,9 @@ class RecommendationAgent:
         """
         if detail:
             first_line = detail.strip().splitlines()[0].strip()
-            # 取详情首行的商品名部分（截断到第一个逗号前，去掉规格描述）。
-            name = first_line.split("，")[0].strip()
+            # 取详情首行的商品名部分：在第一个句读处截断，去掉规格描述。
+            # 兼容中英文标点（中文逗号/句号、英文逗号/句号）。
+            name = re.split(r"[，。,.]", first_line, maxsplit=1)[0].strip()
             if name:
                 return name
         if web_info is not None and web_info.product_info:

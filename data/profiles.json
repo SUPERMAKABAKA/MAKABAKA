@@ -1,62 +1,62 @@
 [
   {
     "user_id": "user-001",
-    "preferences": ["降噪", "长续航", "轻便"],
+    "preferences": ["noise cancelling", "long battery life", "lightweight"],
     "budget": 2500.0,
-    "purpose": "通勤路上听音乐和播客"
+    "purpose": "listening to music and podcasts during the commute"
   },
   {
     "user_id": "user-002",
-    "preferences": ["高性价比", "游戏", "高刷新率"],
+    "preferences": ["great value", "gaming", "high refresh rate"],
     "budget": 1500.0,
-    "purpose": "在家玩游戏和看剧"
+    "purpose": "playing games and watching shows at home"
   },
   {
     "user_id": "user-003",
-    "preferences": ["保湿", "温和", "敏感肌友好"],
+    "preferences": ["hydrating", "gentle", "sensitive-skin friendly"],
     "budget": 800.0,
-    "purpose": "秋冬日常护肤补水"
+    "purpose": "daily skincare and hydration in autumn and winter"
   },
   {
     "user_id": "user-004",
-    "preferences": ["缓震", "透气", "适合长跑"],
+    "preferences": ["cushioning", "breathable", "good for long runs"],
     "budget": 1000.0,
-    "purpose": "备战半程马拉松训练"
+    "purpose": "training for a half marathon"
   },
   {
     "user_id": "user-005",
-    "preferences": ["智能", "省心", "适合养宠"],
+    "preferences": ["smart", "low-maintenance", "good for pets"],
     "budget": 4000.0,
-    "purpose": "打理有猫有狗的家庭清洁"
+    "purpose": "keeping a home with cats and dogs clean"
   },
   {
     "user_id": "user-006",
-    "preferences": ["实木", "北欧风", "环保"],
+    "preferences": ["solid wood", "Nordic style", "eco-friendly"],
     "budget": 3000.0,
-    "purpose": "布置新家的餐厅"
+    "purpose": "furnishing the dining room of a new home"
   },
   {
     "user_id": "user-007",
-    "preferences": ["静音", "人体工学", "多设备"],
+    "preferences": ["quiet", "ergonomic", "multi-device"],
     "budget": 1200.0,
-    "purpose": "长时间居家办公"
+    "purpose": "working from home for long hours"
   },
   {
     "user_id": "user-008",
-    "preferences": ["无油低脂", "大容量", "操作简单"],
+    "preferences": ["oil-free low-fat", "large capacity", "easy to use"],
     "budget": 700.0,
-    "purpose": "一家三口的健康烹饪"
+    "purpose": "healthy cooking for a family of three"
   },
   {
     "user_id": "user-009",
-    "preferences": ["安全", "易安装", "舒适"],
+    "preferences": ["safe", "easy to install", "comfortable"],
     "budget": 2000.0,
-    "purpose": "给幼儿选购出行装备"
+    "purpose": "buying travel gear for a toddler"
   },
   {
     "user_id": "user-010",
-    "preferences": ["专注", "自我提升", "通俗易懂"],
+    "preferences": ["focus", "self-improvement", "easy to understand"],
     "budget": 200.0,
-    "purpose": "利用碎片时间阅读成长类书籍"
+    "purpose": "reading growth-oriented books in spare moments"
   }
 ]

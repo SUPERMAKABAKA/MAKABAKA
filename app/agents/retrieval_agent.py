@@ -95,9 +95,11 @@ class RetrievalAgent:
         # 相关度顺序保留在后（兜底，避免品类无命中时结果为空）。
         terms = category_query_terms(session.category)
         if terms:
+            lowered_terms = [t.lower() for t in terms]
+
             def _is_category_match(record: RetrievedRecord) -> bool:
-                text = (record.detail or "") + " " + (record.matched_text or "")
-                return any(term in text for term in terms)
+                text = ((record.detail or "") + " " + (record.matched_text or "")).lower()
+                return any(term in text for term in lowered_terms)
 
             matched = [r for r in results if _is_category_match(r)]
             others = [r for r in results if not _is_category_match(r)]

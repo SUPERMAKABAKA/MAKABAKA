@@ -55,17 +55,18 @@ class ConsultationSummary:
         recommendations: list[ProductRecommendation],
     ) -> str:
         """构造“仅基于客服内容做要点总结、不新增事实”的中文提示词。"""
-        titles = "、".join(
+        titles = ", ".join(
             (item.title or item.product_id) for item in recommendations
         )
         return (
-            "你是购物助手。请仅基于下面这段客服咨询内容做要点总结，"
-            "不要新增任何价格、星级或原文中不存在的事实。"
-            "输出简明中文，覆盖推荐倾向、主要优点、需要留意之处。\n"
-            f"涉及商品：{titles}\n"
-            "客服咨询内容：\n"
+            "You are a shopping assistant. Summarize the key points based ONLY on the "
+            "customer-support content below. Do not add any price, star rating, or any "
+            "fact not present in the original text. Write concise English covering the "
+            "recommendation leaning, main pros, and things to note.\n"
+            f"Products involved: {titles}\n"
+            "Customer-support content:\n"
             f"{transcript}\n"
-            "请给出总结："
+            "Provide the summary:"
         )
 
     @staticmethod
@@ -77,20 +78,20 @@ class ConsultationSummary:
         if not recommendations:
             text = (transcript or "").strip()
             if text:
-                return "客服要点总结：\n" + text
-            return "暂无可总结的客服咨询内容，请先获取推荐并发起咨询。"
+                return "Support summary:\n" + text
+            return "No customer-support content to summarize yet. Please get recommendations and start a consultation first."
 
-        lines: list[str] = ["以下是本次客服咨询的要点总结："]
+        lines: list[str] = ["Here is a summary of this customer-support consultation:"]
         for index, product in enumerate(recommendations, start=1):
             name = product.title or product.product_id
-            reason = (product.reason or "").strip() or "与当前需求匹配。"
+            reason = (product.reason or "").strip() or "Matches your current needs."
             positives = [p for p in product.summary.positives[:2] if p]
             negatives = [n for n in product.summary.negatives[:2] if n]
-            parts = [f"{index}. {name}：推荐倾向——{reason}"]
+            parts = [f"{index}. {name}: recommendation leaning — {reason}"]
             if positives:
-                parts.append("主要优点：" + "；".join(positives))
+                parts.append("Main pros: " + "; ".join(positives))
             if negatives:
-                parts.append("需要留意：" + "；".join(negatives))
+                parts.append("Things to note: " + "; ".join(negatives))
             lines.append(" ".join(parts))
 
         if len(recommendations) > 1:
@@ -102,7 +103,7 @@ class ConsultationSummary:
                 ),
             )
             lines.append(
-                f"综合口碑，我会优先建议「{best.title or best.product_id}」，"
-                "最终请结合商品页实时信息决定。"
+                f"Based on overall reputation, I'd suggest \"{best.title or best.product_id}\" first; "
+                "please make the final decision together with the live info on the product page."
             )
         return "\n".join(lines)

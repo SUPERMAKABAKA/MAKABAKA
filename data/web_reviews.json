@@ -1,1655 +1,1655 @@
 {
   "info": {
-    "elec-001": "索尼 WH-1000XM5 无线降噪头戴属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-002": "Anker 65W 氮化镓充电器属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-003": "小米 Redmi 显示器 27 英寸 2属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-004": "罗技 MX Master 3S 无线鼠标属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-005": "Kindle Paperwhite 电子属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-006": "大疆 Osmo Pocket 3 口袋云属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-007": "elec-007属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-008": "机械键盘 87 键 RGB 背光属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-009": "移动固态硬盘 1TB属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "elec-010": "智能手表 GPS 版属于数码电子品类的热门单品，官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。",
-    "home-001": "戴森 V12 无绳吸尘器属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-002": "石头扫地机器人 G20属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-003": "北欧风实木餐桌属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-004": "记忆棉枕头属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-005": "智能空气净化器属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-006": "电动升降桌属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-007": "加湿器 4.5L 大容量属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-008": "多功能电饭煲属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-009": "落地灯 LED 无极调光属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "home-010": "home-010属于家居生活品类的热门单品，官方主打实用性与颜值，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-001": "雅诗兰黛小棕瓶精华 50ml属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-002": "兰蔻菁纯面霜属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-003": "科颜氏高保湿面霜属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-004": "植村秀琥珀卸妆油属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-005": "圣罗兰细管唇釉属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-006": "资生堂新艳阳夏防晒霜 SPF50+属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-007": "花西子空气蜜粉饼属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "beauty-008": "SK-II 神仙水 230ml属于美妆护肤品类的热门单品，官方主打肤感与成分，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-001": "耐克 Pegasus 40 跑鞋属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-002": "阿迪达斯运动速干T恤属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-003": "瑜伽垫 TPE 材质属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-004": "可调节哑铃一对属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-005": "运动水壶 1L 大容量属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-006": "登山双肩包 40L属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-007": "sport-007属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "sport-008": "筋膜枪深层肌肉放松属于运动健身品类的热门单品，官方主打舒适度与透气性，市场口碑整体不错，是同价位段的关注热点。",
-    "book-001": "《人类简史》尤瓦尔·赫拉利著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
-    "book-002": "《深度工作》卡尔·纽波特著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
-    "book-003": "《活着》余华著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
-    "book-004": "《原则》瑞·达利欧著属于图书阅读品类的热门单品，官方主打内容与装帧，市场口碑整体不错，是同价位段的关注热点。",
-    "kitchen-001": "不锈钢炒锅 32cm属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
-    "kitchen-002": "全自动咖啡机属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
-    "kitchen-003": "破壁料理机属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
-    "kitchen-004": "陶瓷刀具套装属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
-    "kitchen-005": "空气炸锅 5.5L 大容量属于厨房烹饪品类的热门单品，官方主打易用性与做工，市场口碑整体不错，是同价位段的关注热点。",
-    "baby-001": "婴儿推车轻便可折叠属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
-    "baby-002": "恒温调奶器属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
-    "baby-003": "儿童安全座椅属于母婴用品品类的热门单品，官方主打安全性与舒适度，市场口碑整体不错，是同价位段的关注热点。",
-    "pet-001": "自动喂食器智能定时属于宠物用品品类的热门单品，官方主打实用性与耐用度，市场口碑整体不错，是同价位段的关注热点。",
-    "pet-002": "pet-002属于宠物用品品类的热门单品，官方主打实用性与耐用度，市场口碑整体不错，是同价位段的关注热点。"
+    "elec-001": "Sony WH-1000XM5 wireless noise-cancelling headphones is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-002": "Anker 65W GaN charger is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-003": "Xiaomi Redmi 27-inch 2K monitor is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-004": "Logitech MX Master 3S wireless mouse is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-005": "Kindle Paperwhite e-reader is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-006": "DJI Osmo Pocket 3 gimbal camera is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-007": "Bluetooth speaker is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-008": "87-key RGB mechanical keyboard is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-009": "Portable SSD 1TB is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "elec-010": "Smartwatch GPS edition is a popular item in the Electronics category. The brand highlights build quality and battery life; overall market reputation is solid, making it a focal point in its price range.",
+    "home-001": "Dyson V12 cordless vacuum is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-002": "Roborock G20 robot vacuum is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-003": "Nordic solid wood dining table is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-004": "Memory foam pillow is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-005": "Smart air purifier is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-006": "Electric standing desk is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-007": "4.5L humidifier is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-008": "Multifunction rice cooker is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-009": "LED floor lamp is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "home-010": "Storage box is a popular item in the Home & Living category. The brand highlights practicality and aesthetics; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-001": "Estee Lauder Advanced Night Repair serum 50ml is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-002": "Lancome Absolue cream is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-003": "Kiehl's Ultra Facial Cream is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-004": "Shu Uemura cleansing oil is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-005": "YSL slim lip stain is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-006": "Shiseido Anessa sunscreen SPF50+ is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-007": "Florasis loose setting powder is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "beauty-008": "SK-II Facial Treatment Essence 230ml is a popular item in the Beauty & Skincare category. The brand highlights skin feel and ingredients; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-001": "Nike Pegasus 40 running shoes is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-002": "Adidas quick-dry sports T-shirt is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-003": "TPE yoga mat is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-004": "Adjustable dumbbell pair is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-005": "1L sports water bottle is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-006": "40L hiking backpack is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-007": "Jump rope is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "sport-008": "Massage gun is a popular item in the Sports & Fitness category. The brand highlights comfort and breathability; overall market reputation is solid, making it a focal point in its price range.",
+    "book-001": "\"Sapiens\" by Yuval Noah Harari is a popular item in the Books & Reading category. The brand highlights content and binding; overall market reputation is solid, making it a focal point in its price range.",
+    "book-002": "\"Deep Work\" by Cal Newport is a popular item in the Books & Reading category. The brand highlights content and binding; overall market reputation is solid, making it a focal point in its price range.",
+    "book-003": "\"To Live\" by Yu Hua is a popular item in the Books & Reading category. The brand highlights content and binding; overall market reputation is solid, making it a focal point in its price range.",
+    "book-004": "\"Principles\" by Ray Dalio is a popular item in the Books & Reading category. The brand highlights content and binding; overall market reputation is solid, making it a focal point in its price range.",
+    "kitchen-001": "Stainless steel wok 32cm is a popular item in the Kitchen & Cooking category. The brand highlights ease of use and build quality; overall market reputation is solid, making it a focal point in its price range.",
+    "kitchen-002": "Fully automatic coffee machine is a popular item in the Kitchen & Cooking category. The brand highlights ease of use and build quality; overall market reputation is solid, making it a focal point in its price range.",
+    "kitchen-003": "High-speed blender is a popular item in the Kitchen & Cooking category. The brand highlights ease of use and build quality; overall market reputation is solid, making it a focal point in its price range.",
+    "kitchen-004": "Ceramic knife set is a popular item in the Kitchen & Cooking category. The brand highlights ease of use and build quality; overall market reputation is solid, making it a focal point in its price range.",
+    "kitchen-005": "Air fryer 5.5L is a popular item in the Kitchen & Cooking category. The brand highlights ease of use and build quality; overall market reputation is solid, making it a focal point in its price range.",
+    "baby-001": "Lightweight foldable baby stroller is a popular item in the Baby & Maternity category. The brand highlights safety and comfort; overall market reputation is solid, making it a focal point in its price range.",
+    "baby-002": "Constant-temperature formula maker is a popular item in the Baby & Maternity category. The brand highlights safety and comfort; overall market reputation is solid, making it a focal point in its price range.",
+    "baby-003": "Child car seat is a popular item in the Baby & Maternity category. The brand highlights safety and comfort; overall market reputation is solid, making it a focal point in its price range.",
+    "pet-001": "Automatic pet feeder is a popular item in the Pet Supplies category. The brand highlights practicality and durability; overall market reputation is solid, making it a focal point in its price range.",
+    "pet-002": "Cat tree is a popular item in the Pet Supplies category. The brand highlights practicality and durability; overall market reputation is solid, making it a focal point in its price range."
   },
   "reviews": {
     "elec-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-005": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-006": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-007": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-008": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-009": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "elec-010": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the build quality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，续航和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the battery life falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测续航很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the battery life is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，做工是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the build quality is a weak point; think twice if that matters to you."
       }
     ],
     "home-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-005": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-006": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-007": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-008": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-009": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "home-010": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款家居生活产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，颜值和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the aesthetics falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测颜值很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the aesthetics is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-005": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-006": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-007": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "beauty-008": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款美妆护肤产品真的绝，肤感超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the skin feel exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，成分和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the ingredients falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测成分很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the ingredients is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，性价比翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从性价比来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，肤感是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the skin feel is a weak point; think twice if that matters to you."
       }
     ],
     "sport-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-005": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-006": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-007": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "sport-008": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款运动健身产品真的绝，舒适度超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the comfort exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，透气性和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the breathability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测透气性很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the breathability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，耐用度翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从耐用度来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of durability it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，舒适度是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the comfort is a weak point; think twice if that matters to you."
       }
     ],
     "book-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the content exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the binding falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the binding is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the content is a weak point; think twice if that matters to you."
       }
     ],
     "book-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the content exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the binding falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the binding is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the content is a weak point; think twice if that matters to you."
       }
     ],
     "book-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the content exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the binding falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the binding is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the content is a weak point; think twice if that matters to you."
       }
     ],
     "book-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款图书阅读产品真的绝，内容超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the content exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，装帧和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the binding falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测装帧很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the binding is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，可读性翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从可读性来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，内容是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the content is a weak point; think twice if that matters to you."
       }
     ],
     "kitchen-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the ease of use exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the build quality falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the build quality is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the ease of use is a weak point; think twice if that matters to you."
       }
     ],
     "kitchen-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the ease of use exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the build quality falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the build quality is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the ease of use is a weak point; think twice if that matters to you."
       }
     ],
     "kitchen-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the ease of use exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the build quality falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the build quality is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the ease of use is a weak point; think twice if that matters to you."
       }
     ],
     "kitchen-004": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the ease of use exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the build quality falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the build quality is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the ease of use is a weak point; think twice if that matters to you."
       }
     ],
     "kitchen-005": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款厨房烹饪产品真的绝，易用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the ease of use exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，做工和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the build quality falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测做工很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the build quality is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，清洗翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从清洗来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of value for money it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，易用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the ease of use is a weak point; think twice if that matters to you."
       }
     ],
     "baby-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the safety exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the comfort falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the comfort is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of build quality it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the safety is a weak point; think twice if that matters to you."
       }
     ],
     "baby-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the safety exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the comfort falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the comfort is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of build quality it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the safety is a weak point; think twice if that matters to you."
       }
     ],
     "baby-003": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款母婴用品产品真的绝，安全性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the safety exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，舒适度和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the comfort falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测舒适度很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the comfort is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of build quality it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，安全性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the safety is a weak point; think twice if that matters to you."
       }
     ],
     "pet-001": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款宠物用品产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，耐用度和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the durability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测耐用度很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the durability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of build quality it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ],
     "pet-002": [
       {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款宠物用品产品真的绝，实用性超出预期，回购无数次。"
+        "content": "Highly recommend! This product is fantastic, the practicality exceeded my expectations, I've repurchased many times."
       },
       {
         "platform": "xiaohongshu",
         "sentiment": "negative",
-        "content": "踩雷预警，耐用度和宣传有差距，用下来体验一般般。"
+        "content": "Heads-up: the durability falls short of the marketing, the experience was just so-so."
       },
       {
         "platform": "douyin",
         "sentiment": "positive",
-        "content": "刷到就买了，实测耐用度很能打，日常使用非常满意，强烈安利。"
+        "content": "Bought it after seeing it online; in real use the durability is strong and I'm very satisfied with daily use, strongly recommend."
       },
       {
         "platform": "douyin",
         "sentiment": "negative",
-        "content": "别冲动下单，做工翻车了，性价比不高，退货了。"
+        "content": "Don't buy on impulse; the value for money disappointed me, not worth it, I returned it."
       },
       {
         "platform": "bilibili",
         "sentiment": "positive",
-        "content": "UP 主实测了一个月，从做工来看确实用心，值得入手。"
+        "content": "A reviewer tested it for a month; in terms of build quality it's genuinely well made and worth buying."
       },
       {
         "platform": "bilibili",
         "sentiment": "negative",
-        "content": "客观说说缺点，实用性是短板，介意的朋友慎重。"
+        "content": "To be objective about the downsides, the practicality is a weak point; think twice if that matters to you."
       }
     ]
   }

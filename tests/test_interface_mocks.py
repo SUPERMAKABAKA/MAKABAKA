@@ -29,15 +29,16 @@ def test_mock_crawler_returns_preset_products() -> None:
         "product_id": "elec-001",
         "source_url": "https://www.amazon.cn/dp/elec-001",
         "detail": (
-            "索尼 WH-1000XM5 无线降噪头戴式耳机，主动降噪，30 小时续航，"
-            "支持多点连接与快充，佩戴轻盈适合长时间使用。"
+            "Sony WH-1000XM5 wireless noise-cancelling over-ear headphones, "
+            "active noise cancellation, 30-hour battery, multipoint connection "
+            "and fast charging, lightweight for all-day wear."
         ),
         "reviews": [
-            "降噪效果非常惊艳，地铁上几乎听不到环境噪音。",
-            "音质通透，人声解析力强，值得这个价位。",
-            "佩戴一整天耳朵也不闷，非常舒适。",
-            "价格偏贵，折叠结构不如上一代方便携带。",
-            "触控操作偶尔会误触，需要适应一段时间。",
+            "The noise cancellation is stunning; on the subway I barely hear any ambient noise.",
+            "Clear sound with strong vocal detail, well worth the price.",
+            "My ears don't feel stuffy even after a full day, very comfortable.",
+            "A bit pricey, and the folding design isn't as portable as the previous generation.",
+            "The touch controls occasionally misfire and take some getting used to.",
         ],
     }
 
@@ -54,14 +55,19 @@ def test_mock_web_search_returns_preset_info_and_three_platforms() -> None:
 
     assert isinstance(web_search, WebSearchInterface)
     assert product_info == (
-        "索尼 WH-1000XM5 无线降噪头戴属于数码电子品类的热门单品，"
-        "官方主打做工与续航，市场口碑整体不错，是同价位段的关注热点。"
+        "Sony WH-1000XM5 wireless noise-cancelling headphones is a popular item "
+        "in the Electronics category. The brand highlights build quality and "
+        "battery life; overall market reputation is solid, making it a focal "
+        "point in its price range."
     )
     assert len(reviews) == 6
     assert reviews[0].model_dump() == {
         "platform": "xiaohongshu",
         "sentiment": "positive",
-        "content": "姐妹们冲！这款数码电子产品真的绝，做工超出预期，回购无数次。",
+        "content": (
+            "Highly recommend! This product is fantastic, the build quality "
+            "exceeded my expectations, I've repurchased many times."
+        ),
     }
     assert {(review.platform, review.sentiment) for review in reviews} == {
         ("xiaohongshu", "positive"),

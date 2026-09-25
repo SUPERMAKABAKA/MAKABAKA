@@ -267,7 +267,7 @@ body.front .ambient,body.front .grain{display:none}
 /* 3-column app shell: [collapsible left history] [chat] [right product panel].
    Column widths animate so the sidebar collapse and the product panel slide are
    smooth. Panel width is 0 until .panel-open; sidebar shrinks to 0 on .side-collapsed. */
-.app{--pw:clamp(360px, 40vw, 640px);position:relative;z-index:2;display:grid;
+.app{--pw:clamp(460px, 52vw, 860px);position:relative;z-index:2;display:grid;
   grid-template-columns:264px minmax(0,1fr) 0px;height:100dvh;
   transition:grid-template-columns .34s var(--ease)}
 .app.side-collapsed{grid-template-columns:0px minmax(0,1fr) 0px}
@@ -699,7 +699,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 
 /* ===== NOVA AUTHENTICATED CHAT REDESIGN ===== */
 #appScreen{--chat-bg:#FAFAFA;--chat-surface:#fff;--chat-surface-muted:#f0f1f2;--chat-ink:#17191b;--chat-ink-muted:#62666b;--chat-line:#d9dce0;--chat-focus:#3f444a;--chat-shadow:0 8px 16px rgba(17,17,17,.10);--chat-content:840px;--chat-duration:180ms;--chat-font:"Nunito",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",Arial,sans-serif;position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) 0;height:100dvh;min-height:0;overflow:hidden;background:var(--chat-bg);color:var(--chat-ink);font-family:var(--chat-font);transition:grid-template-columns var(--chat-duration) ease}
-#appScreen.panel-open{grid-template-columns:minmax(0,1fr) var(--pw,clamp(300px,40vw,640px))}
+#appScreen.panel-open{grid-template-columns:minmax(0,1fr) var(--pw,clamp(460px,52vw,860px))}
 #appScreen *,#appScreen *::before,#appScreen *::after{box-sizing:border-box}
 #appScreen button,#appScreen textarea{font:inherit}#appScreen button{cursor:pointer}#appScreen button:focus-visible,#appScreen textarea:focus-visible,#appScreen [tabindex]:focus-visible{outline:2px solid var(--chat-focus);outline-offset:3px}
 #appScreen .chat-shell,#appScreen .main{display:flex;min-width:0;min-height:0;flex-direction:column;height:100dvh;background:var(--chat-bg)}
@@ -782,7 +782,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 /* -- conversation typography -- */
 #appScreen .msg{gap:14px}
 #appScreen .msg.user .bubble{max-width:min(74%,560px);padding:12px 16px;border-radius:18px 18px 6px 18px;background:var(--chat-surface-muted);border:1px solid var(--chat-line);color:var(--chat-ink)}
-#appScreen .msg.ai .bubble{max-width:min(100%,760px);padding:2px 0}
+#appScreen .msg.ai .bubble{max-width:100%;width:100%;padding:2px 0}
 #appScreen .msg.ai .who{font-size:12px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;font-family:var(--chat-font)}
 #appScreen .msg.ai .body{font-size:14.5px;line-height:1.72}
 
@@ -801,7 +801,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 
 /* -- PRODUCT CARDS: 3 desktop / 2 tablet / 1 mobile -- */
 /* Product Cards: inline recommendations remain user-selectable. */
-#appScreen .recs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+#appScreen .recs{display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px}
 #appScreen .rec{display:flex;flex-direction:column;min-width:0;min-height:100%;padding:0;overflow:hidden;border:1px solid var(--chat-line);border-radius:16px;background:var(--chat-surface);color:var(--chat-ink);text-align:left;box-shadow:0 2px 6px rgba(17,17,17,.04);transition:border-color var(--chat-duration),box-shadow var(--chat-duration),transform var(--chat-duration)}
 #appScreen .rec:hover{border-color:#aeb3b8;box-shadow:0 10px 22px rgba(17,17,17,.09);transform:translateY(-2px)}
 #appScreen .rec:focus-visible{outline:2px solid var(--chat-focus);outline-offset:3px}
@@ -1323,7 +1323,7 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
     <div class="pp-head"><div><div class="pp-eyebrow">Shopping browser</div><div class="pp-title" id="ppTitle">Recommendations</div><div class="pp-rank" id="ppRank"></div></div><button class="pp-close" id="ppClose" type="button" aria-label="Close product panel">×</button></div>
     <div class="pp-prodtabs" id="ppProdTabs"></div><div class="pp-bwbar"><span class="pp-url" id="ppUrl">-</span><a class="pp-ext" id="ppExt" href="#" target="_blank" rel="noopener">Amazon</a></div>
     <div class="pp-webwrap" id="ppWebwrap"><span class="pl-empty" id="plEmpty">Choose a recommendation to browse its shopping results.</span><iframe class="pp-webframe" id="ppWebframe" title="Selected product search" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe></div>
-    <div class="pp-consult" id="ppConsult" aria-live="polite" hidden><div class="pp-consult-head">模拟人工客服</div><div class="pp-consult-body" id="ppConsultBody">尚未进行模拟客服咨询。点击“打开所有推荐商品并咨询模拟人工客服”，我会基于右侧展示的推荐商品做总结。</div></div>
+    <div class="pp-consult" id="ppConsult" aria-live="polite" hidden><div class="pp-consult-head">Simulated Customer Support</div><div class="pp-consult-body" id="ppConsultBody">No consultation yet. Click "Open all recommendations and consult simulated support" and I'll summarize based on the recommended products shown on the right.</div></div>
   </aside>
   <button class="nova-buddy" id="novaBuddy" type="button" aria-label="Nova assistant" aria-controls="nbPanel" aria-expanded="false">N</button>
   <div class="nb-panel" id="nbPanel" role="dialog" aria-label="Nova quick panel" aria-hidden="true">
@@ -1710,20 +1710,20 @@ async function requestConsultation(recs,container,button,statusEl){
   const consultPanel=$("#ppConsult");
   const consultBody=$("#ppConsultBody");
   if(consultPanel) consultPanel.hidden=false;
-  button.disabled=true; button.textContent="正在生成模拟人工客服建议…";
-  if(statusEl) statusEl.textContent="正在读取商品详情、评分和评价信号…";
-  if(consultBody) consultBody.textContent="正在基于推荐商品生成客服总结…";
+  button.disabled=true; button.textContent="Generating simulated support suggestions…";
+  if(statusEl) statusEl.textContent="Reading product details, ratings and review signals…";
+  if(consultBody) consultBody.textContent="Generating a support summary based on the recommended products…";
   try{
     const res=await fetch("/consult",{method:"POST",headers:{"Content-Type":"application/json",...(token?{"Authorization":"Bearer "+token}:{})},body:JSON.stringify({session_id:sessionId,message:"Please introduce these recommended products like a human customer-service agent and explain their strengths and trade-offs using ratings, product information, positive reviews and negative reviews.",product_ids:recs.map(r=>r.product_id)})});
     const data=await res.json();
     if(!res.ok) throw new Error(data.error||"Customer-service content generation failed");
-    if(consultBody) consultBody.textContent=data.reply||"未返回客服内容";
-    button.textContent="已生成模拟客服建议";
-    if(statusEl) statusEl.textContent=`已根据${Array.isArray(data.recommendations)?data.recommendations.length:recs.length}个推荐商品生成咨询内容（见右侧客服区）。`;
+    if(consultBody) consultBody.textContent=data.reply||"No support content returned";
+    button.textContent="Simulated support suggestions ready";
+    if(statusEl) statusEl.textContent=`Generated a consultation from ${Array.isArray(data.recommendations)?data.recommendations.length:recs.length} recommended products (see the support panel on the right).`;
   }catch(err){
-    if(consultBody) consultBody.textContent=err.message||"未生成咨询内容，请重试。";
-    button.textContent="再次咨询模拟人工客服";
-    if(statusEl) statusEl.textContent=err.message||"未生成咨询内容，请重试。";
+    if(consultBody) consultBody.textContent=err.message||"No consultation generated. Please try again.";
+    button.textContent="Consult simulated support again";
+    if(statusEl) statusEl.textContent=err.message||"No consultation generated. Please try again.";
   }finally{ button.disabled=false; scrollDown(); }
 }
 function renderNotices(container,notices){
@@ -1819,37 +1819,37 @@ function renderConsultOffer(container, recs){
   box.className = "consult-offer";
   const prompt = document.createElement("div");
   prompt.className = "consult-offer-text";
-  prompt.textContent = "需要我帮你和这些商品的客服进一步咨询，并总结要点吗？";
+  prompt.textContent = "Want me to consult support for these products and summarize the key points?";
   const actions = document.createElement("div");
   actions.className = "consult-offer-acts";
   const yes = document.createElement("button");
   yes.type = "button"; yes.className = "consult-offer-btn"; yes.dataset.act = "yes";
-  yes.textContent = "需要咨询";
+  yes.textContent = "Yes, consult";
   const no = document.createElement("button");
   no.type = "button"; no.className = "consult-offer-btn ghost"; no.dataset.act = "no";
-  no.textContent = "不需要";
+  no.textContent = "No, thanks";
   actions.appendChild(yes); actions.appendChild(no);
   box.appendChild(prompt); box.appendChild(actions);
   container.appendChild(box); scrollDown();
   no.addEventListener("click", ()=>{ box.remove(); });
   yes.addEventListener("click", async ()=>{
     yes.disabled = true; no.disabled = true;
-    yes.textContent = "正在咨询客服并总结…";
+    yes.textContent = "Consulting support and summarizing…";
     let errEl = box.querySelector(".consult-offer-err"); if(errEl) errEl.remove();
     try{
       const res = await fetch("/consult/summary", {method:"POST", headers:{"Content-Type":"application/json", ...(token?{"Authorization":"Bearer "+token}:{})}, body: JSON.stringify({session_id: sessionId, product_ids: ids})});
       const data = await res.json();
-      if(!res.ok) throw new Error((data&&data.error)||"未生成总结，请重试。");
+      if(!res.ok) throw new Error((data&&data.error)||"No summary generated. Please try again.");
       const m = aiBubble(); const mb = m.querySelector(".body");
-      mb.style.whiteSpace = "pre-wrap"; mb.textContent = data.reply || "未返回总结内容。"; scrollDown();
+      mb.style.whiteSpace = "pre-wrap"; mb.textContent = data.reply || "No summary content returned."; scrollDown();
       const panel = $("#ppConsult"), pbody = $("#ppConsultBody");
       if(pbody && data.transcript){ pbody.textContent = data.transcript; if(panel) panel.hidden = false; }
       box.innerHTML = ""; const done = document.createElement("div"); done.className = "consult-offer-done";
-      done.textContent = "已根据推荐商品完成咨询并总结（见上方回复）。"; box.appendChild(done); scrollDown();
+      done.textContent = "Consultation and summary completed based on the recommended products (see the reply above)."; box.appendChild(done); scrollDown();
     }catch(err){
-      yes.disabled = false; no.disabled = false; yes.textContent = "需要咨询";
+      yes.disabled = false; no.disabled = false; yes.textContent = "Yes, consult";
       const ie = document.createElement("div"); ie.className = "consult-offer-err";
-      ie.textContent = (err&&err.message) || "未生成总结，请重试。"; box.appendChild(ie); scrollDown();
+      ie.textContent = (err&&err.message) || "No summary generated. Please try again."; box.appendChild(ie); scrollDown();
     }
   });
 }
@@ -1952,11 +1952,11 @@ function closeProduct({restoreFocus=true}={}){ appEl.classList.remove("panel-ope
 function fitEmbed(){ const wrap=$("#ppWebwrap"),frame=$("#ppWebframe"); if(!wrap||!frame)return; const width=wrap.clientWidth||wrap.getBoundingClientRect().width,height=wrap.clientHeight||wrap.getBoundingClientRect().height; if(width<10||height<10)return; const scale=width/EMBED_FW; frame.style.width=EMBED_FW+"px"; frame.style.height=Math.ceil(height/scale)+"px"; frame.style.transform="scale("+scale.toFixed(4)+")"; }
 function novaReadField(obj,keys){ for(const k of keys){ const v=obj&&obj[k]; if(v!==undefined&&v!==null&&String(v).trim()!=="") return String(v); } return ""; }
 function novaSafeImg(v){ return typeof v==="string"&&/^https?:\/\//i.test(v.trim())?v.trim():""; }
-function renderRecs(container,recs,status){ const wrap=document.createElement("div"); wrap.className="recs"; const groupId="rec-"+Math.random().toString(36).slice(2); recommendationGroups.set(groupId,recs); recs.forEach((rec,index)=>{ const pos=(rec.summary&&rec.summary.positives||[]).slice(0,3),neg=(rec.summary&&rec.summary.negatives||[]).slice(0,3),title=rec.title||rec.product_id||"Product"; const image=novaSafeImg(novaReadField(rec,["image","image_url","product_image","thumbnail","thumbnail_url"])); const price=novaReadField(rec,["price","price_text"]),rating=novaReadField(rec,["rating","rating_score"]),match=novaReadField(rec,["match_score","matchScore","match_percentage","match"]),review=novaReadField(rec,["review_summary","reviewSummary","review"]); const badge=index===0?"Best Match":index===1?"Smart Save":index===2?"Upgrade":""; const card=document.createElement("button"); card.type="button"; card.className="rec"; card.dataset.recGroup=groupId; card.dataset.recIndex=String(index); card.setAttribute("aria-label","View recommendation "+(index+1)+": "+title); card.setAttribute("aria-pressed","false"); const priceRow=(price||rating||match)?('<div class="rec-price-row">'+(price?'<span class="rec-price">'+esc(price)+'</span>':'')+(rating?'<span class="rec-rating">★ '+esc(rating)+'</span>':'')+(match?'<span class="rec-match">'+esc(match)+' match</span>':'')+'</div>'):''; const reviewRow=review?('<div class="rec-review"><strong>Review summary</strong>'+esc(review)+'</div>'):''; card.innerHTML='<div class="rec-media">'+(image?'<img src="'+esc(image)+'" alt="" loading="lazy">':'<span class="rec-media-fallback">Image not provided</span>')+(badge?'<span class="rec-badge">'+badge+'</span>':'')+'</div><div class="rec-body"><div class="rec-head"><div class="rec-title">'+esc(title)+'</div><div class="rec-rank">#'+String(index+1).padStart(2,"0")+'</div></div>'+priceRow+'<div class="rec-reason">'+esc(rec.reason||"")+'</div><div class="rec-summary"><div class="sum"><div class="sum-h">Pros</div><ul>'+(pos.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div><div class="sum"><div class="sum-h">Cons</div><ul>'+(neg.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div></div>'+reviewRow+'<span class="rec-cta">View Product</span></div>'; wrap.appendChild(card); }); container.appendChild(wrap); const actions=document.createElement("div"); actions.className="rec-actions"; const openAll=document.createElement("button"); openAll.type="button"; openAll.className="rec-action"; openAll.textContent="打开所有推荐商品"; openAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } }); const consultAll=document.createElement("button"); consultAll.type="button"; consultAll.className="rec-action primary"; consultAll.textContent="打开所有推荐商品并咨询模拟人工客服"; const statusEl=document.createElement("div"); statusEl.className="consult-status"; statusEl.textContent=`已整理${recs.length}个推荐商品，可打开商品或咨询模拟人工客服。`; consultAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } requestConsultation(recs,container,consultAll,statusEl); }); actions.append(openAll,consultAll,statusEl); container.appendChild(actions); if(status==="insufficient")renderNotices(container,["Few items matched. Showing all available results."]); scrollDown(); }
+function renderRecs(container,recs,status){ const wrap=document.createElement("div"); wrap.className="recs"; const groupId="rec-"+Math.random().toString(36).slice(2); recommendationGroups.set(groupId,recs); recs.forEach((rec,index)=>{ const pos=(rec.summary&&rec.summary.positives||[]).slice(0,3),neg=(rec.summary&&rec.summary.negatives||[]).slice(0,3),title=rec.title||rec.product_id||"Product"; const image=novaSafeImg(novaReadField(rec,["image","image_url","product_image","thumbnail","thumbnail_url"])); const price=novaReadField(rec,["price","price_text"]),rating=novaReadField(rec,["rating","rating_score"]),match=novaReadField(rec,["match_score","matchScore","match_percentage","match"]),review=novaReadField(rec,["review_summary","reviewSummary","review"]); const badge=index===0?"Best Match":index===1?"Smart Save":index===2?"Upgrade":""; const card=document.createElement("button"); card.type="button"; card.className="rec"; card.dataset.recGroup=groupId; card.dataset.recIndex=String(index); card.setAttribute("aria-label","View recommendation "+(index+1)+": "+title); card.setAttribute("aria-pressed","false"); const priceRow=(price||rating||match)?('<div class="rec-price-row">'+(price?'<span class="rec-price">'+esc(price)+'</span>':'')+(rating?'<span class="rec-rating">★ '+esc(rating)+'</span>':'')+(match?'<span class="rec-match">'+esc(match)+' match</span>':'')+'</div>'):''; const reviewRow=review?('<div class="rec-review"><strong>Review summary</strong>'+esc(review)+'</div>'):''; card.innerHTML='<div class="rec-media">'+(image?'<img src="'+esc(image)+'" alt="" loading="lazy">':'<span class="rec-media-fallback">Image not provided</span>')+(badge?'<span class="rec-badge">'+badge+'</span>':'')+'</div><div class="rec-body"><div class="rec-head"><div class="rec-title">'+esc(title)+'</div><div class="rec-rank">#'+String(index+1).padStart(2,"0")+'</div></div>'+priceRow+'<div class="rec-reason">'+esc(rec.reason||"")+'</div><div class="rec-summary"><div class="sum"><div class="sum-h">Pros</div><ul>'+(pos.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div><div class="sum"><div class="sum-h">Cons</div><ul>'+(neg.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div></div>'+reviewRow+'<span class="rec-cta">View Product</span></div>'; wrap.appendChild(card); }); container.appendChild(wrap); const actions=document.createElement("div"); actions.className="rec-actions"; const openAll=document.createElement("button"); openAll.type="button"; openAll.className="rec-action"; openAll.textContent="Open all recommendations"; openAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } }); const consultAll=document.createElement("button"); consultAll.type="button"; consultAll.className="rec-action primary"; consultAll.textContent="Open all recommendations & consult simulated support"; const statusEl=document.createElement("div"); statusEl.className="consult-status"; statusEl.textContent=`Prepared ${recs.length} recommended products. You can open them or consult simulated support.`; consultAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } requestConsultation(recs,container,consultAll,statusEl); }); actions.append(openAll,consultAll,statusEl); container.appendChild(actions); if(status==="insufficient")renderNotices(container,["Few items matched. Showing all available results."]); scrollDown(); }
 function renderReact(container,steps){ if(!steps||!steps.length)return; const box=document.createElement("div"); box.className="react"; box.innerHTML='<div class="react-h">Nova details</div>'+steps.map(step=>'<div class="react-step"><div class="react-k">Thought</div><div class="react-v">'+esc(step.thought||"")+'</div><div class="react-k">Plan</div><div class="react-v">'+esc(step.plan||"")+'</div><div class="react-k">Action</div><div class="react-v">'+esc(step.action||"")+'</div></div>').join(""); container.appendChild(box); }
 function renderNotices(container,notices){ if(!notices||!notices.length)return; const wrap=document.createElement("div"); wrap.className="notices"; notices.forEach(note=>{const item=document.createElement("div");item.className="notice";item.textContent=note;wrap.appendChild(item);});container.appendChild(wrap); }
 function renderOptions(container,options){ if(!options||!options.length)return; const wrap=document.createElement("div"); wrap.className="opts"; options.forEach(option=>{const button=document.createElement("button");button.type="button";button.className="opt";button.textContent=option;button.setAttribute("aria-pressed","false");wrap.appendChild(button);});container.appendChild(wrap); }
-function addThinking(){ const message=document.createElement("div");message.className="msg ai";message.innerHTML='<div class="avatar ai">N</div><div class="bubble"><div class="thinking" role="status" aria-live="polite"><span>Nova is reviewing your request…</span><span class="agent-stages"><span class="agent-stage on">搜索商品</span><span class="agent-stage">比较价格</span><span class="agent-stage">分析评论</span><span class="agent-stage">生成推荐</span></span></div></div>';streamInner.appendChild(message);scrollDown();return message; }
+function addThinking(){ const message=document.createElement("div");message.className="msg ai";message.innerHTML='<div class="avatar ai">N</div><div class="bubble"><div class="thinking" role="status" aria-live="polite"><span>Nova is reviewing your request…</span><span class="agent-stages"><span class="agent-stage on">Search products</span><span class="agent-stage">Compare prices</span><span class="agent-stage">Analyze reviews</span><span class="agent-stage">Generate recommendations</span></span></div></div>';streamInner.appendChild(message);scrollDown();return message; }
 function aiBubble(){ const message=document.createElement("div");message.className="msg ai";message.innerHTML='<div class="avatar ai">N</div><div class="bubble"><div class="who">Nova</div><div class="body"></div></div>';streamInner.appendChild(message);return message; }
 function addUser(text,attachments){ if(welcome.parentNode)welcome.style.display="none"; const message=document.createElement("div");message.className="msg user";message.innerHTML='<div class="bubble"></div>';const bubble=message.querySelector(".bubble"); if(text){const t=document.createElement("div");t.textContent=text;bubble.appendChild(t);} if(attachments&&attachments.length){const grid=document.createElement("div");grid.className="att-grid";grid.innerHTML=attachments.map(a=>a.isImage&&a.dataUrl?'<img src="'+a.dataUrl+'" alt="'+esc(a.name)+'">':'<span class="att-file">'+fileSvg+esc(a.name)+'</span>').join("");bubble.appendChild(grid);} streamInner.appendChild(message);scrollDown(); }
 function appendToken(body,text,caret){ const tokenEl=document.createElement("span"); tokenEl.className="tok";tokenEl.textContent=text;body.insertBefore(tokenEl,caret);scrollDown(); }

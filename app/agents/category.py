@@ -61,25 +61,25 @@ _GENERIC_PREFS: tuple[str, ...] = ("Top quality", "Best value", "Popular brand",
 # 用与商品详情一致的中文词能显著提升检索命中相关品类（避免检索跑偏）。
 # 只用品类本体名词，不含跨品类功能词（如“降噪/人体工学/静音”），避免误命中。
 _CATEGORY_QUERY_TERMS: dict[str, tuple[str, ...]] = {
-    "headphones": ("耳机",),
-    "laptop": ("笔记本", "笔记本电脑"),
-    "phone": ("手机",),
-    "mouse": ("鼠标",),
-    "keyboard": ("键盘",),
-    "monitor": ("显示器",),
-    "camera": ("相机", "云台相机"),
-    "watch": ("手表", "手环"),
-    "speaker": ("音箱",),
-    "tablet": ("平板",),
-    "shoes": ("跑鞋", "运动鞋"),
-    "chair": ("椅子", "座椅"),
-    "purifier": ("净化器",),
-    "massage": ("按摩", "筋膜枪"),
+    "headphones": ("headphone", "headphones", "耳机"),
+    "laptop": ("laptop", "notebook", "笔记本"),
+    "phone": ("phone", "手机"),
+    "mouse": ("mouse", "鼠标"),
+    "keyboard": ("keyboard", "键盘"),
+    "monitor": ("monitor", "显示器"),
+    "camera": ("camera", "相机"),
+    "watch": ("watch", "手表", "手环"),
+    "speaker": ("speaker", "音箱"),
+    "tablet": ("tablet", "平板"),
+    "shoes": ("running shoes", "shoes", "跑鞋", "运动鞋"),
+    "chair": ("chair", "椅子", "座椅"),
+    "purifier": ("purifier", "净化器"),
+    "massage": ("massage", "筋膜枪", "按摩"),
 }
 
 
 def category_query_terms(category: Optional[str]) -> list[str]:
-    """返回品类对应的中文检索关键词列表；未知品类返回空列表。"""
+    """返回品类对应的检索关键词列表（含中英，兼容英文商品数据）；未知品类返回空列表。"""
     if not category:
         return []
     return list(_CATEGORY_QUERY_TERMS.get(category, ()))
