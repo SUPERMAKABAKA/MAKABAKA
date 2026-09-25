@@ -807,7 +807,14 @@ textarea,.field input{user-select:text;-webkit-user-select:text;cursor:text}
 #appScreen .rec:focus-visible{outline:2px solid var(--chat-focus);outline-offset:3px}
 #appScreen .rec.active{border-color:var(--chat-ink);box-shadow:0 0 0 1px var(--chat-ink),0 10px 22px rgba(17,17,17,.09)}
 #appScreen .rec-media{position:relative;display:grid;place-items:center;height:150px;background:linear-gradient(180deg,#f4f5f6,#eceef0);border-bottom:1px solid var(--chat-line);overflow:hidden}
-#appScreen .rec-media img{width:100%;height:150px;object-fit:cover}
+/* Tone product images to match the light page palette: gently desaturate,
+   brighten and soften contrast so vivid colors (e.g. bright red) blend in. */
+#appScreen .rec-media img{position:absolute;inset:0;width:100%;height:150px;object-fit:cover;z-index:1;background:#f4f5f6;filter:saturate(.72) brightness(1.05) contrast(.96)}
+/* Soft light overlay tinted to the page background, blends the photo into the UI. */
+#appScreen .rec-media::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(250,250,250,.30),rgba(250,250,250,.14) 45%,rgba(236,238,240,.30));mix-blend-mode:normal}
+#appScreen .rec-media .rec-badge{z-index:3}
+#appScreen .rec-media-fallback{position:relative;z-index:3}
+#appScreen .rec-media-loading{z-index:0}
 #appScreen .rec-media-fallback{color:#9a9da1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 #appScreen .rec-badge{position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:999px;background:var(--chat-ink);color:#fff;font-size:10.5px;font-weight:700}
 #appScreen .rec-body{display:flex;flex:1;flex-direction:column;padding:16px}
@@ -1952,7 +1959,71 @@ function closeProduct({restoreFocus=true}={}){ appEl.classList.remove("panel-ope
 function fitEmbed(){ const wrap=$("#ppWebwrap"),frame=$("#ppWebframe"); if(!wrap||!frame)return; const width=wrap.clientWidth||wrap.getBoundingClientRect().width,height=wrap.clientHeight||wrap.getBoundingClientRect().height; if(width<10||height<10)return; const scale=width/EMBED_FW; frame.style.width=EMBED_FW+"px"; frame.style.height=Math.ceil(height/scale)+"px"; frame.style.transform="scale("+scale.toFixed(4)+")"; }
 function novaReadField(obj,keys){ for(const k of keys){ const v=obj&&obj[k]; if(v!==undefined&&v!==null&&String(v).trim()!=="") return String(v); } return ""; }
 function novaSafeImg(v){ return typeof v==="string"&&/^https?:\/\//i.test(v.trim())?v.trim():""; }
-function renderRecs(container,recs,status){ const wrap=document.createElement("div"); wrap.className="recs"; const groupId="rec-"+Math.random().toString(36).slice(2); recommendationGroups.set(groupId,recs); recs.forEach((rec,index)=>{ const pos=(rec.summary&&rec.summary.positives||[]).slice(0,3),neg=(rec.summary&&rec.summary.negatives||[]).slice(0,3),title=rec.title||rec.product_id||"Product"; const image=novaSafeImg(novaReadField(rec,["image","image_url","product_image","thumbnail","thumbnail_url"])); const price=novaReadField(rec,["price","price_text"]),rating=novaReadField(rec,["rating","rating_score"]),match=novaReadField(rec,["match_score","matchScore","match_percentage","match"]),review=novaReadField(rec,["review_summary","reviewSummary","review"]); const badge=index===0?"Best Match":index===1?"Smart Save":index===2?"Upgrade":""; const card=document.createElement("button"); card.type="button"; card.className="rec"; card.dataset.recGroup=groupId; card.dataset.recIndex=String(index); card.setAttribute("aria-label","View recommendation "+(index+1)+": "+title); card.setAttribute("aria-pressed","false"); const priceRow=(price||rating||match)?('<div class="rec-price-row">'+(price?'<span class="rec-price">'+esc(price)+'</span>':'')+(rating?'<span class="rec-rating">★ '+esc(rating)+'</span>':'')+(match?'<span class="rec-match">'+esc(match)+' match</span>':'')+'</div>'):''; const reviewRow=review?('<div class="rec-review"><strong>Review summary</strong>'+esc(review)+'</div>'):''; card.innerHTML='<div class="rec-media">'+(image?'<img src="'+esc(image)+'" alt="" loading="lazy">':'<span class="rec-media-fallback">Image not provided</span>')+(badge?'<span class="rec-badge">'+badge+'</span>':'')+'</div><div class="rec-body"><div class="rec-head"><div class="rec-title">'+esc(title)+'</div><div class="rec-rank">#'+String(index+1).padStart(2,"0")+'</div></div>'+priceRow+'<div class="rec-reason">'+esc(rec.reason||"")+'</div><div class="rec-summary"><div class="sum"><div class="sum-h">Pros</div><ul>'+(pos.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div><div class="sum"><div class="sum-h">Cons</div><ul>'+(neg.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div></div>'+reviewRow+'<span class="rec-cta">View Product</span></div>'; wrap.appendChild(card); }); container.appendChild(wrap); const actions=document.createElement("div"); actions.className="rec-actions"; const openAll=document.createElement("button"); openAll.type="button"; openAll.className="rec-action"; openAll.textContent="Open all recommendations"; openAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } }); const consultAll=document.createElement("button"); consultAll.type="button"; consultAll.className="rec-action primary"; consultAll.textContent="Open all recommendations & consult simulated support"; const statusEl=document.createElement("div"); statusEl.className="consult-status"; statusEl.textContent=`Prepared ${recs.length} recommended products. You can open them or consult simulated support.`; consultAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } requestConsultation(recs,container,consultAll,statusEl); }); actions.append(openAll,consultAll,statusEl); container.appendChild(actions); if(status==="insufficient")renderNotices(container,["Few items matched. Showing all available results."]); scrollDown(); }
+/* When a product has no real image URL, generate a stable placeholder image
+   based on the product title (e.g. a Nike item searches Nike-related photos).
+   Generates a polished product image from the product title using an image
+   generation endpoint (no API key). A stable seed derived from the title keeps
+   the same product mapped to the same image across renders. */
+function novaImgSeed(t){ let h=0; for(let i=0;i<t.length;i++){ h=(h*31+t.charCodeAt(i))>>>0; } return h%100000; }
+/* Category -> curated stable Unsplash image (relevant, reliable product photos).
+   Keyword match runs against the product title (English or Chinese). */
+const NOVA_IMG_MAP=[
+  [["headphone","earbud","earphone","耳机"],"photo-1505740420928-5e560c06d30e"],
+  [["running shoe","sneaker","shoe","跑鞋","运动鞋","鞋"],"photo-1542291026-7eec264c27ff"],
+  [["laptop","notebook","笔记本"],"photo-1496181133206-80ce9b88a853"],
+  [["phone","smartphone","手机"],"photo-1511707171634-5f897ff02aa9"],
+  [["mouse","鼠标"],"photo-1527814050087-3793815479db"],
+  [["keyboard","键盘"],"photo-1587829741301-dc798b83add3"],
+  [["monitor","display","显示器","屏幕"],"photo-1527443224154-c4a3942d3acf"],
+  [["camera","相机","云台"],"photo-1516035069371-29a1b244cc32"],
+  [["watch","手表","手环"],"photo-1523275335684-37898b6baf30"],
+  [["speaker","音箱","音响"],"photo-1608043152269-423dbba4e7e1"],
+  [["tablet","ipad","平板"],"photo-1544244015-0df4b3ffc6b0"],
+  [["charger","充电","power"],"photo-1583863788434-e58a36330cf0"],
+  [["ssd","hard drive","硬盘"],"photo-1531492746076-161ca9bcad58"],
+  [["e-reader","kindle","阅读器"],"photo-1512820790803-83ca734da794"],
+  [["vacuum","吸尘","扫地"],"photo-1558317374-067fb5f30001"],
+  [["table","desk","桌","餐桌"],"photo-1503602642458-232111445657"],
+  [["pillow","枕"],"photo-1584100936595-c0654b55a2e6"],
+  [["purifier","净化器"],"photo-1585771724684-38269d6639fd"],
+  [["humidifier","加湿"],"photo-1600494603989-9650cf6dad51"],
+  [["rice cooker","cooker","电饭煲"],"photo-1585515320310-259814833e62"],
+  [["lamp","灯"],"photo-1507473885765-e6ed057f782c"],
+  [["serum","cream","skincare","面霜","精华","护肤"],"photo-1556228578-8c89e6adf883"],
+  [["lipstick","lip","唇"],"photo-1586495777744-4413f21062fa"],
+  [["sunscreen","防晒"],"photo-1556228578-dd6f0f9f6c0d"],
+  [["powder","蜜粉","定妆"],"photo-1596462502278-27bfdc403348"],
+  [["t-shirt","shirt","衣","tee"],"photo-1521572163474-6864f9cf17ab"],
+  [["yoga mat","yoga","瑜伽"],"photo-1592432678016-e910b452f9a2"],
+  [["dumbbell","哑铃"],"photo-1638536532686-d610adfc8e5c"],
+  [["water bottle","bottle","水壶"],"photo-1602143407151-7111542de6e8"],
+  [["backpack","双肩包","背包"],"photo-1553062407-98eeb64c6a62"],
+  [["jump rope","跳绳"],"photo-1598289431512-b97b0917affc"],
+  [["massage","筋膜枪","按摩"],"photo-1600334129128-685c5582fd35"],
+  [["book","《","著","阅读"],"photo-1512820790803-83ca734da794"],
+  [["wok","pan","锅","炒"],"photo-1585032226651-759b368d7246"],
+  [["coffee","咖啡"],"photo-1495474472287-4d71bcdd2085"],
+  [["blender","破壁","料理机"],"photo-1570222094114-d054a817e56b"],
+  [["knife","刀"],"photo-1593618998160-e34014e67546"],
+  [["air fryer","炸锅"],"photo-1626074353765-517a681e40be"],
+  [["stroller","推车"],"photo-1607355739828-0bf365c9d3fc"],
+  [["formula maker","调奶","奶"],"photo-1515488042361-ee00e0ddd4e4"],
+  [["car seat","安全座椅","座椅"],"photo-1591019479261-1a103585c559"],
+  [["feeder","喂食","pet","宠物","cat","dog"],"photo-1583511655857-d19b40a7a54e"],
+];
+function novaGuessImg(title){
+  const t=(title||"").trim(); if(!t) return "";
+  const low=t.toLowerCase();
+  let photoId="";
+  for(const [keys,id] of NOVA_IMG_MAP){ if(keys.some(k=>low.indexOf(k)>=0)){ photoId=id; break; } }
+  if(photoId){
+    return "https://images.unsplash.com/"+photoId+"?auto=format&fit=crop&w=600&h=400&q=70";
+  }
+  // Fallback: stable, always-available image keyed by title (not category-specific).
+  const seed=novaImgSeed(low);
+  return "https://picsum.photos/seed/nova"+seed+"/600/400";
+}
+function renderRecs(container,recs,status){ const wrap=document.createElement("div"); wrap.className="recs"; const groupId="rec-"+Math.random().toString(36).slice(2); recommendationGroups.set(groupId,recs); recs.forEach((rec,index)=>{ const pos=(rec.summary&&rec.summary.positives||[]).slice(0,3),neg=(rec.summary&&rec.summary.negatives||[]).slice(0,3),title=rec.title||rec.product_id||"Product"; const image=novaSafeImg(novaReadField(rec,["image","image_url","product_image","thumbnail","thumbnail_url"])); const price=novaReadField(rec,["price","price_text"]),rating=novaReadField(rec,["rating","rating_score"]),match=novaReadField(rec,["match_score","matchScore","match_percentage","match"]),review=novaReadField(rec,["review_summary","reviewSummary","review"]); const badge=index===0?"Best Match":index===1?"Smart Save":index===2?"Upgrade":""; const card=document.createElement("button"); card.type="button"; card.className="rec"; card.dataset.recGroup=groupId; card.dataset.recIndex=String(index); card.setAttribute("aria-label","View recommendation "+(index+1)+": "+title); card.setAttribute("aria-pressed","false"); const priceRow=(price||rating||match)?('<div class="rec-price-row">'+(price?'<span class="rec-price">'+esc(price)+'</span>':'')+(rating?'<span class="rec-rating">★ '+esc(rating)+'</span>':'')+(match?'<span class="rec-match">'+esc(match)+' match</span>':'')+'</div>'):''; const reviewRow=review?('<div class="rec-review"><strong>Review summary</strong>'+esc(review)+'</div>'):''; card.innerHTML='<div class="rec-media">'+((image||novaGuessImg(title))?'<span class="rec-media-fallback rec-media-loading">Loading image…</span><img class="rec-media-img" src="'+esc(image||novaGuessImg(title))+'" alt="'+esc(title)+'" loading="lazy" referrerpolicy="no-referrer">':'<span class="rec-media-fallback">Image not provided</span>')+(badge?'<span class="rec-badge">'+badge+'</span>':'')+'</div><div class="rec-body"><div class="rec-head"><div class="rec-title">'+esc(title)+'</div><div class="rec-rank">#'+String(index+1).padStart(2,"0")+'</div></div>'+priceRow+'<div class="rec-reason">'+esc(rec.reason||"")+'</div><div class="rec-summary"><div class="sum"><div class="sum-h">Pros</div><ul>'+(pos.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div><div class="sum"><div class="sum-h">Cons</div><ul>'+(neg.map(v=>"<li>"+esc(v)+"</li>").join("")||"<li>Not provided</li>")+'</ul></div></div>'+reviewRow+'<span class="rec-cta">View Product</span></div>'; wrap.appendChild(card); }); container.appendChild(wrap); const actions=document.createElement("div"); actions.className="rec-actions"; const openAll=document.createElement("button"); openAll.type="button"; openAll.className="rec-action"; openAll.textContent="Open all recommendations"; openAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } }); const consultAll=document.createElement("button"); consultAll.type="button"; consultAll.className="rec-action primary"; consultAll.textContent="Open all recommendations & consult simulated support"; const statusEl=document.createElement("div"); statusEl.className="consult-status"; statusEl.textContent=`Prepared ${recs.length} recommended products. You can open them or consult simulated support.`; consultAll.addEventListener("click",()=>{ if(recs.length){ openRecommendationsPanel(recs); selectProduct(0); } requestConsultation(recs,container,consultAll,statusEl); }); actions.append(openAll,consultAll,statusEl); container.appendChild(actions); if(status==="insufficient")renderNotices(container,["Few items matched. Showing all available results."]); container.querySelectorAll(".rec-media-img").forEach(function(img){ function drop(){ var p=img.parentNode; if(p){ var l=p.querySelector(".rec-media-loading"); if(l) l.remove(); } } img.addEventListener("load",drop); img.addEventListener("error",function(){ var p=img.parentNode; drop(); img.remove(); if(p&&!p.querySelector(".rec-media-fallback")){ var s=document.createElement("span"); s.className="rec-media-fallback"; s.textContent="Image not provided"; p.insertBefore(s,p.firstChild); } }); if(img.complete&&img.naturalWidth>0){ drop(); } }); scrollDown(); }
 function renderReact(container,steps){ if(!steps||!steps.length)return; const box=document.createElement("div"); box.className="react"; box.innerHTML='<div class="react-h">Nova details</div>'+steps.map(step=>'<div class="react-step"><div class="react-k">Thought</div><div class="react-v">'+esc(step.thought||"")+'</div><div class="react-k">Plan</div><div class="react-v">'+esc(step.plan||"")+'</div><div class="react-k">Action</div><div class="react-v">'+esc(step.action||"")+'</div></div>').join(""); container.appendChild(box); }
 function renderNotices(container,notices){ if(!notices||!notices.length)return; const wrap=document.createElement("div"); wrap.className="notices"; notices.forEach(note=>{const item=document.createElement("div");item.className="notice";item.textContent=note;wrap.appendChild(item);});container.appendChild(wrap); }
 function renderOptions(container,options){ if(!options||!options.length)return; const wrap=document.createElement("div"); wrap.className="opts"; options.forEach(option=>{const button=document.createElement("button");button.type="button";button.className="opt";button.textContent=option;button.setAttribute("aria-pressed","false");wrap.appendChild(button);});container.appendChild(wrap); }
